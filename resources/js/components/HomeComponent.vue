@@ -1,7 +1,7 @@
 <template>
 <div class="content">
     <div class="title m-b-md">
-        Laravel
+        VIRTUAL WALLET
     </div>
 </div>
 
@@ -11,7 +11,7 @@
     export default {
         data: function () {
             return {
-                
+
             }
         }
     }
