@@ -1927,6 +1927,11 @@ __webpack_require__.r(__webpack_exports__);
 
         localStorage.setItem("token", _this.user.remember_token);
         axios.defaults.headers.common.Authorization = "Bearer " + _this.user.remember_token;
+        axios.get('/api/getAuthUser').then(function (response) {
+          _this.$store.commit('setUser', response.data);
+
+          console.log(_this.$store.getters.user);
+        });
 
         _this.$router.push('/home');
       })["catch"](function (error) {
@@ -53544,6 +53549,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_3__["default"].Store({
     loggedin: false
   },
   mutations: {
+    setUser: function setUser(state, user) {
+      state.user = user;
+    },
     setToken: function setToken(state, received_token) {
       state.token = received_token;
     },
@@ -53557,6 +53565,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_3__["default"].Store({
     },
     loggedin: function loggedin(state) {
       return state.loggedin;
+    },
+    user: function user(state) {
+      return state.user;
     }
   }
 });

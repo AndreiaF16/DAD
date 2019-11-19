@@ -36,16 +36,20 @@ const store = new Vuex.Store({
       loggedin: false
     },
     mutations: {
-      setToken(state, received_token) {
-          state.token = received_token;
-      },
-      logIn(state, boll) {
+        setUser(state, user) {
+            state.user = user;
+        },
+        setToken(state, received_token) {
+            state.token = received_token;
+        },
+        logIn(state, boll) {
         state.loggedin = boll;
-      }
+        }
     },
     getters: {
         token: state => state.token,
-        loggedin: state => state.loggedin
+        loggedin: state => state.loggedin,
+        user: state => state.user
       }
 });
 
@@ -62,6 +66,7 @@ const app = new Vue({
         }
     },methods:{
         logout(){
+            this.$store.commit('setUser',null);
             this.$store.commit('setToken',"");
             this.$store.commit('logIn', false);
             axios.defaults.headers.common.Authorization = null;

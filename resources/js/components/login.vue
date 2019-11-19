@@ -46,6 +46,11 @@
                         this.$store.commit('logIn',true);
                         localStorage.setItem("token", this.user.remember_token);
                         axios.defaults.headers.common.Authorization = "Bearer " + this.user.remember_token;
+                        axios.get('/api/getAuthUser')
+                            .then(response => {
+                                this.$store.commit('setUser',response.data);
+                                console.log(this.$store.getters.user)
+                            });
                         this.$router.push('/home');
                     })
                     .catch(error => {
