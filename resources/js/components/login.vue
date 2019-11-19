@@ -38,21 +38,15 @@
                // this.$emit('user-login', this.user);
                axios.post('api/login', this.user)
                 .then(response => {
-
-                  // this.$store.commit('setToken',response.data.remember_token);
+                    this.$store.
+                 // this.$store.commit('setToken',response.data.remember_token);
                      return axios.get('api/home');
                  })
                  .then(response => {
-                                  // this.$store.commit('setUser',response.data.data);
-                               //    this.$socket.emit('user_enter', response.data.data);
-                                   // this.typeofmsg = "alert-success";
                                    this.message = "User authenticated correctly";
                                     this.showMessage = true;
                                 })
                                 .catch(error => {
-                                    //this.$store.commit('clearUserAndToken');
-                                  //  this.typeofmsg = "alert-danger";
-                                  //  this.message = "Invalid credentials";
                                     this.showMessage = true;
                                     console.log(error);
                                 });
