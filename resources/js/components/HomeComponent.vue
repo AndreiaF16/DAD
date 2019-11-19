@@ -1,7 +1,9 @@
 <template>
 <div class="content">
     <div class="title m-b-md">
-        Laravel
+        <h2> {{title}}</h2>
+        <h2> {{wallets}}</h2>
+
     </div>
 </div>
 
@@ -9,10 +11,17 @@
 </template>
 <script>
     export default {
-        data: function () {
-            return {
-                
-            }
+        data: function(){
+        return{
+            title: 'Welcome to virtual wallet, total number of virtual wallets: ',
+            wallets: undefined
         }
+    },
+    mounted(){
+        axios.get('api/home')
+        .then(response=>{
+            this.wallets = response.data;
+        });
     }
+}
 </script>
