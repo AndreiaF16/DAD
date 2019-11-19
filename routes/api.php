@@ -27,3 +27,4 @@ Route::middleware('auth:api')->get('teste', function () {
    });
 //us1
 Route::get('home', 'WalletControllerAPI@index');
+Route::middleware('auth:api')->get('getAuthUser','UserControllerAPI@getAuthUser');
