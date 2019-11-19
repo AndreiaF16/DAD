@@ -1847,9 +1847,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      title: 'Welcome to virtual wallet, total number of virtual wallets: ',
+      wallets: undefined
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('api/home').then(function (response) {
+      _this.wallets = response.data;
+    });
   }
 });
 
@@ -37234,6 +37246,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+<<<<<<< HEAD
   return _vm._m(0)
 }
 var staticRenderFns = [
@@ -37245,9 +37258,17 @@ var staticRenderFns = [
       _c("div", { staticClass: "title m-b-md" }, [
         _vm._v("\n        VIRTUAL WALLET\n    ")
       ])
+=======
+  return _c("div", { staticClass: "content" }, [
+    _c("div", { staticClass: "title m-b-md" }, [
+      _c("h2", [_vm._v(" " + _vm._s(_vm.title))]),
+      _vm._v(" "),
+      _c("h2", [_vm._v(" " + _vm._s(_vm.wallets))])
+>>>>>>> fb78ed4fa295211ba50cf25d69b7922ee33b19f5
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -52657,8 +52678,13 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 __webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+=======
+__webpack_require__(/*! C:\laragon\www\projetoDad\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\projetoDad\resources\sass\app.scss */"./resources/sass/app.scss");
+>>>>>>> fb78ed4fa295211ba50cf25d69b7922ee33b19f5
 
 
 /***/ })

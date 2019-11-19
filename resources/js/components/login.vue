@@ -38,7 +38,8 @@
                // this.$emit('user-login', this.user);
                axios.post('api/login', this.user)
                 .then(response => {
-                    this.$store.
+
+                  //  this.$store.
                  // this.$store.commit('setToken',response.data.remember_token);
                      return axios.get('api/home');
                  })
