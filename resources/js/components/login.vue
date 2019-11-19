@@ -37,6 +37,24 @@
         },
         methods: {
             userLogin(){
+<<<<<<< HEAD
+               // this.$emit('user-login', this.user);
+               axios.post('api/login', this.user)
+                .then(response => {
+                        console.log(response.data);
+                  //  this.$store.
+                 // this.$store.commit('setToken',response.data.remember_token);
+                     return axios.get('api/home');
+                 })
+                 .then(response => {
+                                   this.message = "User authenticated correctly";
+                                    this.showMessage = true;
+                                })
+                                .catch(error => {
+                                    this.showMessage = true;
+                                    console.log(error);
+                                });
+=======
                 axios.post('/api/login', this.user)
                     .then(response => {
                         this.message = "User authenticated correctly";
@@ -60,6 +78,7 @@
                         }
                         
                     });
+>>>>>>> c76c6c142e34fc33fbb43e2ed0651499bf5ab343
             },
             cancelLogin() {
                 this.$router.push('/home');
