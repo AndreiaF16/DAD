@@ -1,6 +1,6 @@
 <template>
     <div class="jumbotron">
-
+        <form>
             <h2>User Login</h2>
             <div class="form-group">
                 <label for="inputEmail">Email</label>
@@ -16,44 +16,48 @@
             </div>
 
             <div class="form-group">
-                <a class="btn btn-primary" v-on:click.prevent="userLogin()">Login</a>
-                <a class="btn btn-light" v-on:click.prevent="cancelLogin()">Cancel</a>
+                <button type="submit" class="btn btn-primary" v-on:click.prevent="userLogin()">Login</button>
+                <button type="submit" class="btn btn-light" v-on:click.prevent="cancelLogin()">Cancel</button>
             </div>
-        </div>
-
-
+        </form>
+    </div>
 </template>
 <script>
     export default {
         data: function () {
             return {
+                message: "",
+                showMessage: false,
                 user: {
                     email:"",
                     password:"",
+                    remember_token: null,
                 },
             }
         },
         methods: {
             userLogin(){
-               // this.$emit('user-login', this.user);
-               axios.post('api/login', this.user)
-                .then(response => {
-
-                  //  this.$store.
-                 // this.$store.commit('setToken',response.data.remember_token);
-                     return axios.get('api/home');
-                 })
-                 .then(response => {
-                                   this.message = "User authenticated correctly";
-                                    this.showMessage = true;
-                                })
-                                .catch(error => {
-                                    this.showMessage = true;
-                                    console.log(error);
-                                });
+                axios.post('/api/login', this.user)
+                    .then(response => {
+                        this.message = "User authenticated correctly";
+                        this.showMessage = true;
+                        this.user.remember_token = response.data.access_token;
+                        this.$store.commit('setToken',this.user.remember_token);
+                        this.$store.commit('logIn',true);
+                        localStorage.setItem("token", this.user.remember_token);
+                        axios.defaults.headers.common.Authorization = "Bearer " + this.user.remember_token;
+                        this.$router.push('/home');
+                    })
+                    .catch(error => {
+                        this.showMessage = true;
+                        if(error.response){
+                            console.log(error.response);
+                        }
+                        
+                    });
             },
             cancelLogin() {
-                this.$emit('cancel-login');
+                this.$router.push('/home');
             }
         }
     }
