@@ -66,6 +66,7 @@ const app = new Vue({
         }
     },methods:{
         logout(){
+            this.$store.commit('setUser',null);
             this.$store.commit('setToken',"");
             this.$store.commit('logIn', false);
             axios.defaults.headers.common.Authorization = null;
