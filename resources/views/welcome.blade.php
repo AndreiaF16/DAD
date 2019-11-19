@@ -12,6 +12,8 @@
         <div class="container" id="app">
             <router-link to="/login"> Login </router-link>
             <router-link to="/home"> Home </router-link>
+            <button v-if="!isLoggedIn()">teste</button>
+            <button @click="logout" v-if="isLoggedIn()">Logout</button>
             <router-view></router-view>
         </div>
         <script src="js/app.js"></script>
