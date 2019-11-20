@@ -19,8 +19,8 @@ Vue.use(VueRouter);
 const routes = [
     {path:'/', redirect:'/home'},
     {path:'/home', component:Home},
-    {path:'/login', component:Login},
-    {path: '/users/profile', component: profile, name: 'profile'},
+    {path:'/login', component:Login}//,
+    //{path: '/users/profile', component: profile, name: 'profile'},
 ]
 
 const router = new VueRouter({
@@ -29,7 +29,7 @@ const router = new VueRouter({
 
 Vue.component('login', Login)
 Vue.component('home', Home)
-Vue.component('profile', Profile)
+//Vue.component('profile', Profile)
 
 const store = new Vuex.Store({
     state: {
@@ -65,6 +65,11 @@ const app = new Vue({
         if(token != null){
             this.$store.commit('setToken',token);
             axios.defaults.headers.common.Authorization = "Bearer " + token;
+            axios.get('/api/getAuthUser')
+                .then(response => {
+                    this.$store.commit('setUser',response.data);
+                    console.log(this.$store.getters.user)
+                });
         }
     },methods:{
         logout(){
@@ -72,6 +77,7 @@ const app = new Vue({
             this.$store.commit('setToken',"");
             this.$store.commit('logIn', false);
             axios.defaults.headers.common.Authorization = null;
+            localStorage.clear();
         },
         isLoggedIn(){
             if(this.$store.getters.loggedin){

@@ -53536,12 +53536,15 @@ var routes = [{
 }, {
   path: '/login',
   component: _components_login__WEBPACK_IMPORTED_MODULE_1__["default"]
-}];
+} //,
+//{path: '/users/profile', component: profile, name: 'profile'},
+];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: routes
 });
 Vue.component('login', _components_login__WEBPACK_IMPORTED_MODULE_1__["default"]);
-Vue.component('home', _components_HomeComponent__WEBPACK_IMPORTED_MODULE_2__["default"]);
+Vue.component('home', _components_HomeComponent__WEBPACK_IMPORTED_MODULE_2__["default"]); //Vue.component('profile', Profile)
+
 var store = new vuex__WEBPACK_IMPORTED_MODULE_3__["default"].Store({
   state: {
     token: "",
@@ -53577,11 +53580,18 @@ var app = new Vue({
   store: store,
   data: {},
   mounted: function mounted() {
+    var _this = this;
+
     var token = localStorage.getItem("token");
 
     if (token != null) {
       this.$store.commit('setToken', token);
       axios.defaults.headers.common.Authorization = "Bearer " + token;
+      axios.get('/api/getAuthUser').then(function (response) {
+        _this.$store.commit('setUser', response.data);
+
+        console.log(_this.$store.getters.user);
+      });
     }
   },
   methods: {
@@ -53590,6 +53600,7 @@ var app = new Vue({
       this.$store.commit('setToken', "");
       this.$store.commit('logIn', false);
       axios.defaults.headers.common.Authorization = null;
+      localStorage.clear();
     },
     isLoggedIn: function isLoggedIn() {
       if (this.$store.getters.loggedin) {
