@@ -58,7 +58,7 @@
                         if(error.response){
                             console.log(error.response);
                         }
-                        
+
                     });
             },
             cancelLogin() {
