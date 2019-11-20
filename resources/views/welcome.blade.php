@@ -14,6 +14,7 @@
             <router-link to="/home"> Home </router-link>
             <button v-if="!isLoggedIn()">teste</button>
             <button @click="logout" v-if="isLoggedIn()">Logout</button>
+            <em>User: @{{this.$store.state.user != null ? this.$store.state.user.data.name : " ** No User Logged in ** " }}</em>
             <router-view></router-view>
         </div>
         <script src="js/app.js"></script>

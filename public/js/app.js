@@ -1916,17 +1916,7 @@ __webpack_require__.r(__webpack_exports__);
     userLogin: function userLogin() {
       var _this = this;
 
-<<<<<<< HEAD
-      // this.$emit('user-login', this.user);
-      axios.post('api/login', this.user).then(function (response) {
-        console.log(response.data); //  this.$store.
-        // this.$store.commit('setToken',response.data.remember_token);
-
-        return axios.get('api/home');
-      }).then(function (response) {
-=======
       axios.post('/api/login', this.user).then(function (response) {
->>>>>>> c76c6c142e34fc33fbb43e2ed0651499bf5ab343
         _this.message = "User authenticated correctly";
         _this.showMessage = true;
         _this.user.remember_token = response.data.access_token;
@@ -53596,6 +53586,7 @@ var app = new Vue({
   },
   methods: {
     logout: function logout() {
+      this.$store.commit('setUser', null);
       this.$store.commit('setToken', "");
       this.$store.commit('logIn', false);
       axios.defaults.headers.common.Authorization = null;
@@ -53813,13 +53804,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-<<<<<<< HEAD
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
-=======
 __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
->>>>>>> c76c6c142e34fc33fbb43e2ed0651499bf5ab343
 
 
 /***/ })
