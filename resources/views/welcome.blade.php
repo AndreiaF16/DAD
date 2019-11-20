@@ -13,17 +13,16 @@
                 <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">Virtual Wallet</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <router-link class="nav-item nav-link" to="/login"  v-if="!this.$store.state.users">Login</router-link>
-               <router-link class="nav-item nav-link" to="/logout" v-show="this.$store.state.users">Logout</router-link>
+                <router-link class="nav-item nav-link" to="/login"  v-show="!this.$store.state.user">Login</router-link>
+               <router-link class="nav-item nav-link" to="/logout" v-show="this.$store.state.user">Logout</router-link>
                  <router-link class="nav-item nav-link" to="/home">Home</router-link>
-                <!-- <router-link class="nav-item nav-link" to="/profile" v-show="this.$store.state.user">Profile</router-link>-->
+                <router-link class="nav-item nav-link" to="/profile" v-show="this.$store.state.user">Profile</router-link>
                   <!--  <router-link to="/login"> Login </router-link>
                     <router-link to="/home"> Home </router-link>-->
                <!--   <button @click="logout" v-if="isLoggedIn()">Logout</button>-->
                 </div>
                 <br>
-    <em>User: @{{this.$store.state.users != null ? this.$store.state.users.name : " ** No User Logged in ** " }}</em>
-
+    <em>User: @{{this.$store.state.user != null ? this.$store.state.user.data.name : " ** No User Logged in ** " }}</em>
             <router-view></router-view>
         </div>
         <script src="js/app.js"></script>

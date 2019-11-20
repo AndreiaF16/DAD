@@ -19,7 +19,8 @@ Vue.use(VueRouter);
 const routes = [
     {path:'/', redirect:'/home'},
     {path:'/home', component:Home},
-    {path:'/login', component:Login}
+    {path:'/login', component:Login},
+    {path: '/users/profile', component: profile, name: 'profile'},
 ]
 
 const router = new VueRouter({
@@ -28,6 +29,7 @@ const router = new VueRouter({
 
 Vue.component('login', Login)
 Vue.component('home', Home)
+Vue.component('profile', Profile)
 
 const store = new Vuex.Store({
     state: {
