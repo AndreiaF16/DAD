@@ -1929,8 +1929,6 @@ __webpack_require__.r(__webpack_exports__);
         axios.defaults.headers.common.Authorization = "Bearer " + _this.user.remember_token;
         axios.get('/api/getAuthUser').then(function (response) {
           _this.$store.commit('setUser', response.data);
-
-          console.log(_this.$store.getters.user);
         });
 
         _this.$router.push('/home');
@@ -53589,8 +53587,6 @@ var app = new Vue({
       axios.defaults.headers.common.Authorization = "Bearer " + token;
       axios.get('/api/getAuthUser').then(function (response) {
         _this.$store.commit('setUser', response.data);
-
-        console.log(_this.$store.getters.user);
       });
     }
   },
@@ -53815,8 +53811,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

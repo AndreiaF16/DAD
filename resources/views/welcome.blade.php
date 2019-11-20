@@ -14,8 +14,8 @@
                 aria-haspopup="true" aria-expanded="false">Virtual Wallet</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <router-link class="nav-item nav-link" to="/login"  v-show="!this.$store.state.user">Login</router-link>
-               <router-link class="nav-item nav-link" to="/logout" v-show="this.$store.state.user">Logout</router-link>
-                 <router-link class="nav-item nav-link" to="/home">Home</router-link>
+                <router-link class="nav-item nav-link" v-on:click.native="logout" v-show="this.$store.state.user" to="/">Logout</router-link>
+                <router-link class="nav-item nav-link" to="/home">Home</router-link>
                 <router-link class="nav-item nav-link" to="/profile" v-show="this.$store.state.user">Profile</router-link>
                   <!--  <router-link to="/login"> Login </router-link>
                     <router-link to="/home"> Home </router-link>-->

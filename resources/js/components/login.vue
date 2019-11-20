@@ -49,7 +49,6 @@
                         axios.get('/api/getAuthUser')
                             .then(response => {
                                 this.$store.commit('setUser',response.data);
-                                console.log(this.$store.getters.user)
                             });
                         this.$router.push('/home');
                     })
