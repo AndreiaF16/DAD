@@ -1,24 +1,17 @@
 <template>
-
-<div>
+<div class="content">
         <div class="jumbotron">
             <h1>Profile</h1>
           </div>
           <div>
-            <div class="form-group">
-                <label for="inputUsername">Username</label>
-                <input
-                    type="text" class="form-control" v-model="user.username"
-                    name="username" id="inputUsername"
-                    placeholder="Username"/>
-            </div>
-            <div class="form-group">
+
+          <div class="form-group">
                 <label for="inputName">Name</label>
-                <input
-                    type="text" class="form-control" v-model="user.name"
-                    name="name" id="inputName"
-                    placeholder="Fullname"/>
+                <input type="text" class="form-control" v-model="this.user.name"
+                       name="name" id="inputName"
+                       placeholder="Fullname" value="" />
             </div>
+
             <div class="form-group">
                 <label for="inputEmail">Email</label>
                 <input
@@ -27,14 +20,14 @@
                     placeholder="Email address" readonly/>
             </div>
 
-            <div class="form-group">
+<!--<div class="form-group">
 
                 <input type="file" id="file" ref="file"  v-on:change="handleFileUpload()"/>
-                <!---->
-                <img  width="100px"  :src="'storage/profiles/' + user.photo_url" >
+
+               <img  width="100px"  :src="'storage/profiles/' + user.photo_url" >
                 <img  width="100px"  :src="'storage/images/profiles/' + user.photo_url" >
                 <a class="btn btn-primary" v-on:click.prevent="submitFile">Submit Photo</a>
-            </div>
+            </div>-->
 
 
             <div class="form-group">
@@ -48,7 +41,8 @@
 </template>
 <script>
 export default {
-    data () {
+
+    data: function() {
       return {
             user: [],
             file: ''
@@ -58,44 +52,50 @@ export default {
     methods: {
         clear () {
             this.name = ''
-            this.username = ''
+          //  this.username = ''
         },
         savedUser(){
             axios.put('/api/user/updateProfile/' + this.user.id, this.user).then(response => {
-                this.$store.commit('setUser',response.data.data);
+                this.$store.commit('setUser',response.data);
             })
             .catch(function(err) {
                 console.log(err);
             });
         },
-        getUserInfor() {
-            this.user = this.$store.state.user;
-        },
-        submitFile(){
+
+      submitFile(){
             let formData = new FormData();
+            //criar link strorage para as fts
             // Add the form data we need to submit
-            formData.append('file', this.file);
+          /*  formData.append('file', this.file);
             axios.post('/api/user/updatePhoto/' + this.user.id, formData,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }
-            ).then(response =>{
-                this.$store.commit('setUser',response.data.data);
+            .then(response =>{
+                this.$store.commit('setUser',response.data);
 
             })
             .catch(function(){
             console.log('FAILURE!!');
-            });
+            });*/
         },
-        handleFileUpload(){
+      /*  handleFileUpload(){
             this.file = this.$refs.file.files[0];
-        }
+        }*/
     },
     mounted() {
-       this.getUserInfor();
+      // this.getUserInfor();
+        this.user = this.$store.state.user;
+        console.log(this.user);
+
+
+        console.log(this.$store.state);
+        console.log(this.$store.getters.user);
       // this.getInformationFromLoggedUser();
+
     },
 }
 </script>

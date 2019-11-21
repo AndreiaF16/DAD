@@ -2,6 +2,8 @@
 <div class="content">
     <div class="title m-b-md">
         <h2> {{title}}</h2>
+    <h2> {{text}}</h2>
+
         <h2> {{wallets}}</h2>
 
     </div>
@@ -13,7 +15,8 @@
     export default {
         data: function(){
         return{
-            title: 'Welcome to virtual wallet, total number of virtual wallets: ',
+            title: 'Welcome to Virtual Wallet ',
+            text:'total number of virtual wallets: ',
             wallets: undefined
         }
     },

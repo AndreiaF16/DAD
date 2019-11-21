@@ -29,5 +29,13 @@ class UserControllerAPI extends Controller
         $user->save();
 
     return new UserResource($user);
-}
+    }
+
+
+    public function myProfile(Request $request)
+    {
+        return new UserResource($request->user());
+
+    }
+
 }

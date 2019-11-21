@@ -18,15 +18,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('login', 'LoginControllerAPI@login')->name('login');
+Route::middleware('auth:api')->post('logout','LoginControllerAPI@logout');
+
+
 
 Route::get('home', 'HomeControllerAPI@index')->name('home');
 
-Route::put('users/updateProfile/{id}','UserControllerAPI@update');
 
-Route::middleware('auth:api')->post('logout','LoginControllerAPI@logout');
-Route::middleware('auth:api')->get('teste', function () {
-    return response()->json(['msg'=>'Só um teste'], 200);
-   });
+Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
+Route::put('users/updateProfile/{id}','UserControllerAPI@update');
+Route::post('users/updatePhoto/{id}','UserControllerAPI@changePhoto');
+Route::post('users/updatePhotoRegister/{id}','UserControllerAPI@changePhotoRegister');
+
+//Route::put('users/{id}','UserControllerAPI@update');
+
 //us1
 Route::get('home', 'WalletControllerAPI@index');
 Route::middleware('auth:api')->get('getAuthUser','UserControllerAPI@getAuthUser');

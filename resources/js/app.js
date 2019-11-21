@@ -10,7 +10,9 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
 import Login from './components/login';
+import Profile from './components/users/profile';
 import Home from './components/HomeComponent';
+import Users from './components/users/users';
 import Vuex from 'vuex';
 
 Vue.use(Vuex);
@@ -19,8 +21,8 @@ Vue.use(VueRouter);
 const routes = [
     {path:'/', redirect:'/home'},
     {path:'/home', component:Home},
-    {path:'/login', component:Login}//,
-    //{path: '/users/profile', component: profile, name: 'profile'},
+    {path:'/login', component:Login},
+    {path: '/profile', component:Profile},
 ]
 
 const router = new VueRouter({
@@ -29,7 +31,7 @@ const router = new VueRouter({
 
 Vue.component('login', Login)
 Vue.component('home', Home)
-//Vue.component('profile', Profile)
+Vue.component('profile', Profile)
 
 const store = new Vuex.Store({
     state: {

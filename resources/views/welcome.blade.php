@@ -17,10 +17,8 @@
                 <router-link class="nav-item nav-link" v-on:click.native="logout" v-show="this.$store.state.user" to="/">Logout</router-link>
                 <router-link class="nav-item nav-link" to="/home">Home</router-link>
                 <router-link class="nav-item nav-link" to="/profile" v-show="this.$store.state.user">Profile</router-link>
-                  <!--  <router-link to="/login"> Login </router-link>
-                    <router-link to="/home"> Home </router-link>-->
-               <!--   <button @click="logout" v-if="isLoggedIn()">Logout</button>-->
-                </div>
+
+        </div>
                 <br>
     <em>User: @{{this.$store.state.user != null ? this.$store.state.user.data.name : " ** No User Logged in ** " }}</em>
             <router-view></router-view>
