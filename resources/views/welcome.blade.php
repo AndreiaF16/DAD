@@ -20,7 +20,7 @@
 
         </div>
                 <br>
-    <em>User: @{{this.$store.state.user != null ? this.$store.state.user.data.name : " ** No User Logged in ** " }}</em>
+    <em>User: @{{this.$store.state.user != null ? this.$store.state.user.name : " ** No User Logged in ** " }}</em>
             <router-view></router-view>
         </div>
         <script src="js/app.js"></script>

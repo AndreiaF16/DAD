@@ -1931,7 +1931,9 @@ __webpack_require__.r(__webpack_exports__);
         localStorage.setItem("token", _this.user.remember_token);
         axios.defaults.headers.common.Authorization = "Bearer " + _this.user.remember_token;
         axios.get('/api/getAuthUser').then(function (response) {
-          _this.$store.commit('setUser', response.data);
+          _this.$store.commit('setUser', response.data.data);
+
+          localStorage.setItem("user", JSON.stringify(response.data.data));
         });
 
         _this.$router.push('/home');
@@ -2034,7 +2036,7 @@ __webpack_require__.r(__webpack_exports__);
         }
         .then(response =>{
             this.$store.commit('setUser',response.data);
-         })
+          })
         .catch(function(){
         console.log('FAILURE!!');
         });*/
@@ -2046,10 +2048,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     // this.getUserInfor();
-    this.user = this.$store.state.user;
-    console.log(this.user);
-    console.log(this.$store.state);
-    console.log(this.$store.getters.user); // this.getInformationFromLoggedUser();
+    this.user = JSON.parse(localStorage.getItem('user'));
+    ; // this.getInformationFromLoggedUser();
   }
 });
 
@@ -54006,9 +54006,16 @@ var app = new Vue({
     if (token != null) {
       this.$store.commit('setToken', token);
       axios.defaults.headers.common.Authorization = "Bearer " + token;
-      axios.get('/api/getAuthUser').then(function (response) {
-        _this.$store.commit('setUser', response.data);
-      });
+
+      if (localStorage.getItem('user') != null) {
+        this.$store.commit('setUser', JSON.parse(localStorage.getItem('user')));
+      } else {
+        axios.get('/api/getAuthUser').then(function (response) {
+          _this.$store.commit('setUser', response.data);
+
+          localStorage.setItem("user", JSON.stringify(response.data));
+        });
+      }
     }
   },
   methods: {
@@ -54370,8 +54377,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

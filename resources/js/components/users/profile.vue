@@ -88,12 +88,7 @@ export default {
     },
     mounted() {
       // this.getUserInfor();
-        this.user = this.$store.state.user;
-        console.log(this.user);
-
-
-        console.log(this.$store.state);
-        console.log(this.$store.getters.user);
+        this.user = JSON.parse(localStorage.getItem('user'));;
       // this.getInformationFromLoggedUser();
 
     },

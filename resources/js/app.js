@@ -67,10 +67,15 @@ const app = new Vue({
         if(token != null){
             this.$store.commit('setToken',token);
             axios.defaults.headers.common.Authorization = "Bearer " + token;
+            if(localStorage.getItem('user')!=null){
+                this.$store.commit('setUser',JSON.parse(localStorage.getItem('user')));
+            }else{
             axios.get('/api/getAuthUser')
                 .then(response => {
                     this.$store.commit('setUser',response.data);
+                    localStorage.setItem("user",JSON.stringify(response.data));
                 });
+            }
         }
     },methods:{
         logout(){

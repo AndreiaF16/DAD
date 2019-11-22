@@ -48,7 +48,8 @@
                         axios.defaults.headers.common.Authorization = "Bearer " + this.user.remember_token;
                         axios.get('/api/getAuthUser')
                             .then(response => {
-                                this.$store.commit('setUser',response.data);
+                                this.$store.commit('setUser',response.data.data);
+                                localStorage.setItem("user",JSON.stringify(response.data.data));
                             });
                         this.$router.push('/home');
                     })
