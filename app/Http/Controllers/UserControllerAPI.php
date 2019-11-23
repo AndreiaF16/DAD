@@ -17,10 +17,12 @@ class UserControllerAPI extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
-            'username' => 'required|regex:/^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/',
+            'name' => 'string|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
+            'email' => 'string|email|max:255|unique:users',
+            'password' => 'min:3','password',
+            'nif' => 'max:9',
 
-        ]   );
+        ]  );
         $user = User::findOrFail($id);
 
 

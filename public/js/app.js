@@ -2003,11 +2003,49 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       user: [],
-      file: ''
+      file: '',
+      password_old: '',
+      password: '',
+      password_confirmation: ''
     };
   },
   methods: {
@@ -2018,29 +2056,41 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.put('/api/user/updateProfile/' + this.user.id, this.user).then(function (response) {
-        _this.$store.commit('setUser', response.data);
-      })["catch"](function (err) {
-        console.log(err);
-      });
-    },
-    submitFile: function submitFile() {
-      var formData = new FormData(); //criar link strorage para as fts
-      // Add the form data we need to submit
+        _this.$store.commit('setUser', response.data.data);
 
-      /*  formData.append('file', this.file);
-        axios.post('/api/user/updatePhoto/' + this.user.id, formData,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-        .then(response =>{
+        localStorage.setItem("user", JSON.stringify(response.data.data));
+      });
+      /*  axios.put('/api/user/updateProfile/' + this.user.id, this.user).then(response => {
             this.$store.commit('setUser',response.data);
-          })
-        .catch(function(){
-        console.log('FAILURE!!');
+        })
+        .catch(function(err) {
+            console.log(err);
         });*/
-    }
+
+      localStorage.setItem("user", JSON.stringify(this.user));
+    },
+    cancelEdit: function cancelEdit() {
+      this.$emit('cancel-edit');
+    } //  submitFile(){
+    //let formData = new FormData();
+    //criar link strorage para as fts
+    // Add the form data we need to submit
+
+    /*  formData.append('file', this.file);
+      axios.post('/api/user/updatePhoto/' + this.user.id, formData,
+      {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+      }
+      .then(response =>{
+          this.$store.commit('setUser',response.data);
+       })
+      .catch(function(){
+      console.log('FAILURE!!');
+      });*/
+    // },
+
     /*  handleFileUpload(){
           this.file = this.$refs.file.files[0];
       }*/
@@ -37669,6 +37719,38 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "inputNif" } }, [_vm._v("Nif")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: this.user.nif,
+              expression: "this.user.nif"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            name: "nif",
+            id: "inputNif",
+            placeholder: "Nif",
+            value: ""
+          },
+          domProps: { value: this.user.nif },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(this.user, "nif", $event.target.value)
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "inputEmail" } }, [_vm._v("Email")]),
         _vm._v(" "),
         _c("input", {
@@ -37698,6 +37780,130 @@ var render = function() {
             }
           }
         })
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c("h5", [_vm._v("Change Password")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c(
+            "label",
+            {
+              staticClass: "col-sm-4 col-form-label",
+              attrs: { for: "oldPassword" }
+            },
+            [_vm._v("Current Password")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-10" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.password_old,
+                  expression: "password_old"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "password",
+                name: "password_old",
+                id: "password_old",
+                placeholder: "Insert your current password"
+              },
+              domProps: { value: _vm.password_old },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.password_old = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c(
+            "label",
+            {
+              staticClass: "col-sm-4 col-form-label",
+              attrs: { for: "newPassword" }
+            },
+            [_vm._v(" New Password")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-10" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.password,
+                  expression: "password"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "password",
+                name: "password",
+                id: "password",
+                placeholder: "New Password"
+              },
+              domProps: { value: _vm.password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.password = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c(
+            "label",
+            {
+              staticClass: "col-sm-4 col-form-label",
+              attrs: { for: "passwordConfirmation" }
+            },
+            [_vm._v(" Password Confirmation")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-10" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.password_confirmation,
+                  expression: "password_confirmation"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "password",
+                name: "password_confirmation",
+                id: "passwordConfirmation",
+                placeholder: "Confirm your new password"
+              },
+              domProps: { value: _vm.password_confirmation },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.password_confirmation = $event.target.value
+                }
+              }
+            })
+          ])
+        ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
@@ -54377,8 +54583,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
