@@ -14,23 +14,21 @@ class UserControllerAPI extends Controller
         return new UserResource(Auth::user());
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'string|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
-            'email' => 'string|email|max:255|unique:users',
+            'email' => 'string|email|max:255|unique:users,email,'.$request->id,
             'password' => 'min:3','password',
             'nif' => 'max:9',
 
-        ]  );
-        $user = User::findOrFail($id);
+        ]);
+        $user = Auth::user();
 
-
-        $user->name = $request->name;
-        $user->update($request->all());
+        $user->fill($validated);
         $user->save();
 
-    return new UserResource($user);
+        return response()->json(new UserResource($user), 201);
     }
 
 

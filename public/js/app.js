@@ -2055,7 +2055,7 @@ __webpack_require__.r(__webpack_exports__);
     savedUser: function savedUser() {
       var _this = this;
 
-      axios.put('/api/user/updateProfile/' + this.user.id, this.user).then(function (response) {
+      axios.put('/api/users/updateProfile', this.user).then(function (response) {
         _this.$store.commit('setUser', response.data.data);
 
         localStorage.setItem("user", JSON.stringify(response.data.data));
@@ -2085,7 +2085,7 @@ __webpack_require__.r(__webpack_exports__);
       }
       .then(response =>{
           this.$store.commit('setUser',response.data);
-       })
+        })
       .catch(function(){
       console.log('FAILURE!!');
       });*/
@@ -37694,8 +37694,8 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: this.user.name,
-              expression: "this.user.name"
+              value: _vm.user.name,
+              expression: "user.name"
             }
           ],
           staticClass: "form-control",
@@ -37706,13 +37706,13 @@ var render = function() {
             placeholder: "Fullname",
             value: ""
           },
-          domProps: { value: this.user.name },
+          domProps: { value: _vm.user.name },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.$set(this.user, "name", $event.target.value)
+              _vm.$set(_vm.user, "name", $event.target.value)
             }
           }
         })
@@ -37726,8 +37726,8 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: this.user.nif,
-              expression: "this.user.nif"
+              value: _vm.user.nif,
+              expression: "user.nif"
             }
           ],
           staticClass: "form-control",
@@ -37738,13 +37738,13 @@ var render = function() {
             placeholder: "Nif",
             value: ""
           },
-          domProps: { value: this.user.nif },
+          domProps: { value: _vm.user.nif },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.$set(this.user, "nif", $event.target.value)
+              _vm.$set(_vm.user, "nif", $event.target.value)
             }
           }
         })
@@ -54583,8 +54583,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
