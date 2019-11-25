@@ -25,8 +25,13 @@ Route::middleware('auth:api')->post('logout','LoginControllerAPI@logout');
 Route::get('home', 'HomeControllerAPI@index')->name('home');
 
 
-Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
+//Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
+//Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
+Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myprofile');
+
 Route::middleware('auth:api')->put('users/updateProfile','UserControllerAPI@update');
+Route::middleware('auth:api')->patch('users/password','UserControllerAPI@changePassword');
+
 //Route::post('users/updatePhoto/{id}','UserControllerAPI@changePhoto');
 //Route::post('users/updatePhotoRegister/{id}','UserControllerAPI@changePhotoRegister');
 

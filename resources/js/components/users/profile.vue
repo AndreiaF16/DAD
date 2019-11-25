@@ -3,6 +3,11 @@
         <div class="jumbotron">
             <h1>Profile</h1>
           </div>
+
+          <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
+
+        <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
+
           <div>
 
           <div class="form-group">
@@ -26,6 +31,15 @@
                     name="email" id="inputEmail"
                     placeholder="Email address" readonly/>
             </div>
+
+             <div class="form-group">
+
+                <file-upload v-on:fileChanged="onFileChanged"> </file-upload>
+             <!--    <img  width="100px"  :src="'storage/profiles/' + user.photo_url" >
+                <img  width="100px"  :src="'storage/images/profiles/' + user.photo_url" >-->
+                <br>
+            </div>
+
 <div>
 			<h5>Change Password</h5>
 
@@ -54,19 +68,9 @@
 			</div>
             </div>
 
-<!--
-<div class="form-group">
 
-                <input type="file" id="file" ref="file"  v-on:change="handleFileUpload()"/>
-
-               <img  width="100px"  :src="'storage/profiles/' + user.photo_url" >
-                <img  width="100px"  :src="'storage/images/profiles/' + user.photo_url" >
-                <a class="btn btn-primary" v-on:click.prevent="submitFile">Submit Photo</a>
-            </div>
-
--->
             <div class="form-group">
-                    <a class="btn btn-primary" v-on:click.prevent="savedUser">Save</a>
+                    <a class="btn btn-primary" v-on:click.prevent="savedUser">Save Changes</a>
                     <a class="btn btn-danger" v-on:click.prevent="cancelEdit">Cancel</a>
             </div>
         </div>
@@ -74,42 +78,112 @@
 
 </div>
 </template>
-<script>
+<script type="text/javascript">
+  import errorValidation from '../helpers/showErrors.vue';
+    import showMessage from '../helpers/showMessage.vue';
+  import fileUpload from '../helpers/uploadFile.vue';
+
 export default {
 
     data: function() {
       return {
+            errors: [],
+            showMessage: false,
+            showErrors: false,
+            typeofmsg: "",
+            message:'',
+            file: '',
             user: [],
             file: '',
             password_old:'',
+             message:'',
 			password:'',
-			password_confirmation:'',
+            password_confirmation:'',
       }
     },
 
     methods: {
+        onFileChanged(fileSelected) {
+                this.file = fileSelected
+            },
         clear () {
             this.name = ''
           //  this.username = ''
         },
         savedUser(){
-<<<<<<< HEAD
-            axios.put('/api/users/updateProfile/' + this.user.id, this.user)
-=======
-            axios.put('/api/users/updateProfile', this.user)
->>>>>>> cafdcd282966970627aa6d04660c766c67ccbea6
+             this.showMessage=false;
+                this.showErrors=false;
+            axios.put('/api/users/updateProfile/', this.user)
                 .then(response => {
-                     this.$store.commit('setUser',response.data.data);
-                     localStorage.setItem("user",JSON.stringify(response.data.data));
+                    this.showErrors=false;
+                    this.showMessage=true;
+                    this.message='Profile updated with success';
+                    this.typeofmsg= "alert-success";
+
+                     this.$store.commit('setUser',response.data);
+                     localStorage.setItem("user",JSON.stringify(response.data));
                 })
-          /*  axios.put('/api/user/updateProfile/' + this.user.id, this.user).then(response => {
-                this.$store.commit('setUser',response.data);
-            })*/
-            .catch(function(err) {
-                console.log(err);
-            });
+            .catch(error=>{
+                    if(error.response.status==401){
+                        this.showMessage=true;
+                        this.message=error.response.data.unauthorized;
+                        this.typeofmsg= "alert-danger";
+                        return;
+                    }
+
+                    if(error.response.status==422){
+                        if(error.response.data.errors==undefined){
+                            this.showErrors=false;
+                            this.showMessage=true;
+                            this.message=error.response.data.user_already_exists;
+                            this.typeofmsg= "alert-danger";
+                        }else{
+                            this.showMessage=false;
+                            this.showErrors=true;
+                            this.errors=error.response.data.errors;
+                        }
+                    }
+                });
+
+                axios.patch('/api/users/password/'+this.user,
+				{
+					old_password:this.old_password,
+					password_confirmation:this.password_confirmation,
+					password:this.password,
+				}).
+				then(response=>{
+					this.showErrors=false;
+					this.showMessage=true;
+					this.message='Password updated with success';
+					this.typeofmsg= "alert-success";
+					this.$router.push({ path:'/profile' });
+				}).
+				catch(error=>{
+					if(error.response.status==401){
+						this.showMessage=true;
+						this.message=error.response.data.unauthorized;
+						this.typeofmsg= "alert-danger";
+						return;
+					}
+					if(error.response.status==422){
+						if(error.response.data.errors==undefined){
+							this.showErrors=false;
+							this.showMessage=true;
+							this.message=error.response.data.old_password;
+							this.typeofmsg= "alert-danger";
+						}else{
+							this.showMessage=false;
+							this.showErrors=true;
+							this.errors=error.response.data.errors;
+						}
+					}
+				});
            // localStorage.setItem("user",JSON.stringify(this.user));
-        }, cancelEdit() {
+        },  close(){
+                this.showErrors=false;
+                this.showMessage=false;
+            },
+            cancelEdit() {
                 this.$emit('cancel-edit');
             }
 
@@ -142,5 +216,10 @@ export default {
       // this.getInformationFromLoggedUser();
 
     },
+     components: {
+            'error-validation':errorValidation,
+            'show-message':showMessage,
+            'file-upload': fileUpload,
+        },
 }
 </script>
