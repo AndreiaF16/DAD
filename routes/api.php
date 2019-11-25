@@ -26,7 +26,7 @@ Route::get('home', 'HomeControllerAPI@index')->name('home');
 
 
 Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
-Route::put('users/updateProfile/{id}','UserControllerAPI@update');
+Route::middleware('auth:api')->put('users/updateProfile','UserControllerAPI@update');
 //Route::post('users/updatePhoto/{id}','UserControllerAPI@changePhoto');
 //Route::post('users/updatePhotoRegister/{id}','UserControllerAPI@changePhotoRegister');
 

@@ -93,7 +93,11 @@ export default {
           //  this.username = ''
         },
         savedUser(){
+<<<<<<< HEAD
             axios.put('/api/users/updateProfile/' + this.user.id, this.user)
+=======
+            axios.put('/api/users/updateProfile', this.user)
+>>>>>>> cafdcd282966970627aa6d04660c766c67ccbea6
                 .then(response => {
                      this.$store.commit('setUser',response.data.data);
                      localStorage.setItem("user",JSON.stringify(response.data.data));
