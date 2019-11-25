@@ -1,7 +1,12 @@
 <template>
+<div>
+            <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
+
     <div class="jumbotron">
+            <h1>User Login</h1>
+        </div>
+
         <form>
-            <h2>User Login</h2>
             <div class="form-group">
                 <label for="inputEmail">Email</label>
                 <input type="email" class="form-control" v-model.trim="user.email"
@@ -22,11 +27,15 @@
         </form>
     </div>
 </template>
-<script>
+<script type="text/javascript">
+
+    import showMessage from './helpers/showMessage.vue';
+
     export default {
         data: function () {
             return {
                 message: "",
+                typeofmsg: "alert-success",
                 showMessage: false,
                 user: {
                     email:"",
@@ -48,22 +57,36 @@
                         axios.defaults.headers.common.Authorization = "Bearer " + this.user.remember_token;
                         axios.get('/api/getAuthUser')
                             .then(response => {
+                                 console.log(response.data);
                                 this.$store.commit('setUser',response.data.data);
-                                localStorage.setItem("user",JSON.stringify(response.data.data));
+                             localStorage.setItem("user",JSON.stringify(response.data.data));
+                                 this.message = "User authenticated correctly";
+                            this.typeofmsg = "alert-success";
+                            this.showMessage = true;
                             });
                         this.$router.push('/home');
                     })
                     .catch(error => {
-                        this.showMessage = true;
-                        if(error.response){
-                            console.log(error.response);
-                        }
+                        console.log(error);
+                        this.showMessage=true;
+                        this.message = "Invalid credentials";
+                       //this.message=error.response.data.unauthorized;
+                        this.typeofmsg= "alert-danger";
+                        return;
+
 
                     });
             },
+             close(){
+                this.showMessage = false;
+            }
+        },
             cancelLogin() {
                 this.$router.push('/home');
-            }
-        }
-    }
+            },
+             components: {
+            'show-message':showMessage,
+        },
+
+    };
 </script>

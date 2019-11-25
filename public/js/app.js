@@ -1986,6 +1986,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers/showMessage.vue */ "./resources/js/components/helpers/showMessage.vue");
 //
 //
 //
@@ -2010,10 +2011,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       message: "",
+      typeofmsg: "alert-success",
       showMessage: false,
       user: {
         email: "",
@@ -2038,23 +2046,35 @@ __webpack_require__.r(__webpack_exports__);
         localStorage.setItem("token", _this.user.remember_token);
         axios.defaults.headers.common.Authorization = "Bearer " + _this.user.remember_token;
         axios.get('/api/getAuthUser').then(function (response) {
+          console.log(response.data);
+
           _this.$store.commit('setUser', response.data.data);
 
           localStorage.setItem("user", JSON.stringify(response.data.data));
+          _this.message = "User authenticated correctly";
+          _this.typeofmsg = "alert-success";
+          _this.showMessage = true;
         });
 
         _this.$router.push('/home');
       })["catch"](function (error) {
+        console.log(error);
         _this.showMessage = true;
+        _this.message = "Invalid credentials"; //this.message=error.response.data.unauthorized;
 
-        if (error.response) {
-          console.log(error.response);
-        }
+        _this.typeofmsg = "alert-danger";
+        return;
       });
     },
-    cancelLogin: function cancelLogin() {
-      this.$router.push('/home');
+    close: function close() {
+      this.showMessage = false;
     }
+  },
+  cancelLogin: function cancelLogin() {
+    this.$router.push('/home');
+  },
+  components: {
+    'show-message': _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -37874,113 +37894,134 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "jumbotron" }, [
-    _c("form", [
-      _c("h2", [_vm._v("User Login")]),
+  return _c(
+    "div",
+    [
+      _c("show-message", {
+        class: _vm.typeofmsg,
+        attrs: { showSuccess: _vm.showMessage, successMessage: _vm.message },
+        on: { close: _vm.close }
+      }),
       _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "inputEmail" } }, [_vm._v("Email")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model.trim",
-              value: _vm.user.email,
-              expression: "user.email",
-              modifiers: { trim: true }
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "email",
-            name: "email",
-            id: "inputEmail",
-            placeholder: "Email address",
-            value: ""
-          },
-          domProps: { value: _vm.user.email },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+      _vm._m(0),
+      _vm._v(" "),
+      _c("form", [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "inputEmail" } }, [_vm._v("Email")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model.trim",
+                value: _vm.user.email,
+                expression: "user.email",
+                modifiers: { trim: true }
               }
-              _vm.$set(_vm.user, "email", $event.target.value.trim())
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "email",
+              name: "email",
+              id: "inputEmail",
+              placeholder: "Email address",
+              value: ""
             },
-            blur: function($event) {
-              return _vm.$forceUpdate()
+            domProps: { value: _vm.user.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.user, "email", $event.target.value.trim())
+              },
+              blur: function($event) {
+                return _vm.$forceUpdate()
+              }
             }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "inputPassword" } }, [_vm._v("Password")]),
+          })
+        ]),
         _vm._v(" "),
-        _c("input", {
-          directives: [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "inputPassword" } }, [
+            _vm._v("Password")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.user.password,
+                expression: "user.password"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              name: "password",
+              id: "inputPassword",
+              placeholder: "Password",
+              value: ""
+            },
+            domProps: { value: _vm.user.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.user, "password", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c(
+            "button",
             {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.user.password,
-              expression: "user.password"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "password",
-            name: "password",
-            id: "inputPassword",
-            placeholder: "Password",
-            value: ""
-          },
-          domProps: { value: _vm.user.password },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+              staticClass: "btn btn-primary",
+              attrs: { type: "submit" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.userLogin()
+                }
               }
-              _vm.$set(_vm.user, "password", $event.target.value)
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary",
-            attrs: { type: "submit" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.userLogin()
+            },
+            [_vm._v("Login")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-light",
+              attrs: { type: "submit" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.cancelLogin()
+                }
               }
-            }
-          },
-          [_vm._v("Login")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-light",
-            attrs: { type: "submit" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.cancelLogin()
-              }
-            }
-          },
-          [_vm._v("Cancel")]
-        )
+            },
+            [_vm._v("Cancel")]
+          )
+        ])
       ])
-    ])
-  ])
+    ],
+    1
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron" }, [
+      _c("h1", [_vm._v("User Login")])
+    ])
+  }
+]
 render._withStripped = true
 
 
