@@ -7,14 +7,14 @@
 
           <div class="form-group">
                 <label for="inputName">Name</label>
-                <input type="text" class="form-control" v-model="this.user.name"
+                <input type="text" class="form-control" v-model="user.name"
                        name="name" id="inputName"
                        placeholder="Fullname" value="" />
             </div>
 
              <div class="form-group">
                 <label for="inputNif">Nif</label>
-                <input type="number" class="form-control" v-model="this.user.nif"
+                <input type="number" class="form-control" v-model="user.nif"
                        name="nif" id="inputNif"
                        placeholder="Nif" value="" />
             </div>
@@ -93,18 +93,18 @@ export default {
           //  this.username = ''
         },
         savedUser(){
-            axios.put('/api/user/updateProfile/' + this.user.id, this.user)
+            axios.put('/api/users/updateProfile/' + this.user.id, this.user)
                 .then(response => {
                      this.$store.commit('setUser',response.data.data);
                      localStorage.setItem("user",JSON.stringify(response.data.data));
-                });
+                })
           /*  axios.put('/api/user/updateProfile/' + this.user.id, this.user).then(response => {
                 this.$store.commit('setUser',response.data);
-            })
+            })*/
             .catch(function(err) {
                 console.log(err);
-            });*/
-            localStorage.setItem("user",JSON.stringify(this.user));
+            });
+           // localStorage.setItem("user",JSON.stringify(this.user));
         }, cancelEdit() {
                 this.$emit('cancel-edit');
             }

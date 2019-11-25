@@ -27,7 +27,7 @@ class UserControllerAPI extends Controller
 
 
         $user->name = $request->name;
-        $user->update($request->all());
+        $user->fill($request->all());
         $user->save();
 
     return new UserResource($user);
