@@ -35,16 +35,18 @@
              <div class="form-group">
 
                 <file-upload v-on:fileChanged="onFileChanged"> </file-upload>
-             <!--    <img  width="100px"  :src="'storage/profiles/' + user.photo_url" >
-                <img  width="100px"  :src="'storage/images/profiles/' + user.photo_url" >-->
+             <!--   <img  width="100px"  :src="'storage/' + user.photo" >-->
+              <!--  <img  width="100px"  :src="'storage/images/profiles/' + user.photo_url" >-->
                 <br>
+            </div>
+
+             <div class="form-group">
+                    <a class="btn btn-primary" v-on:click.prevent="savedUser">Save Changes</a>
+                    <a class="btn btn-danger" v-on:click.prevent="cancelEdit">Cancel</a>
             </div>
 
 <div>
 			<h5>Change Password</h5>
-
-
-
 
 			<div class="form-group">
 				<label for="oldPassword" class="col-sm-4 col-form-label">Current Password</label>
@@ -68,11 +70,12 @@
 			</div>
             </div>
 
-
-            <div class="form-group">
-                    <a class="btn btn-primary" v-on:click.prevent="savedUser">Save Changes</a>
+ <div class="form-group">
+                    <a class="btn btn-primary" v-on:click.prevent="savedPassword">Save Password</a>
                     <a class="btn btn-danger" v-on:click.prevent="cancelEdit">Cancel</a>
             </div>
+
+
         </div>
 
 
@@ -110,6 +113,45 @@ export default {
             this.name = ''
           //  this.username = ''
         },
+        cancelEdit() {
+                this.$emit('cancel-user-click');
+            },
+        savedPassword(){
+
+            axios.patch('/api/users/password',
+				{
+					'password_old':this.password_old,
+					'password_confirmation':this.password_confirmation,
+                    'password':this.password,
+
+
+                }).then(response=>{
+					this.showErrors=false;
+					this.showMessage=true;
+					this.message='Password updated with success';
+					this.typeofmsg= "alert-success";
+					this.$router.push('home' );
+				}).catch(error=>{
+					if(error.response.status==401){
+						this.showMessage=true;
+						this.message=error.response.data.unauthorized;
+						this.typeofmsg= "alert-danger";
+						return;
+					}
+					if(error.response.status==422){
+						if(error.response.data.errors==undefined){
+							this.showErrors=false;
+							this.showMessage=true;
+							this.message=error.response.data.password_old;
+							this.typeofmsg= "alert-danger";
+						}else{
+							this.showMessage=false;
+							this.showErrors=true;
+							this.errors=error.response.data.errors;
+						}
+					}
+				});
+        },
         savedUser(){
              this.showMessage=false;
                 this.showErrors=false;
@@ -145,47 +187,13 @@ export default {
                     }
                 });
 
-                axios.patch('/api/users/password/'+this.user,
-				{
-					old_password:this.old_password,
-					password_confirmation:this.password_confirmation,
-					password:this.password,
-				}).
-				then(response=>{
-					this.showErrors=false;
-					this.showMessage=true;
-					this.message='Password updated with success';
-					this.typeofmsg= "alert-success";
-					this.$router.push({ path:'/profile' });
-				}).
-				catch(error=>{
-					if(error.response.status==401){
-						this.showMessage=true;
-						this.message=error.response.data.unauthorized;
-						this.typeofmsg= "alert-danger";
-						return;
-					}
-					if(error.response.status==422){
-						if(error.response.data.errors==undefined){
-							this.showErrors=false;
-							this.showMessage=true;
-							this.message=error.response.data.old_password;
-							this.typeofmsg= "alert-danger";
-						}else{
-							this.showMessage=false;
-							this.showErrors=true;
-							this.errors=error.response.data.errors;
-						}
-					}
-				});
+
            // localStorage.setItem("user",JSON.stringify(this.user));
         },  close(){
                 this.showErrors=false;
                 this.showMessage=false;
             },
-            cancelEdit() {
-                this.$emit('cancel-edit');
-            }
+
 
     //  submitFile(){
 //let formData = new FormData();

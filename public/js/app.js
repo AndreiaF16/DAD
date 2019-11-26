@@ -2045,7 +2045,7 @@ __webpack_require__.r(__webpack_exports__);
 
         localStorage.setItem("token", _this.user.remember_token);
         axios.defaults.headers.common.Authorization = "Bearer " + _this.user.remember_token;
-        axios.get('/api/getAuthUser').then(function (response) {
+        axios.get('/api/users/me').then(function (response) {
           console.log(response.data);
 
           _this.$store.commit('setUser', response.data.data);
@@ -2174,6 +2174,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2198,20 +2201,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     clear: function clear() {
       this.name = ''; //  this.username = ''
     },
-    savedUser: function savedUser() {
+    cancelEdit: function cancelEdit() {
+      this.$emit('cancel-user-click');
+    },
+    savedPassword: function savedPassword() {
       var _this = this;
 
-      this.showMessage = false;
-      this.showErrors = false;
-      axios.put('/api/users/updateProfile/', this.user).then(function (response) {
+      axios.patch('/api/users/password', {
+        'password_old': this.password_old,
+        'password_confirmation': this.password_confirmation,
+        'password': this.password
+      }).then(function (response) {
         _this.showErrors = false;
         _this.showMessage = true;
-        _this.message = 'Profile updated with success';
+        _this.message = 'Password updated with success';
         _this.typeofmsg = "alert-success";
 
-        _this.$store.commit('setUser', response.data);
-
-        localStorage.setItem("user", JSON.stringify(response.data));
+        _this.$router.push('home');
       })["catch"](function (error) {
         if (error.response.status == 401) {
           _this.showMessage = true;
@@ -2224,7 +2230,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           if (error.response.data.errors == undefined) {
             _this.showErrors = false;
             _this.showMessage = true;
-            _this.message = error.response.data.user_already_exists;
+            _this.message = error.response.data.password_old;
             _this.typeofmsg = "alert-danger";
           } else {
             _this.showMessage = false;
@@ -2233,37 +2239,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }
       });
-      axios.patch('/api/users/password/' + this.user, {
-        old_password: this.old_password,
-        password_confirmation: this.password_confirmation,
-        password: this.password
-      }).then(function (response) {
-        _this.showErrors = false;
-        _this.showMessage = true;
-        _this.message = 'Password updated with success';
-        _this.typeofmsg = "alert-success";
+    },
+    savedUser: function savedUser() {
+      var _this2 = this;
 
-        _this.$router.push({
-          path: '/profile'
-        });
+      this.showMessage = false;
+      this.showErrors = false;
+      axios.put('/api/users/updateProfile/', this.user).then(function (response) {
+        _this2.showErrors = false;
+        _this2.showMessage = true;
+        _this2.message = 'Profile updated with success';
+        _this2.typeofmsg = "alert-success";
+
+        _this2.$store.commit('setUser', response.data);
+
+        localStorage.setItem("user", JSON.stringify(response.data));
       })["catch"](function (error) {
         if (error.response.status == 401) {
-          _this.showMessage = true;
-          _this.message = error.response.data.unauthorized;
-          _this.typeofmsg = "alert-danger";
+          _this2.showMessage = true;
+          _this2.message = error.response.data.unauthorized;
+          _this2.typeofmsg = "alert-danger";
           return;
         }
 
         if (error.response.status == 422) {
           if (error.response.data.errors == undefined) {
-            _this.showErrors = false;
-            _this.showMessage = true;
-            _this.message = error.response.data.old_password;
-            _this.typeofmsg = "alert-danger";
+            _this2.showErrors = false;
+            _this2.showMessage = true;
+            _this2.message = error.response.data.user_already_exists;
+            _this2.typeofmsg = "alert-danger";
           } else {
-            _this.showMessage = false;
-            _this.showErrors = true;
-            _this.errors = error.response.data.errors;
+            _this2.showMessage = false;
+            _this2.showErrors = true;
+            _this2.errors = error.response.data.errors;
           }
         }
       }); // localStorage.setItem("user",JSON.stringify(this.user));
@@ -2271,9 +2279,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     close: function close() {
       this.showErrors = false;
       this.showMessage = false;
-    },
-    cancelEdit: function cancelEdit() {
-      this.$emit('cancel-edit');
     } //  submitFile(){
     //let formData = new FormData();
     //criar link strorage para as fts
@@ -38168,6 +38173,36 @@ var render = function() {
           1
         ),
         _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-primary",
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.savedUser($event)
+                }
+              }
+            },
+            [_vm._v("Save Changes")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-danger",
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.cancelEdit($event)
+                }
+              }
+            },
+            [_vm._v("Cancel")]
+          )
+        ]),
+        _vm._v(" "),
         _c("div", [
           _c("h5", [_vm._v("Change Password")]),
           _vm._v(" "),
@@ -38300,11 +38335,11 @@ var render = function() {
               on: {
                 click: function($event) {
                   $event.preventDefault()
-                  return _vm.savedUser($event)
+                  return _vm.savedPassword($event)
                 }
               }
             },
-            [_vm._v("Save Changes")]
+            [_vm._v("Save Password")]
           ),
           _vm._v(" "),
           _c(
@@ -54604,7 +54639,7 @@ var app = new Vue({
       if (localStorage.getItem('user') != null) {
         this.$store.commit('setUser', JSON.parse(localStorage.getItem('user')));
       } else {
-        axios.get('/api/getAuthUser').then(function (response) {
+        axios.get('/api/users/me').then(function (response) {
           _this.$store.commit('setUser', response.data);
 
           localStorage.setItem("user", JSON.stringify(response.data));
