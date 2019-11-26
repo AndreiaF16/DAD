@@ -18,7 +18,7 @@ class WalletControllerAPI extends Controller
         $myWallets = Movement::join('movements', 'wallets.id', '=', 'movements.wallet_id')
         ->join('categories', 'categories.id', '=', 'movements.category_id')->where('id', '=', 'movements.category_id')
         ->get(['movements.*']);
-        return Movement::collection($myWallets);
+        return MovementResource::collection($myWallets);
 
     }
 
@@ -26,7 +26,7 @@ class WalletControllerAPI extends Controller
 	{
         $user=Wallet::findOrFail($id);
 
-        if((Auth::guard('api')->user()->id != $user->id) || (Auth::guard('api')->user()->type != 'cook')){
+        if((Auth::guard('api')->user()->id != $user->id) || (Auth::guard('api')->user()->type != 'u')){
             return Response::json([
                 'unauthorized' => 'Access forbiden!'
             ], 401);
