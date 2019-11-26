@@ -1,5 +1,5 @@
 <template>
-  
+
 
 <div>
     <div class="container">
@@ -14,7 +14,7 @@
           id="inputName"
           placeholder="Enter name"
         >
-        
+
       </div>
       <div class="form-group">
         <label for="inputEmail">Email</label>
@@ -26,7 +26,7 @@
           id="inputEmail"
           placeholder="Enter email address"
         >
-       
+
       </div>
       <div class="form-group">
         <label for="inputPassword">Password</label>
@@ -38,14 +38,14 @@
           id="inputPassword"
           placeholder="Enter password"
         >
-       
+
       </div>
       <!--<div class="form-group">
 
-                <file-upload v-on:fileChanged="onFileChanged"> 
+                <file-upload v-on:fileChanged="onFileChanged">
                   <a class="btn btn-primary" v-on:click.prevent="submitFile">Submit Photo</a>
                 </file-upload>
-            
+
             </div>-->
       <div class="form-group">
         <label for="inputNif">Nif</label>
@@ -57,9 +57,9 @@
           id="inputNif"
           placeholder="Enter nif"
         >
-       
+
       </div>
-      
+
       <div class="form-group">
         <a class="btn btn-primary" v-on:click.prevent="register">Register</a>
       </div>
@@ -81,8 +81,8 @@
         password: "",
         photo: "",
         nif: "",
-        
-        
+
+
       }
     };
   },
@@ -92,7 +92,7 @@
         .post("api/registerUser", this.user)
         .then(response => {
           console.log("response", response);
-          
+
         })
         .catch(error => {
           console.log(error);
@@ -119,7 +119,7 @@
             }
             ).then(response =>{
                 this.$store.commit('setUser',response.data.data);
-                
+
             })
             .catch(function(){
             console.log('FAILURE!!');
@@ -129,7 +129,7 @@
   components: {
             //'error-validation':errorValidation,
             //'show-message':showMessage,
-            'file-upload': fileUpload,
+         //   'file-upload': fileUpload,
         },
 };
 </script>
