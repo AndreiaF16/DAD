@@ -38439,7 +38439,7 @@ var render = function() {
             }
           ],
           staticClass: "btn btn-xs btn-primary dropdown-toggle btn-block",
-          attrs: { name: "PaymentType" },
+          attrs: { name: "PaymentType", id: "PaymentType" },
           on: {
             change: function($event) {
               var $$selectedVal = Array.prototype.filter
