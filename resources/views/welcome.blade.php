@@ -19,7 +19,9 @@
                 <router-link class="nav-item nav-link" v-on:click.native="logout" v-show="this.$store.state.user" to="/">Logout</router-link>
                 <router-link class="nav-item nav-link" to="/home">Home</router-link>
                 <router-link class="nav-item nav-link" to="/profile" v-show="this.$store.state.user">Profile</router-link>
-
+                <router-link class="nav-item nav-link" to="/myVirtualWallets" v-show="this.$store.state.user && this.$store.state.user.type=='u'">My Virtual Wallets</router-link>
+                  <!--       <router-link class="nav-item nav-link" to="/orders" v-show="this.$store.state.user && this.$store.state.user.type=='waiter'"><i class="fas fa-clipboard-list">&nbsp;</i>Orders</router-link>
+                -->
         </div>
                 <br>
     <em>User: @{{this.$store.state.user != null ? this.$store.state.user.name : " ** No User Logged in ** " }}</em>
