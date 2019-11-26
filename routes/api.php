@@ -44,3 +44,6 @@ Route::middleware('auth:api')->patch('users/password','UserControllerAPI@changeP
 //us1
 Route::get('home', 'WalletControllerAPI@index');
 Route::middleware('auth:api')->get('getAuthUser','UserControllerAPI@getAuthUser');
+//us2
+Route::post('registerUser', 'RegisterControllerAPI@create');
+Route::post('api/users/updatePhoto/', 'RegisterControllerAPI@changePhoto');

@@ -12,6 +12,7 @@ import VueRouter from 'vue-router';
 import Login from './components/login';
 import Profile from './components/users/profile';
 import Home from './components/HomeComponent';
+import RegisterUser from './components/registerUser.vue';
 import Users from './components/users/users';
 import Vuex from 'vuex';
 
@@ -22,6 +23,7 @@ const routes = [
     {path:'/', redirect:'/home'},
     {path:'/home', component:Home},
     {path:'/login', component:Login},
+    {path:'/register', component:RegisterUser},
     {path: '/profile', component:Profile},
 ]
 
@@ -31,6 +33,7 @@ const router = new VueRouter({
 
 Vue.component('login', Login)
 Vue.component('home', Home)
+Vue.component('register',RegisterUser)
 Vue.component('profile', Profile)
 
 const store = new Vuex.Store({
