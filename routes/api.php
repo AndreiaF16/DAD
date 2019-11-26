@@ -38,7 +38,7 @@ Route::middleware(['auth:api','u'])->get('users/myVirtualWallets', 'WalletContro
 
 
 //us6
-
+Route::post('operator/registerIncome','OperatorControllerAPI@registerIncome');
 //Route::put('users/{id}','UserControllerAPI@update');
 
 //us1

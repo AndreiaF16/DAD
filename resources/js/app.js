@@ -13,7 +13,8 @@ import VueGoodTable from 'vue-good-table';
 import Login from './components/login';
 import Profile from './components/users/profile';
 import Home from './components/HomeComponent';
-import RegisterUser from './components/users/registerUser.vue';
+import RegisterUser from './components/users/registerUser';
+import Operator from './components/operator/OperatorComponent';
 import Users from './components/users/users';
 import listVirtualWallets from './components/wallets/wallets.vue';
 
@@ -30,6 +31,7 @@ const routes = [
     {path:'/register', component:RegisterUser},
     {path: '/profile', component:Profile},
     {path: '/myVirtualWallets', component:listVirtualWallets},
+    {path: '/operator', component:Operator},
 ]
 
 const router = new VueRouter({
@@ -41,6 +43,7 @@ Vue.component('home', Home)
 Vue.component('register',RegisterUser)
 Vue.component('profile', Profile)
 Vue.component('myVirtualWallets', listVirtualWallets)
+Vue.component('operator', Operator)
 
 const store = new Vuex.Store({
     state: {
