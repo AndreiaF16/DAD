@@ -11,13 +11,15 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router';
 import Login from './components/login';
 import Home from './components/HomeComponent';
+import RegisterUser from './components/registerUser.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
     {path:'/', redirect:'/home'},
     {path:'/home', component:Home},
-    {path:'/login', component:Login}
+    {path:'/login', component:Login},
+    {path:'/register', component:RegisterUser}
 ]
 
 const router = new VueRouter({
@@ -26,6 +28,7 @@ const router = new VueRouter({
 
 Vue.component('login', Login)
 Vue.component('home', Home)
+Vue.component('register',RegisterUser)
 
 const app = new Vue({
     el: '#app',

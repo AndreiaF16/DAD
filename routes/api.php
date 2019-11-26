@@ -25,3 +25,6 @@ Route::middleware('auth:api')->get('teste', function () {
    });
 //us1
 Route::get('home', 'WalletControllerAPI@index');
+//us2
+Route::post('registerUser', 'RegisterControllerAPI@create');
+Route::post('api/users/updatePhoto/', 'RegisterControllerAPI@changePhoto');
