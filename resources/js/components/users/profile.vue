@@ -114,8 +114,8 @@ export default {
           //  this.username = ''
         },
         cancelEdit() {
-                this.$emit('cancel-user-click');
-            },
+            this.$router.push('/home' );
+        },
         savedPassword(){
 
             axios.patch('/api/users/password',

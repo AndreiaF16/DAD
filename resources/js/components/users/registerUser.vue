@@ -3,7 +3,7 @@
 
 <div>
     <div class="container">
-      <h2>Register Worker</h2>
+      <h2>Regist User</h2>
       <div class="form-group">
         <label for="inputName">Name</label>
         <input
@@ -62,6 +62,8 @@
 
       <div class="form-group">
         <a class="btn btn-primary" v-on:click.prevent="register">Register</a>
+
+                    <a class="btn btn-danger" v-on:click.prevent="cancelEdit">Cancel</a>
       </div>
     </div>
   </div>
@@ -105,7 +107,10 @@
             }
           }
         });
-    },/*onFileChanged(fileSelected) {
+    },cancelEdit() {
+            this.$router.push('/home' );
+        },
+    /*onFileChanged(fileSelected) {
                 this.file = fileSelected
             }, submitFile(){
             let formData = new FormData();

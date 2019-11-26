@@ -12,7 +12,7 @@ import VueRouter from 'vue-router';
 import Login from './components/login';
 import Profile from './components/users/profile';
 import Home from './components/HomeComponent';
-import RegisterUser from './components/registerUser.vue';
+import RegisterUser from './components/users/registerUser.vue';
 import Users from './components/users/users';
 import Vuex from 'vuex';
 
