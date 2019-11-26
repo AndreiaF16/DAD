@@ -10,7 +10,7 @@ use App\Http\Resources\User as UserResource;
 
 class OperatorControllerAPI extends Controller
 {
-    public function Create(Request $request){
-
+    public function registerIncome(Request $request){
+        
     }
 }

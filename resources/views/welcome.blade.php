@@ -18,7 +18,7 @@
                 <router-link class="nav-item nav-link" to="/home">Home</router-link>
                 <router-link class="nav-item nav-link" to="/profile" v-show="this.$store.state.user">Profile</router-link>
                 <router-link class="nav-item nav-link" to="/register" v-show="this.$store.state.user"> Create an account </router-link>
-
+                <router-link class="nav-item nav-link" to="/operator" v-show="this.$store.state.user"> Create an income </router-link>
         </div>
                 <br>
     <em>User: @{{this.$store.state.user != null ? this.$store.state.user.name : " ** No User Logged in ** " }}</em>
