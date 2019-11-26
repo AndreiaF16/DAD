@@ -1,6 +1,8 @@
 <?php
 namespace App;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Wallet extends Model{
     //
     protected $fillable = [
@@ -10,6 +12,12 @@ class Wallet extends Model{
         'created_at',
         'updated_at'
     ];
+
+  /*  public function wallets()
+    {
+        return $this->hasMany(Wallet::class);
+    }*/
+
 }
 
 
