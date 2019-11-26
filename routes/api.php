@@ -24,11 +24,6 @@ Route::middleware('auth:api')->post('logout','LoginControllerAPI@logout');
 
 Route::get('home', 'HomeControllerAPI@index')->name('home');
 
-
-//Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
-//Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
-Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myprofile');
-
 Route::middleware('auth:api')->put('users/updateProfile','UserControllerAPI@update');
 Route::middleware('auth:api')->patch('users/password','UserControllerAPI@changePassword');
 
@@ -43,6 +38,7 @@ Route::middleware('auth:api')->patch('users/password','UserControllerAPI@changeP
 
 //us1
 Route::get('home', 'WalletControllerAPI@index');
+Route::middleware('auth:api')->get('users/me','UserControllerAPI@getAuthUser');
 Route::middleware('auth:api')->get('getAuthUser','UserControllerAPI@getAuthUser');
 //us2
 Route::post('registerUser', 'RegisterControllerAPI@create');

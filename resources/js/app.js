@@ -73,7 +73,7 @@ const app = new Vue({
             if(localStorage.getItem('user')!=null){
                 this.$store.commit('setUser',JSON.parse(localStorage.getItem('user')));
             }else{
-            axios.get('/api/getAuthUser')
+            axios.get('/api/users/me')
                 .then(response => {
                     this.$store.commit('setUser',response.data);
                     localStorage.setItem("user",JSON.stringify(response.data));
