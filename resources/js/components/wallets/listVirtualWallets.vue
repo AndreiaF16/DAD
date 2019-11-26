@@ -80,7 +80,7 @@
             },
         methods:{
 
-            load() {
+            getWallets() {
                 axios.get('api/users/myVirtualWallets')
             .then(response=>{
                 this.myWallets = response.data;
@@ -91,7 +91,7 @@
             }
         },
         mounted(){
-
+            this.getWallets();
         },
         components: {
             'show-message':showMessage,

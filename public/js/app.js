@@ -2180,8 +2180,10 @@ __webpack_require__.r(__webpack_exports__);
       showMessage: false,
       showErrors: false,
       message: "",
+      user: {
+        email: ""
+      },
       movement: {
-        email: "",
         value: "",
         type_payment: "",
         iban: "",
@@ -2717,6 +2719,152 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('api/departments').then(function (response) {
       _this5.departments = response.data.data;
     });
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wallets/listVirtualWallets.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/wallets/listVirtualWallets.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/showMessage.vue */ "./resources/js/components/helpers/showMessage.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/*jshint esversion: 6 */
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['myWallets'],
+  data: function data() {
+    return {
+      showMessage: false,
+      message: '',
+      typeofmsg: "",
+      selectedRow: null,
+      rows: [],
+      // totalRecords: 0,
+      columns: [{
+        label: "Id",
+        field: 'id'
+      }, {
+        label: "Type",
+        field: 'type'
+      }, {
+        label: 'email',
+        field: 'email'
+      }, {
+        label: 'Type Of Payment',
+        field: 'type_payment'
+      }, {
+        label: 'Category',
+        field: 'category_id'
+      }, {
+        label: 'Date',
+        field: 'date'
+      }, {
+        label: 'Start Balance',
+        field: 'start_balance'
+      }, {
+        label: 'End Balance',
+        field: 'end_balance'
+      }, {
+        label: 'Value',
+        field: 'value'
+      }, {
+        label: 'Actions',
+        field: 'actions',
+        sortable: false
+      }]
+    };
+  },
+  methods: {
+    getWallets: function getWallets() {
+      var _this = this;
+
+      axios.get('api/users/myVirtualWallets').then(function (response) {
+        _this.myWallets = response.data;
+      });
+    },
+    close: function close() {}
+  },
+  mounted: function mounted() {
+    this.getWallets();
+  },
+  components: {
+    'show-message': _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wallets/wallets.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/wallets/wallets.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _listVirtualWallets_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./listVirtualWallets.vue */ "./resources/js/components/wallets/listVirtualWallets.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/*jshint esversion: 6 */
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      wallets: []
+    };
+  },
+  methods: {
+    getWallets: function getWallets() {
+      var _this = this;
+
+      axios.get('api/users/myVirtualWallets').then(function (response) {
+        _this.wallets = response.data;
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getWallets();
+  },
+  components: {
+    'wallets-list': _listVirtualWallets_vue__WEBPACK_IMPORTED_MODULE_0__["default"] //myWallets
+
   }
 });
 
@@ -53214,8 +53362,8 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.movement.email,
-            expression: "movement.email"
+            value: _vm.user.email,
+            expression: "user.email"
           }
         ],
         staticClass: "form-control",
@@ -53225,13 +53373,13 @@ var render = function() {
           id: "inputEmail",
           placeholder: "Enter email address"
         },
-        domProps: { value: _vm.movement.email },
+        domProps: { value: _vm.user.email },
         on: {
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.$set(_vm.movement, "email", $event.target.value)
+            _vm.$set(_vm.user, "email", $event.target.value)
           }
         }
       })
@@ -53999,6 +54147,111 @@ var render = function() {
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wallets/listVirtualWallets.vue?vue&type=template&id=e08c0f26&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/wallets/listVirtualWallets.vue?vue&type=template&id=e08c0f26& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("show-message", {
+        class: _vm.typeofmsg,
+        attrs: { showSuccess: _vm.showMessage, successMessage: _vm.message },
+        on: { close: _vm.close }
+      }),
+      _vm._v(" "),
+      _c("vue-good-table", {
+        ref: "table",
+        attrs: {
+          mode: "remote",
+          columns: _vm.columns,
+          rows: _vm.rows,
+          "pagination-options": { enabled: true }
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "table-row",
+            fn: function(props) {
+              return [
+                props.column.field == "actions"
+                  ? _c("span")
+                  : _c("span", [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(props.formattedRow[props.column.field]) +
+                          "\n                "
+                      )
+                    ])
+              ]
+            }
+          }
+        ])
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wallets/wallets.vue?vue&type=template&id=5187f7ac&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/wallets/wallets.vue?vue&type=template&id=5187f7ac& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("wallets-list", {
+        attrs: { wallets: _vm.wallets, showSelected: false }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "jumbotron" }, [
+      _c("h1", [_vm._v("Tittle")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -70123,7 +70376,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_users_registerUser__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/users/registerUser */ "./resources/js/components/users/registerUser.vue");
 /* harmony import */ var _components_operator_OperatorComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/operator/OperatorComponent */ "./resources/js/components/operator/OperatorComponent.vue");
 /* harmony import */ var _components_users_users__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/users/users */ "./resources/js/components/users/users.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _components_wallets_wallets_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/wallets/wallets.vue */ "./resources/js/components/wallets/wallets.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -70139,10 +70393,10 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 
 
- //import listVirtualWallets from './components/wallets/wallets.vue';
 
 
-Vue.use(vuex__WEBPACK_IMPORTED_MODULE_8__["default"]);
+
+Vue.use(vuex__WEBPACK_IMPORTED_MODULE_9__["default"]);
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 Vue.use(vue_good_table__WEBPACK_IMPORTED_MODULE_9__["default"]);
 var routes = [{
@@ -70160,8 +70414,10 @@ var routes = [{
 }, {
   path: '/profile',
   component: _components_users_profile__WEBPACK_IMPORTED_MODULE_3__["default"]
-}, //  {path: '/myVirtualWallets', component:listVirtualWallets},
-{
+}, {
+  path: '/myVirtualWallets',
+  component: _components_wallets_wallets_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
+}, {
   path: '/operator',
   component: _components_operator_OperatorComponent__WEBPACK_IMPORTED_MODULE_6__["default"]
 }];
@@ -70171,10 +70427,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
 Vue.component('login', _components_login__WEBPACK_IMPORTED_MODULE_2__["default"]);
 Vue.component('home', _components_HomeComponent__WEBPACK_IMPORTED_MODULE_4__["default"]);
 Vue.component('register', _components_users_registerUser__WEBPACK_IMPORTED_MODULE_5__["default"]);
-Vue.component('profile', _components_users_profile__WEBPACK_IMPORTED_MODULE_3__["default"]); //Vue.component('myVirtualWallets', listVirtualWallets)
-
+Vue.component('profile', _components_users_profile__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Vue.component('myVirtualWallets', _components_wallets_wallets_vue__WEBPACK_IMPORTED_MODULE_8__["default"]);
 Vue.component('operator', _components_operator_OperatorComponent__WEBPACK_IMPORTED_MODULE_6__["default"]);
-var store = new vuex__WEBPACK_IMPORTED_MODULE_8__["default"].Store({
+var store = new vuex__WEBPACK_IMPORTED_MODULE_9__["default"].Store({
   state: {
     token: "",
     user: null,
@@ -70909,6 +71165,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_users_vue_vue_type_template_id_063ef5c6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_users_vue_vue_type_template_id_063ef5c6_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/wallets/listVirtualWallets.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/wallets/listVirtualWallets.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _listVirtualWallets_vue_vue_type_template_id_e08c0f26___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./listVirtualWallets.vue?vue&type=template&id=e08c0f26& */ "./resources/js/components/wallets/listVirtualWallets.vue?vue&type=template&id=e08c0f26&");
+/* harmony import */ var _listVirtualWallets_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./listVirtualWallets.vue?vue&type=script&lang=js& */ "./resources/js/components/wallets/listVirtualWallets.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _listVirtualWallets_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _listVirtualWallets_vue_vue_type_template_id_e08c0f26___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _listVirtualWallets_vue_vue_type_template_id_e08c0f26___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/wallets/listVirtualWallets.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/wallets/listVirtualWallets.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/wallets/listVirtualWallets.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_listVirtualWallets_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./listVirtualWallets.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wallets/listVirtualWallets.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_listVirtualWallets_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/wallets/listVirtualWallets.vue?vue&type=template&id=e08c0f26&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/wallets/listVirtualWallets.vue?vue&type=template&id=e08c0f26& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_listVirtualWallets_vue_vue_type_template_id_e08c0f26___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./listVirtualWallets.vue?vue&type=template&id=e08c0f26& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wallets/listVirtualWallets.vue?vue&type=template&id=e08c0f26&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_listVirtualWallets_vue_vue_type_template_id_e08c0f26___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_listVirtualWallets_vue_vue_type_template_id_e08c0f26___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/wallets/wallets.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/wallets/wallets.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wallets_vue_vue_type_template_id_5187f7ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./wallets.vue?vue&type=template&id=5187f7ac& */ "./resources/js/components/wallets/wallets.vue?vue&type=template&id=5187f7ac&");
+/* harmony import */ var _wallets_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./wallets.vue?vue&type=script&lang=js& */ "./resources/js/components/wallets/wallets.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _wallets_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _wallets_vue_vue_type_template_id_5187f7ac___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _wallets_vue_vue_type_template_id_5187f7ac___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/wallets/wallets.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/wallets/wallets.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/wallets/wallets.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_wallets_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./wallets.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wallets/wallets.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_wallets_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/wallets/wallets.vue?vue&type=template&id=5187f7ac&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/wallets/wallets.vue?vue&type=template&id=5187f7ac& ***!
+  \************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_wallets_vue_vue_type_template_id_5187f7ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./wallets.vue?vue&type=template&id=5187f7ac& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wallets/wallets.vue?vue&type=template&id=5187f7ac&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_wallets_vue_vue_type_template_id_5187f7ac___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_wallets_vue_vue_type_template_id_5187f7ac___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -11,7 +11,7 @@
         <input
           type="email"
           class="form-control"
-          v-model="movement.email"
+          v-model="user.email"
           name="email"
           id="inputEmail"
           placeholder="Enter email address"
@@ -79,8 +79,11 @@
       showMessage: false,
       showErrors: false,
       message:"",
+      user:{
+          email: "",
+      },
       movement: {
-        email: "",
+
         value: "",
         type_payment: "",
         iban: "",
