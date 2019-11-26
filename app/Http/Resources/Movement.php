@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class Movements extends Resource
+class Movement extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -12,6 +12,7 @@ class Movements extends Resource
      * @param  \Illuminate\Http\Request
      * @return array
      */
+    
     public function toArray($request)
     {
         return [

@@ -12,12 +12,8 @@ import VueRouter from 'vue-router';
 import Login from './components/login';
 import Profile from './components/users/profile';
 import Home from './components/HomeComponent';
-<<<<<<< HEAD
-import RegisterUser from './components/registerUser.vue';
+import RegisterUser from './components/users/registerUser';
 import Operator from './components/operator/OperatorComponent';
-=======
-import RegisterUser from './components/users/registerUser.vue';
->>>>>>> 0b8931b12f3120d6cf5f86f93171e896b86b5687
 import Users from './components/users/users';
 import Vuex from 'vuex';
 

@@ -11,7 +11,7 @@
         <input
           type="email"
           class="form-control"
-          v-model="user.email"
+          v-model="movement.email"
           name="email"
           id="inputEmail"
           placeholder="Enter email address"
@@ -23,7 +23,7 @@
         <input
           type="text"
           class="form-control"
-          v-model="user.password"
+          v-model="movement.value"
           name="value"
           id="inputValue"
           placeholder="Enter value"
@@ -31,7 +31,7 @@
       </div>
     <div class="form-group">
         <label for="inputPaymentType">Payment Type</label>
-        <select class="btn btn-xs btn-primary dropdown-toggle btn-block"  name="PaymentType">
+        <select class="btn btn-xs btn-primary dropdown-toggle btn-block" name="PaymentType" v-model="movement.type_payment">
             <option value="c">Cash</option>
             <option value="bt">Bank Transfer</option>
             <option value="mb">MB payment</option>
@@ -42,7 +42,7 @@
         <textarea
           type="text"
           class="form-control"
-          v-model="user.nif"
+          v-model="movement.source_decription"
           name="Src_Desc"
           id="inputSrc_Desc"
           placeholder="Enter the Source Description"
@@ -54,7 +54,7 @@
         <input
           type="text"
           class="form-control"
-          v-model="user.password"
+          v-model="movement.iban"
           name="IBAN"
           id="inputIBAN"
           placeholder="Enter IBAN"
@@ -62,54 +62,66 @@
       </div>
 
       <div class="form-group">
-        <a class="btn btn-primary" v-on:click.prevent="register">Create Income</a>
+        <a class="btn btn-primary" v-on:click.prevent="registerIncome">Create Income</a>
       </div>
     </div>
 </template>
 
 <script>
-//import fileUpload from './helpers/uploadFile';
 
-//module.exports = {
+  import errorValidation from '../helpers/showErrors.vue';
+  import showMessage from '../helpers/showMessage.vue';
+
   export default{
   data: function() {
     return {
-      user: {
-        name: "",
+      errors: [],
+      showMessage: false,
+      showErrors: false,
+      message:"",
+      movement: {
         email: "",
-        password: "",
-        photo: "",
-        nif: "",
-
-
+        value: "",
+        type_payment: "",
+        iban: "",
+        source_description: "",
       }
     };
   },
   methods: {
-    register() {
-      axios
-        .post("api/registerUser", this.user)
-        .then(response => {
-          console.log("response", response);
-
-        })
-        .catch(error => {
-          console.log(error);
-          let data = error.response.data.errors;
-          for (let key in this.errors) {
-            this.errors[key] = [];
-            let errorMessage = data[key];
-            if (errorMessage) {
-              this.errors[key] = errorMessage;
-            }
-          }
-        });
+    registerIncome() {
+      axios.post("api/operator/registerIncome",this.movement)
+      .then(response=>{
+					this.showErrors=false;
+					this.showMessage=true;
+					this.message='Income registered with success';
+					this.typeofmsg= "alert-success";
+					this.$router.push('/home');
+				}).catch(error=>{
+					if(error.response.status==401){
+						this.showMessage=true;
+						this.message=error.response.data.unauthorized;
+						this.typeofmsg= "alert-danger";
+						return;
+					}
+					if(error.response.status==422){
+						if(error.response.data.errors==undefined){
+							this.showErrors=false;
+							this.showMessage=true;
+							this.message=error.response.data.email;
+							this.typeofmsg= "alert-danger";
+						}else{
+							this.showMessage=false;
+							this.showErrors=true;
+							this.errors=error.response.data.errors;
+						}
+					}
+				});
     }
   },
   components: {
-            //'error-validation':errorValidation,
-            //'show-message':showMessage,
-         //   'file-upload': fileUpload,
+            'error-validation':errorValidation,
+            'show-message':showMessage,
         },
 };
 </script>

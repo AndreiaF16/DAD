@@ -33,7 +33,7 @@ Route::middleware('auth:api')->patch('users/password','UserControllerAPI@changeP
 
 
 //us6
-
+Route::post('operator/registerIncome','OperatorControllerAPI@registerIncome');
 //Route::put('users/{id}','UserControllerAPI@update');
 
 //us1
