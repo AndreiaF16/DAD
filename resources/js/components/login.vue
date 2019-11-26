@@ -1,7 +1,12 @@
 <template>
-    <div class="jumbotron">
+<div>
+            <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
 
-            <h2>User Login</h2>
+    <div class="jumbotron">
+            <h1>User Login</h1>
+        </div>
+
+        <form>
             <div class="form-group">
                 <label for="inputEmail">Email</label>
                 <input type="email" class="form-control" v-model.trim="user.email"
@@ -16,30 +21,72 @@
             </div>
 
             <div class="form-group">
-                <a class="btn btn-primary" v-on:click.prevent="userLogin()">Login</a>
-                <a class="btn btn-light" v-on:click.prevent="cancelLogin()">Cancel</a>
+                <button type="submit" class="btn btn-primary" v-on:click.prevent="userLogin()">Login</button>
+                <button type="submit" class="btn btn-light" v-on:click.prevent="cancelLogin()">Cancel</button>
             </div>
-        </div>
-
-
+        </form>
+    </div>
 </template>
-<script>
+<script type="text/javascript">
+
+    import showMessage from './helpers/showMessage.vue';
+
     export default {
         data: function () {
             return {
+                message: "",
+                typeofmsg: "alert-success",
+                showMessage: false,
                 user: {
                     email:"",
                     password:"",
+                    remember_token: null,
                 },
             }
         },
         methods: {
             userLogin(){
-                this.$emit('user-login', this.user);
+                axios.post('/api/login', this.user)
+                    .then(response => {
+                        this.message = "User authenticated correctly";
+                        this.showMessage = true;
+                        this.user.remember_token = response.data.access_token;
+                        this.$store.commit('setToken',this.user.remember_token);
+                        this.$store.commit('logIn',true);
+                        localStorage.setItem("token", this.user.remember_token);
+                        axios.defaults.headers.common.Authorization = "Bearer " + this.user.remember_token;
+                        axios.get('/api/getAuthUser')
+                            .then(response => {
+                                 console.log(response.data);
+                                this.$store.commit('setUser',response.data.data);
+                             localStorage.setItem("user",JSON.stringify(response.data.data));
+                                 this.message = "User authenticated correctly";
+                            this.typeofmsg = "alert-success";
+                            this.showMessage = true;
+                            });
+                        this.$router.push('/home');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.showMessage=true;
+                        this.message = "Invalid credentials";
+                       //this.message=error.response.data.unauthorized;
+                        this.typeofmsg= "alert-danger";
+                        return;
+
+
+                    });
             },
-            cancelLogin() {
-                this.$emit('cancel-login');
+             close(){
+                this.showMessage = false;
             }
-        }
-    }
+        },
+            cancelLogin() {
+                this.$router.push('/home');
+            },
+             components: {
+            'show-message':showMessage,
+        },
+
+    };
 </script>

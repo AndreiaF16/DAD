@@ -12,6 +12,7 @@
 
 <script type="text/javascript">
     /*jshint esversion: 6 */
+
     export default {
 		data() {
 			return {
@@ -28,3 +29,4 @@
 		}
 	};
 </script>
+

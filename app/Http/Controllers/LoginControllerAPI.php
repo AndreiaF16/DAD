@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-define('YOUR_SERVER_URL', 'http://projetodad.test/');
+define('YOUR_SERVER_URL', 'http://dad.test/');
 // Check "oauth_clients" table for next 2 values:
-define('CLIENT_ID', '2');
-define('CLIENT_SECRET','DK9KhmIONTzlZClN8fqiVyUTTw1qMITmzVaSfNw0');
+define('CLIENT_ID', '6');
+define('CLIENT_SECRET','P4XPY6vnOQN1sZLM3ZOSBGYlVK1segSQ9RJqgNoh');
 
 class LoginControllerAPI extends Controller
 {
