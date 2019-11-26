@@ -1,16 +1,20 @@
 <template>
 <div class="content">
-        <div class="jumbotron">
-            <h1>Profile</h1>
-          </div>
+        <div class="jumbotron row justify-content-center">
+                <h1>{{tittle}}</h1>
+        </div>
 
-          <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
+    <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
 
-        <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
+    <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
 
-          <div>
+    <div>
 
-          <div class="form-group">
+            <div class="row justify-content-right">
+                <h5>{{tittle2}}</h5>
+            </div>
+
+            <div class="form-group">
                 <label for="inputName">Name</label>
                 <input type="text" class="form-control" v-model="user.name"
                        name="name" id="inputName"
@@ -37,7 +41,6 @@
                 <file-upload v-on:fileChanged="onFileChanged"> </file-upload>
              <!--   <img  width="100px"  :src="'storage/' + user.photo" >-->
               <!--  <img  width="100px"  :src="'storage/images/profiles/' + user.photo_url" >-->
-                <br>
             </div>
 
              <div class="form-group">
@@ -45,8 +48,11 @@
                     <a class="btn btn-danger" v-on:click.prevent="cancelEdit">Cancel</a>
             </div>
 
-<div>
-			<h5>Change Password</h5>
+    <div>
+        <br>
+            <div class="row justify-content-right">
+                <h5>{{tittle3}}</h5>
+            </div>
 
 			<div class="form-group">
 				<label for="oldPassword" class="col-sm-4 col-form-label">Current Password</label>
@@ -70,15 +76,11 @@
 			</div>
             </div>
 
- <div class="form-group">
+            <div class="form-group">
                     <a class="btn btn-primary" v-on:click.prevent="savedPassword">Save Password</a>
                     <a class="btn btn-danger" v-on:click.prevent="cancelEdit">Cancel</a>
             </div>
-
-
         </div>
-
-
 </div>
 </template>
 <script type="text/javascript">
@@ -90,6 +92,9 @@ export default {
 
     data: function() {
       return {
+            tittle: 'Profile',
+            tittle2: 'Change Personal Information',
+            tittle3:'Change Password',
             errors: [],
             showMessage: false,
             showErrors: false,

@@ -1851,11 +1851,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      title: 'Welcome to Virtual Wallet ',
-      text: 'total number of virtual wallets: ',
+      title: 'Welcome to VIRTUAL WALLET',
+      text: 'Total Number Of Virtual Wallets: ',
       wallets: undefined
     };
   },
@@ -2177,6 +2188,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -2185,6 +2198,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _ref;
 
     return _ref = {
+      tittle: 'Profile',
+      tittle2: 'Change Personal Information',
+      tittle3: 'Change Password',
       errors: [],
       showMessage: false,
       showErrors: false,
@@ -2388,22 +2404,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //import fileUpload from './helpers/uploadFile';
 //module.exports = {
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      tittle: 'Regist User',
       user: {
         name: "",
         email: "",
@@ -37882,13 +37888,29 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "content" }, [
-    _c("div", { staticClass: "title m-b-md" }, [
-      _c("h2", [_vm._v(" " + _vm._s(_vm.title))]),
-      _vm._v(" "),
-      _c("h2", [_vm._v(" " + _vm._s(_vm.text))]),
-      _vm._v(" "),
-      _c("h2", [_vm._v(" " + _vm._s(_vm.wallets))])
+  return _c("div", { staticClass: "title m-b-md" }, [
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c("div", { staticClass: "col-md-10" }, [
+          _c("div", { staticClass: "card card-default" }, [
+            _c("div", { staticClass: "jumbotron row justify-content-center" }, [
+              _c("h1", [_vm._v(_vm._s(_vm.title))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row justify-content-center" }, [
+              _c("h6", [_vm._v(" " + _vm._s(_vm.text))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body row justify-content-center" }, [
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.wallets) +
+                  "\n                    "
+              )
+            ])
+          ])
+        ])
+      ])
     ])
   ])
 }
@@ -38199,7 +38221,9 @@ var render = function() {
     "div",
     { staticClass: "content" },
     [
-      _vm._m(0),
+      _c("div", { staticClass: "jumbotron row justify-content-center" }, [
+        _c("h1", [_vm._v(_vm._s(_vm.tittle))])
+      ]),
       _vm._v(" "),
       _c("show-message", {
         class: _vm.typeofmsg,
@@ -38213,6 +38237,10 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("div", [
+        _c("div", { staticClass: "row justify-content-right" }, [
+          _c("h5", [_vm._v(_vm._s(_vm.tittle2))])
+        ]),
+        _vm._v(" "),
         _c("div", { staticClass: "form-group" }, [
           _c("label", { attrs: { for: "inputName" } }, [_vm._v("Name")]),
           _vm._v(" "),
@@ -38312,11 +38340,7 @@ var render = function() {
         _c(
           "div",
           { staticClass: "form-group" },
-          [
-            _c("file-upload", { on: { fileChanged: _vm.onFileChanged } }),
-            _vm._v(" "),
-            _c("br")
-          ],
+          [_c("file-upload", { on: { fileChanged: _vm.onFileChanged } })],
           1
         ),
         _vm._v(" "),
@@ -38351,7 +38375,11 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", [
-          _c("h5", [_vm._v("Change Password")]),
+          _c("br"),
+          _vm._v(" "),
+          _c("div", { staticClass: "row justify-content-right" }, [
+            _c("h5", [_vm._v(_vm._s(_vm.tittle3))])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c(
@@ -38508,16 +38536,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "jumbotron" }, [
-      _c("h1", [_vm._v("Profile")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38541,7 +38560,9 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "container" }, [
-      _c("h2", [_vm._v("Regist User")]),
+      _c("div", { staticClass: "jumbotron row justify-content-center" }, [
+        _c("h1", [_vm._v(_vm._s(_vm.tittle))])
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "inputName" } }, [_vm._v("Name")]),
