@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\Resource;
 
-class Wallet extends JsonResource
+class Wallet extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +14,14 @@ class Wallet extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+
+                'id' => $this->id,
+                'email' => $this->email,
+                'balance' => $this->balance,
+
+
+
+        ];
     }
 }

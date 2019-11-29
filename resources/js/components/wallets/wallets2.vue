@@ -9,7 +9,9 @@
 
 <script>
 	/*jshint esversion: 6 */
+
 	import walletsList from './listVirtualWallets.vue';
+
 	export default {
 		data:
 			function() {
@@ -20,6 +22,7 @@
 		methods: {
 			getWallets: function() {
                 axios.get('api/users/myVirtualWallets')
+
                 .then(response=>{this.wallets = response.data;});
 			}
 		},
@@ -31,4 +34,5 @@
 			//myWallets
 		},
 	};
+
 </script>

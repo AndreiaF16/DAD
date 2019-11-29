@@ -37,7 +37,6 @@
             </div>
 
              <div class="form-group">
-
                 <file-upload v-on:fileChanged="onFileChanged"> </file-upload>
              <!--   <img  width="100px"  :src="'storage/' + user.photo" >-->
               <!--  <img  width="100px"  :src="'storage/images/profiles/' + user.photo_url" >-->
