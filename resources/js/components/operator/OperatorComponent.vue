@@ -8,57 +8,36 @@
       </div>
       <div class="form-group">
         <label for="inputEmail">Email</label>
-        <input
-          type="email"
-          class="form-control"
-          v-model="user.email"
-          name="email"
-          id="inputEmail"
-          placeholder="Enter email address"
-        >
-
+        <input type="email" class="form-control"  v-model="user.email"  name="email"
+          id="inputEmail" placeholder="Enter email address">
       </div>
+
       <div class="form-group">
         <label for="inputValue">Value</label>
-        <input
-          type="text"
-          class="form-control"
-          v-model="movement.value"
-          name="value"
-          id="inputValue"
-          placeholder="Enter value"
-        >
+        <input type="text" class="form-control" v-model="movement.value"  name="value" id="inputValue"
+        placeholder="Enter value">
       </div>
     <div class="form-group">
         <label for="inputPaymentType">Payment Type</label>
-        <select class="btn btn-xs btn-primary dropdown-toggle btn-block" name="PaymentType" v-model="movement.type_payment">
+        <select class="btn btn-xs btn-primary dropdown-toggle btn-block" name="PaymentType"
+        v-model="movement.type_payment">
             <option value="c">Cash</option>
             <option value="bt">Bank Transfer</option>
             <option value="mb">MB payment</option>
         </select>
     </div>
+
       <div class="form-group">
         <label for="inputSrc_Desc">Source Description</label>
-        <textarea
-          type="text"
-          class="form-control"
-          v-model="movement.source_decription"
-          name="Src_Desc"
-          id="inputSrc_Desc"
-          placeholder="Enter the Source Description"
-        ></textarea>
+        <textarea type="text" class="form-control" v-model="movement.source_decription" name="Src_Desc" id="inputSrc_Desc"
+          placeholder="Enter the Source Description">
+        </textarea>
       </div>
 
       <div class="form-group">
         <label for="inputIBAN">IBAN</label>
-        <input
-          type="text"
-          class="form-control"
-          v-model="movement.iban"
-          name="IBAN"
-          id="inputIBAN"
-          placeholder="Enter IBAN"
-        >
+        <input type="text" class="form-control" v-model="movement.iban" name="IBAN" id="inputIBAN"
+        placeholder="Enter IBAN">
       </div>
 
       <div class="form-group">

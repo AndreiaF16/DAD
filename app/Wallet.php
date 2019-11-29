@@ -9,10 +9,19 @@ class Wallet extends Model{
         'id',
         'email',
         'balance',
-        'created_at',
-        'updated_at'
     ];
 
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+     public function user()
+     {
+         return $this->belongsTo(User::class);
+     }
+   /*  public function movement()
+     {
+         return $this->belongsTo(Movement::class);
+     }*/
   /*  public function wallets()
     {
         return $this->hasMany(Wallet::class);

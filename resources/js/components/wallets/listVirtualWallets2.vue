@@ -40,17 +40,48 @@
                             label: "Id",
                             field: 'id',
                         }, {
-                            label: "email",
-                            field: 'email',
+                            label: "Type",
+                            field: 'type',
                         },
+                        {
+                            label: 'email',
+                            field: 'email',
+                        }, {
+                            label: 'Type Of Payment',
+                            field: 'type_payment',
+                        }, {
+                            label: 'Category',
+                            field: 'category_id',
+                        }, {
+                            label: 'Date',
+                            field: 'date',
 
+                        },
+                        {
+                            label: 'Start Balance',
+                            field: 'start_balance',
+
+                        },
+                        {
+                            label: 'End Balance',
+                            field: 'end_balance',
+
+                        },  {
+                            label: 'Value',
+                            field: 'value',
+
+                        }, {
+                            label: 'Actions',
+                            field: 'actions',
+                            sortable: false,
+                        }
                     ],
                 };
             },
         methods:{
 
             getWallets() {
-                axios.get('api/users/myVirtualWallets',this.user.id)
+                axios.get('api/users/myVirtualWallets')
             .then(response=>{
                 this.myWallets = response.data;
             });

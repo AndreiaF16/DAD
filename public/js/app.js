@@ -2150,27 +2150,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2247,7 +2226,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_uploadFile_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/uploadFile.vue */ "./resources/js/components/helpers/uploadFile.vue");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
 //
 //
 //
@@ -2530,22 +2508,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //import fileUpload from './helpers/uploadFile';
 //module.exports = {
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2772,33 +2734,8 @@ __webpack_require__.r(__webpack_exports__);
         label: "Id",
         field: 'id'
       }, {
-        label: "Type",
-        field: 'type'
-      }, {
-        label: 'email',
+        label: "email",
         field: 'email'
-      }, {
-        label: 'Type Of Payment',
-        field: 'type_payment'
-      }, {
-        label: 'Category',
-        field: 'category_id'
-      }, {
-        label: 'Date',
-        field: 'date'
-      }, {
-        label: 'Start Balance',
-        field: 'start_balance'
-      }, {
-        label: 'End Balance',
-        field: 'end_balance'
-      }, {
-        label: 'Value',
-        field: 'value'
-      }, {
-        label: 'Actions',
-        field: 'actions',
-        sortable: false
       }]
     };
   },
@@ -2806,7 +2743,7 @@ __webpack_require__.r(__webpack_exports__);
     getWallets: function getWallets() {
       var _this = this;
 
-      axios.get('api/users/myVirtualWallets').then(function (response) {
+      axios.get('api/users/myVirtualWallets', this.user.id).then(function (response) {
         _this.myWallets = response.data;
       });
     },
