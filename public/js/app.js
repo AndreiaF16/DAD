@@ -2560,7 +2560,7 @@ __webpack_require__.r(__webpack_exports__);
             }
             ).then(response =>{
                 this.$store.commit('setUser',response.data.data);
-             })
+              })
             .catch(function(){
             console.log('FAILURE!!');
             });
@@ -53370,7 +53370,7 @@ var render = function() {
             }
           ],
           staticClass: "btn btn-xs btn-primary dropdown-toggle btn-block",
-          attrs: { name: "PaymentType" },
+          attrs: { name: "PaymentType", id: "PaymentType" },
           on: {
             change: function($event) {
               var $$selectedVal = Array.prototype.filter
@@ -70306,7 +70306,7 @@ module.exports = function(module) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var vue_good_table__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-good-table */ "./node_modules/vue-good-table/dist/vue-good-table.esm.js");
+/* harmony import */ var vue_good_table__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-good-table */ "./node_modules/vue-good-table/dist/vue-good-table.esm.js");
 /* harmony import */ var _components_login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/login */ "./resources/js/components/login.vue");
 /* harmony import */ var _components_users_profile__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/users/profile */ "./resources/js/components/users/profile.vue");
 /* harmony import */ var _components_HomeComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/HomeComponent */ "./resources/js/components/HomeComponent.vue");
@@ -70335,7 +70335,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.use(vuex__WEBPACK_IMPORTED_MODULE_9__["default"]);
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
-Vue.use(vue_good_table__WEBPACK_IMPORTED_MODULE_1__["default"]);
+Vue.use(vue_good_table__WEBPACK_IMPORTED_MODULE_9__["default"]);
 var routes = [{
   path: '/',
   redirect: '/home'
@@ -71263,8 +71263,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
