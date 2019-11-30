@@ -20,6 +20,9 @@ class User extends Authenticatable
         'name','email','type','active','photo','nif','password',
     ];
     
-    
+    public function wallet()
+     {
+         return $this->hasOne('App\Wallet','id','id');
+     }
 
 }

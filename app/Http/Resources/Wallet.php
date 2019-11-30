@@ -15,13 +15,9 @@ class Wallet extends Resource
     public function toArray($request)
     {
         return [
-
-                'id' => $this->id,
-                'email' => $this->email,
-                'balance' => $this->balance,
-
-
-
+            'id' => $this->id,
+            'email' => $this->email,
+            'balance' => $this->balance,
         ];
     }
 }

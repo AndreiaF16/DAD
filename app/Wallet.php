@@ -12,12 +12,12 @@ class Wallet extends Model{
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
     ];
      public function user()
      {
          return $this->belongsTo(User::class);
      }
+     
    /*  public function movement()
      {
          return $this->belongsTo(Movement::class);
