@@ -27,7 +27,7 @@ Route::get('home', 'HomeControllerAPI@index')->name('home');
 Route::middleware('auth:api')->put('users/updateProfile','UserControllerAPI@update');
 Route::middleware('auth:api')->patch('users/password','UserControllerAPI@changePassword');
 
-Route::middleware(['auth:api'])->get('users/myVirtualWallets','WalletControllerAPI@showVirtualWallet');
+Route::middleware('auth:api')->get('users/myVirtualWallets','WalletControllerAPI@showVirtualWallet');
 //Route::middleware(['auth:api','u'])->get('users/myVirtualWallets', 'WalletControllerAPI@movementsWithCategoriesandUsers');
 
 //Route::get('wallets', 'WalletControllerAPI@index');

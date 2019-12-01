@@ -3,7 +3,7 @@
 		<div class="jumbotron">
             <h1>Tittle</h1>
         </div>
-		<wallets-list :my_wallets="wallets" :showSelected="false"> </wallets-list>
+		<wallets-list :my-wallets="wallets" :showSelected="false"> </wallets-list>
 	</div>
 </template>
 
@@ -14,21 +14,23 @@
 		data:
 			function() {
 				return {
-					wallets: []
+					wallets: {}
 				};
 			},
 		methods: {
 			getWallets: function() {
                 axios.get('api/users/myVirtualWallets')
-                .then(response=>{this.wallets = response.data.data;});
+                .then(response=>{
+					this.wallets = response.data.data;
+					console.log(this.wallets);
+				});
 			}
 		},
 		mounted() {
-			this.getWallets();
+			this.getWallets(this.wallets);
 		},
 		components: {
             'wallets-list':walletsList,
-			//myWallets
 		},
 	};
 </script>

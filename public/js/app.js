@@ -2732,6 +2732,7 @@ __webpack_require__.r(__webpack_exports__);
       typeofmsg: "",
       selectedRow: null,
       rows: [],
+      //Array.from(this.myWallets),
       // totalRecords: 0,
       columns: [{
         label: "Id",
@@ -2739,10 +2740,14 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         label: "email",
         field: 'email'
+      }, {
+        label: "email",
+        field: 'email'
       }]
     };
   },
   methods: {
+<<<<<<< HEAD
     /* getWallets() {
          axios.get('api/users/myVirtualWallets')
      .then(response=>{
@@ -2752,6 +2757,14 @@ __webpack_require__.r(__webpack_exports__);
     close: function close() {}
   },
   mounted: function mounted() {// this.getWallets();
+=======
+    close: function close() {}
+  },
+  mounted: function mounted() {
+    console.log(this.myWallets);
+    this.rows = Array.from(this.myWallets);
+    console.log(this.rows);
+>>>>>>> 48d1814c43136e6bd122411c7b886bf18fe35a1f
   },
   components: {
     'show-message': _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -2785,7 +2798,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      wallets: []
+      wallets: {}
     };
   },
   methods: {
@@ -2794,15 +2807,18 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('api/users/myVirtualWallets').then(function (response) {
         _this.wallets = response.data.data;
+<<<<<<< HEAD
+=======
+        console.log(_this.wallets);
+>>>>>>> 48d1814c43136e6bd122411c7b886bf18fe35a1f
       });
     }
   },
   mounted: function mounted() {
-    this.getWallets();
+    this.getWallets(this.wallets);
   },
   components: {
-    'wallets-list': _listVirtualWallets_vue__WEBPACK_IMPORTED_MODULE_0__["default"] //myWallets
-
+    'wallets-list': _listVirtualWallets_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -54188,7 +54204,11 @@ var render = function() {
       _vm._m(0),
       _vm._v(" "),
       _c("wallets-list", {
+<<<<<<< HEAD
         attrs: { my_wallets: _vm.wallets, showSelected: false }
+=======
+        attrs: { "my-wallets": _vm.wallets, showSelected: false }
+>>>>>>> 48d1814c43136e6bd122411c7b886bf18fe35a1f
       })
     ],
     1

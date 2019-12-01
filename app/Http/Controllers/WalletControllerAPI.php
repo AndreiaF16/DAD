@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Wallet;
 use App\Http\Resources\Wallet as WalletResource;
 use Hash;
-Use App\User;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class WalletControllerAPI extends Controller
@@ -35,20 +35,26 @@ class WalletControllerAPI extends Controller
 
     }
 
-    public function movementsWithCategoriesandUsers() {
+    /*public function movementsWithCategoriesandUsers() {
         $myWallets = Movement::join('movements', 'wallets.id', '=', 'movements.wallet_id')
         ->join('categories', 'categories.id', '=', 'movements.category_id')->where('id', '=', 'movements.category_id')
         ->get(['movements.*']);
         return MovementResource::collection($myWallets);
 
-    }
+    }*/
 
-    public function showVirtualWallet(/*$id$request*/)
+    public function showVirtualWallet(/* $request*/)
 	{
-        $user = Auth::user();
-        return new WalletResource(Wallet::where("email",$user->email));
+        // ------------------- 1ª OPÇÃO ---------------------------
 
-       // return new WalletResource(Wallet::find($id));
+        /*$user = Auth::user();//->wallet;
+        return WalletResource::collection(Wallet::where("id",$user->id)->get());*/
+
+        /// ---------------------- 2ª OPÇÃO ------------------------
+        $wallet = Auth::user()->wallet;
+        return new WalletResource($wallet);
+        //----------------------------------------------------------
+
     //   $user=Wallet::findOrFail();
 
       /*  if((Auth::guard('api')->user()->id != $user->id) /*|| (Auth::guard('api')->user()->type != 'u')*///){
@@ -63,9 +69,9 @@ class WalletControllerAPI extends Controller
         }*/
     }
 
-    public function myWallets($id){
+    /*public function myWallets($id){
 
         $myWallets = Wallet::where('id', '=', $id)->get();
         return Wallet::collection($myWallets);
-    }
+    }*/
 }

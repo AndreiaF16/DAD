@@ -32,7 +32,7 @@
                     message:'',
                     typeofmsg: "",
                   selectedRow: null,
-                    rows: [],
+                    rows: [],//Array.from(this.myWallets),
                    // totalRecords: 0,
 
                     columns: [
@@ -42,25 +42,22 @@
                         }, {
                             label: "email",
                             field: 'email',
+                        },{
+                            label: "email",
+                            field: 'email',
                         },
 
                     ],
                 };
             },
         methods:{
-
-           /* getWallets() {
-                axios.get('api/users/myVirtualWallets')
-            .then(response=>{
-                this.myWallets = response.data;
-            });
-
-            },*/
             close(){
             }
         },
         mounted(){
-           // this.getWallets();
+            console.log(this.myWallets);
+            this.rows = Array.from(this.myWallets);
+            console.log(this.rows);
         },
         components: {
             'show-message':showMessage,
