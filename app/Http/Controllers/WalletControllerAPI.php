@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Wallet;
 use App\Http\Resources\Wallet as WalletResource;
 use Hash;
+Use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class WalletControllerAPI extends Controller
 {
@@ -41,9 +43,12 @@ class WalletControllerAPI extends Controller
 
     }
 
-    public function showVirtualWallet($id/* $request*/)
+    public function showVirtualWallet(/*$id$request*/)
 	{
-        return new WalletResource(Wallet::find($id));
+        $user = Auth::user();
+        return new WalletResource(Wallet::where("email",$user->email));
+
+       // return new WalletResource(Wallet::find($id));
     //   $user=Wallet::findOrFail();
 
       /*  if((Auth::guard('api')->user()->id != $user->id) /*|| (Auth::guard('api')->user()->type != 'u')*///){

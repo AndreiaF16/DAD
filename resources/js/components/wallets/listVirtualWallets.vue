@@ -49,18 +49,18 @@
             },
         methods:{
 
-            getWallets() {
-                axios.get('api/users/myVirtualWallets',this.user.id)
+           /* getWallets() {
+                axios.get('api/users/myVirtualWallets')
             .then(response=>{
                 this.myWallets = response.data;
             });
 
-            },
+            },*/
             close(){
             }
         },
         mounted(){
-            this.getWallets();
+           // this.getWallets();
         },
         components: {
             'show-message':showMessage,

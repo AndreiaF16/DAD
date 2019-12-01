@@ -2149,7 +2149,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2226,6 +2225,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_uploadFile_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/uploadFile.vue */ "./resources/js/components/helpers/uploadFile.vue");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -2412,6 +2412,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }); // localStorage.setItem("user",JSON.stringify(this.user));
     },
+    getActualPhoto: function getActualPhoto() {
+      return this.actualPhoto;
+    },
     close: function close() {
       this.showErrors = false;
       this.showMessage = false;
@@ -2560,7 +2563,7 @@ __webpack_require__.r(__webpack_exports__);
             }
             ).then(response =>{
                 this.$store.commit('setUser',response.data.data);
-              })
+             })
             .catch(function(){
             console.log('FAILURE!!');
             });
@@ -2740,17 +2743,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getWallets: function getWallets() {
-      var _this = this;
-
-      axios.get('api/users/myVirtualWallets', this.user.id).then(function (response) {
-        _this.myWallets = response.data;
-      });
-    },
+    /* getWallets() {
+         axios.get('api/users/myVirtualWallets')
+     .then(response=>{
+         this.myWallets = response.data;
+     });
+      },*/
     close: function close() {}
   },
-  mounted: function mounted() {
-    this.getWallets();
+  mounted: function mounted() {// this.getWallets();
   },
   components: {
     'show-message': _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -2792,7 +2793,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('api/users/myVirtualWallets').then(function (response) {
-        _this.wallets = response.data;
+        _this.wallets = response.data.data;
       });
     }
   },
@@ -53634,7 +53635,21 @@ var render = function() {
         _c(
           "div",
           { staticClass: "form-group" },
-          [_c("file-upload", { on: { fileChanged: _vm.onFileChanged } })],
+          [
+            _c("file-upload", { on: { fileChanged: _vm.onFileChanged } }),
+            _vm._v(" "),
+            _c("img", {
+              staticStyle: {
+                width: "150px",
+                height: "150px",
+                "border-radius": "50%",
+                "margin-bottom": "25px",
+                "margin-right": "25px",
+                float: "left"
+              },
+              attrs: { src: "storage/fotos/" + _vm.getActualPhoto() }
+            })
+          ],
           1
         ),
         _vm._v(" "),
@@ -54173,7 +54188,7 @@ var render = function() {
       _vm._m(0),
       _vm._v(" "),
       _c("wallets-list", {
-        attrs: { wallets: _vm.wallets, showSelected: false }
+        attrs: { my_wallets: _vm.wallets, showSelected: false }
       })
     ],
     1
@@ -70306,7 +70321,7 @@ module.exports = function(module) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var vue_good_table__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-good-table */ "./node_modules/vue-good-table/dist/vue-good-table.esm.js");
+/* harmony import */ var vue_good_table__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-good-table */ "./node_modules/vue-good-table/dist/vue-good-table.esm.js");
 /* harmony import */ var _components_login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/login */ "./resources/js/components/login.vue");
 /* harmony import */ var _components_users_profile__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/users/profile */ "./resources/js/components/users/profile.vue");
 /* harmony import */ var _components_HomeComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/HomeComponent */ "./resources/js/components/HomeComponent.vue");
@@ -70335,7 +70350,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.use(vuex__WEBPACK_IMPORTED_MODULE_9__["default"]);
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
-Vue.use(vue_good_table__WEBPACK_IMPORTED_MODULE_9__["default"]);
+Vue.use(vue_good_table__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var routes = [{
   path: '/',
   redirect: '/home'
@@ -71263,8 +71278,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
