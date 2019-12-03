@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-define('YOUR_SERVER_URL', 'APP_URL');
+define('YOUR_SERVER_URL', env('APP_URL'));
 // Check "oauth_clients" table for next 2 values:
-define('CLIENT_ID', 'PASSPORT_ID');
-define('CLIENT_SECRET','PASSPORT_SECRET');
+define('CLIENT_ID', env('PASSPORT_ID'));
+define('CLIENT_SECRET',env('PASSPORT_SECRET'));
 
 class LoginControllerAPI extends Controller
 {
