@@ -21,6 +21,7 @@
                 <router-link class="nav-item nav-link" to="/profile" v-show="this.$store.state.user">Profile</router-link>
                 <router-link class="nav-item nav-link" to="/myVirtualWallets" v-show="this.$store.state.user && this.$store.state.user.type=='u'">My Virtual Wallets</router-link>
                 <router-link class="nav-item nav-link" to="/operator" v-show="this.$store.state.user"> Create an income </router-link>
+                <router-link class="nav-item nav-link" to="/movements" v-show="this.$store.state.user"> Movement</router-link>
 
         </div>
                 <br>

@@ -16,7 +16,8 @@ import Home from './components/HomeComponent';
 import RegisterUser from './components/users/registerUser';
 import Operator from './components/operator/OperatorComponent';
 import Users from './components/users/users';
-import listVirtualWallets from './components/wallets/wallets.vue';
+import listVirtualWallets from './components/wallets/wallets';
+import Movements from './components/movements/movements';
 
 import Vuex from 'vuex';
 
@@ -32,6 +33,8 @@ const routes = [
     {path: '/profile', component:Profile},
    {path: '/myVirtualWallets', component:listVirtualWallets},
     {path: '/operator', component:Operator},
+    {path: '/movements', component:Movements},
+
 ]
 
 const router = new VueRouter({
@@ -44,6 +47,7 @@ Vue.component('register',RegisterUser)
 Vue.component('profile', Profile)
 Vue.component('myVirtualWallets', listVirtualWallets)
 Vue.component('operator', Operator)
+Vue.component('movements', Movements)
 
 const store = new Vuex.Store({
     state: {

@@ -19,7 +19,7 @@ class OperatorControllerAPI extends Controller
             'iban' => 'nullable|regex:/^[A-Za-z]{2}[0-9]{23}/',
             'source_description' => 'max:255'
         ]);
-        
+
         $wallets = DB::table('wallets')->where('email',$request->email)->first();
         if($wallets == null){
             return response()->json([
