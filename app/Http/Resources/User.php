@@ -21,7 +21,8 @@ class User extends Resource
             'type' => $this->type,
             'active' => $this->active,
             'photo' => $this->photo,
-            'nif'=> $this->nif
+            'nif'=> $this->nif,
+            'wallet' => $this->wallet
         ];
     }
 }
