@@ -22,10 +22,40 @@ class MovementControllerAPI extends Controller
             return MovementResource::collection(Movement::all());
         }
     }
+    public function list()
+    {
+        //$movements = Auth::user()->wallet->movement;
+        //return $movements;
+        //$movements = Movement::where("wallet_id",$id)->get();
+        //return $movements;
+        $user = Auth::user();
+        /*$movements = DB::table('wallets')
+            ->join('movements', 'wallets.id', '=', 'movements.wallet_id')
+            ->join('categories', 'categories.id', '=', 'movements.category_id')
+            ->where("wallets.id","=",$user->id)
+            ->select("wallets.email","movements.id","movements.type","movements.type_payment","movements.id"
+                    ,"categories.name","movements.date","movements.description","movements.source_description"
+                    ,"movements.iban","movements.mb_entity_code","movements.start_balance","movements.end_balance"
+                    ,"movements.value")
+            ->orderBy("movements.date","desc")
+            ->paginate(15);*/
+        return MovementResource::collection(
+            Movement::where('wallet_id', Auth::id())
+            ->orderBy('date', 'desc')->get()
+                //->paginate(15)
+        );
+    }
+
     public function show($id)
     {
-        return new MovementResource(Movement::find($id));
+        $movements = Auth::user()->wallet->movement;
+        //return $movements;
+        //$movements = Movement::where("wallet_id",$id)->get();
+        //return $movements;
+        return MovementResource::collection($movements);
     }
+
+
     public function store(Request $request)
     {
       /*   $request->validate([

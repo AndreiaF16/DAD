@@ -31,4 +31,13 @@ class Movement extends Authenticatable
         //'password', 'remember_token',
     ];
 
+    public function wallet()
+    {
+        return $this->belongsTo(Wallet::class);
+    }
+
+    public function category()
+    {
+        return $this->hasOne(Category::class,"id","category_id");
+    }
 }

@@ -30,10 +30,34 @@ const routes = [
     {path:'/home', component:Home},
     {path:'/login', component:Login},
     {path:'/register', component:RegisterUser},
-    {path: '/profile', component:Profile},
-   {path: '/myVirtualWallets', component:listVirtualWallets},
-    {path: '/operator', component:Operator},
-    {path: '/movements', component:Movements},
+    {path: '/profile', component:Profile, beforeEnter: (to, from, next) => {
+        if(localStorage.getItem("token")==null){
+            next("/home");
+        }else{
+            next();
+        }
+    }},
+    {path: '/myVirtualWallets', component:listVirtualWallets, beforeEnter: (to, from, next) => {
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else{
+            next();
+        }
+    }},
+    {path: '/operator', component:Operator, beforeEnter: (to, from, next) => {
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else{
+            next();
+        }
+    }},
+    {path: '/movements', component:Movements, beforeEnter: (to, from, next) => {
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else{
+            next();
+        }
+    }},
 
 ]
 
@@ -53,7 +77,8 @@ const store = new Vuex.Store({
     state: {
       token: "",
       user: null,
-      loggedin: false
+      loggedin: false,
+      movements: null,
     },
     mutations: {
         setUser(state, user) {
@@ -63,13 +88,17 @@ const store = new Vuex.Store({
             state.token = received_token;
         },
         logIn(state, boll) {
-        state.loggedin = boll;
+            state.loggedin = boll;
+        },
+        setMovements(state, movements){
+            state.movements = movements
         }
     },
     getters: {
         token: state => state.token,
         loggedin: state => state.loggedin,
-        user: state => state.user
+        user: state => state.user,
+        movements: state => state.movements
       }
 });
 
@@ -85,11 +114,17 @@ const app = new Vue({
             axios.defaults.headers.common.Authorization = "Bearer " + token;
             if(localStorage.getItem('user')!=null){
                 this.$store.commit('setUser',JSON.parse(localStorage.getItem('user')));
+                this.$store.commit('setMovements',JSON.parse(localStorage.getItem('movement')));
             }else{
             axios.get('/api/users/me')
                 .then(response => {
                     this.$store.commit('setUser',response.data);
                     localStorage.setItem("user",JSON.stringify(response.data));
+                });
+            axios.get('/api/movements')
+                .then(response => {
+                    this.$store.commit('movements',response.data.data);
+                    localStorage.setItem("movements",JSON.stringify(response.data.data));
                 });
             }
         }

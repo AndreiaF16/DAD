@@ -31,7 +31,9 @@ class Movement extends Resource
             'date'=> $this->date,
             'start_balance' => $this->start_balance,
             'end_balance' => $this->end_balance,
-            'value' => $this->value
+            'value' => $this->value,
+            'email' => $this->wallet->email,
+            'category_name' => $this->category["name"],
         ];
     }
 }

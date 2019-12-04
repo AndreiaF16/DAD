@@ -18,10 +18,11 @@ class Wallet extends Model{
          return $this->belongsTo(User::class);
      }
      
-   /*  public function movement()
+     public function movement()
      {
-         return $this->belongsTo(Movement::class);
-     }*/
+        return $this->hasMany('App\Movement','wallet_id','id');
+        //return $this->belongsTo(Movement::class);
+     }
   /*  public function wallets()
     {
         return $this->hasMany(Wallet::class);

@@ -2065,6 +2065,13 @@ __webpack_require__.r(__webpack_exports__);
           _this.message = "User authenticated correctly";
           _this.typeofmsg = "alert-success";
           _this.showMessage = true;
+          axios.get('/api/users/movements/' + _this.$store.getters.user.id, _this.$store.getters.user.id).then(function (response) {
+            console.log(response.data.data);
+
+            _this.$store.commit('movements', response.data.data);
+
+            localStorage.setItem("movements", JSON.stringify(response.data.data));
+          });
         });
 
         _this.$router.push('/home');
@@ -2857,45 +2864,71 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /*jshint esversion: 6 */
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['myWallets'],
   data: function data() {
     return {
+      tittle: "My Virtual Wallet",
+      user: {},
+      wallet: {},
+      movements: [],
       showMessage: false,
       message: '',
       typeofmsg: "",
-      selectedRow: null,
+      current_page: 1,
       rows: [],
-      //Array.from(this.myWallets),
       // totalRecords: 0,
       columns: [{
         label: "Id",
         field: 'id'
       }, {
-        label: "email",
+        label: "Email",
         field: 'email'
+      }, {
+        label: "Type of Movement",
+        field: 'type'
+      }, {
+        label: "Type of Payment",
+        field: 'type_payment'
+      }, {
+        label: "Categoty",
+        field: 'name'
+      }, {
+        label: "Date",
+        field: 'date'
       }]
     };
   },
   methods: {
-    getWallets: function getWallets() {
+    close: function close() {},
+    getMovements: function getMovements() {
       var _this = this;
 
-      axios.get('api/users/myVirtualWallets').then(function (response) {
-        _this.wallets = response.data.data;
-        console.log(_this.wallets);
+      axios.get('api/users/wallet/movements') //?page='+(this.current_page+=1))
+      .then(function (response) {
+        _this.movements = response.data.data;
+      })["catch"](function (error) {
+        console.log(error.response);
       });
-    },
-    close: function close() {}
+    }
   },
   mounted: function mounted() {
-    this.getWallets(this.wallets); // console.log(this.myWallets);
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.wallet = this.user.wallet; //this.movements = JSON.parse(localStorage.getItem('movements'))
 
-    this.rows = Array.from(this.myWallets);
-    console.log(this.rows);
+    this.getMovements();
   },
   components: {
     'show-message': _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -54322,32 +54355,55 @@ var render = function() {
         on: { close: _vm.close }
       }),
       _vm._v(" "),
-      _c("vue-good-table", {
-        ref: "table",
-        attrs: {
-          mode: "remote",
-          columns: _vm.columns,
-          rows: _vm.rows,
-          "pagination-options": { enabled: true }
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "table-row",
-            fn: function(props) {
-              return [
-                props.column.field == "actions"
-                  ? _c("span")
-                  : _c("span", [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(props.formattedRow[props.column.field]) +
-                          "\n                "
-                      )
-                    ])
-              ]
+      _c("div", { staticClass: "row justify-content-right" }, [
+        _c("h5", [_vm._v(_vm._s(_vm.tittle))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "inputBalance" } }, [
+          _vm._v("Balance of My Virtual Wallet")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.wallet.balance,
+              expression: "wallet.balance"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: "balance",
+            id: "inputBalance",
+            placeholder: "Balance"
+          },
+          domProps: { value: _vm.wallet.balance },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.wallet, "balance", $event.target.value)
             }
           }
-        ])
+        })
+      ]),
+      _vm._v(" "),
+      _c("vue-good-table", {
+        attrs: {
+          styleClass: "vgt-table",
+          columns: _vm.columns,
+          rows: _vm.movements,
+          "pagination-options": { enabled: true, mode: "records", perPage: 15 }
+        },
+        on: {
+          click: function($event) {
+            return _vm.getMovements()
+          }
+        }
       })
     ],
     1
@@ -70517,16 +70573,44 @@ var routes = [{
   component: _components_users_registerUser__WEBPACK_IMPORTED_MODULE_5__["default"]
 }, {
   path: '/profile',
-  component: _components_users_profile__WEBPACK_IMPORTED_MODULE_3__["default"]
+  component: _components_users_profile__WEBPACK_IMPORTED_MODULE_3__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (localStorage.getItem("token") == null) {
+      next("/home");
+    } else {
+      next();
+    }
+  }
 }, {
   path: '/myVirtualWallets',
-  component: _components_wallets_wallets__WEBPACK_IMPORTED_MODULE_8__["default"]
+  component: _components_wallets_wallets__WEBPACK_IMPORTED_MODULE_8__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (localStorage.getItem("token") == null) {
+      next("/");
+    } else {
+      next();
+    }
+  }
 }, {
   path: '/operator',
-  component: _components_operator_OperatorComponent__WEBPACK_IMPORTED_MODULE_6__["default"]
+  component: _components_operator_OperatorComponent__WEBPACK_IMPORTED_MODULE_6__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (localStorage.getItem("token") == null) {
+      next("/");
+    } else {
+      next();
+    }
+  }
 }, {
   path: '/movements',
-  component: _components_movements_movements__WEBPACK_IMPORTED_MODULE_9__["default"]
+  component: _components_movements_movements__WEBPACK_IMPORTED_MODULE_9__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (localStorage.getItem("token") == null) {
+      next("/");
+    } else {
+      next();
+    }
+  }
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: routes
@@ -70542,7 +70626,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_10__["default"].Store({
   state: {
     token: "",
     user: null,
-    loggedin: false
+    loggedin: false,
+    movements: null
   },
   mutations: {
     setUser: function setUser(state, user) {
@@ -70553,6 +70638,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_10__["default"].Store({
     },
     logIn: function logIn(state, boll) {
       state.loggedin = boll;
+    },
+    setMovements: function setMovements(state, movements) {
+      state.movements = movements;
     }
   },
   getters: {
@@ -70564,6 +70652,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_10__["default"].Store({
     },
     user: function user(state) {
       return state.user;
+    },
+    movements: function movements(state) {
+      return state.movements;
     }
   }
 });
@@ -70583,11 +70674,17 @@ var app = new Vue({
 
       if (localStorage.getItem('user') != null) {
         this.$store.commit('setUser', JSON.parse(localStorage.getItem('user')));
+        this.$store.commit('setMovements', JSON.parse(localStorage.getItem('movement')));
       } else {
         axios.get('/api/users/me').then(function (response) {
           _this.$store.commit('setUser', response.data);
 
           localStorage.setItem("user", JSON.stringify(response.data));
+        });
+        axios.get('/api/movements').then(function (response) {
+          _this.$store.commit('movements', response.data.data);
+
+          localStorage.setItem("movements", JSON.stringify(response.data.data));
         });
       }
     }

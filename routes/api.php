@@ -38,6 +38,8 @@ Route::middleware('auth:api')->get('users/myVirtualWallets','WalletControllerAPI
 //Route::post('users/updatePhotoRegister/{id}','UserControllerAPI@changePhotoRegister');
 
 Route::get('movements', 'MovementControllerAPI@index');
+Route::get('users/movements/{id}', 'MovementControllerAPI@show');
+Route::get('users/wallet/movements', 'MovementControllerAPI@list');
 
 //us6
 Route::post('operator/registerIncome','OperatorControllerAPI@registerIncome');
