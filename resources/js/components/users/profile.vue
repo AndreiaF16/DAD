@@ -38,8 +38,8 @@
 
              <div class="form-group">
                 <file-upload v-on:fileChanged="onFileChanged"> </file-upload>
-                            <img v-bind:src="'storage/fotos/' + getActualPhoto()" style="width:150px; height:150px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;">
-             <!--   <img  width="100px"  :src="'storage/' + user.photo" >-->
+           <!--                 <img v-bind:src="'storage/fotos/' + getActualPhoto()" style="width:150px; height:150px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;">
+         -->    <!--   <img  width="100px"  :src="'storage/' + user.photo" >-->
               <!--  <img  width="100px"  :src="'storage/images/profiles/' + user.photo_url" >-->
             </div>
 
