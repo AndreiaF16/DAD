@@ -9,14 +9,17 @@
 
             <div class="form-group">
                 <label for="inputBalance">Balance of My Virtual Wallet</label>
-                <input type="text" class="form-control" 
+                <input type="text" class="form-control"
                         name="balance" id="inputBalance"
                         placeholder="Balance" v-model="wallet.balance"/>
             </div>
-        
+
             <vue-good-table styleClass="vgt-table" :columns="columns" :rows="movements"
             :pagination-options="{ enabled: true, mode: 'records', perPage : 15}" @click="getMovements()">
-            
+            <template slot="table-row">
+
+
+            </template>
                 <!--<template slot="table-row" slot-scope="props">
                     <span v-if="props.column.field=='actions'">
                     </span>

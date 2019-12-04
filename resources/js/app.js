@@ -10,6 +10,7 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
 import VueGoodTable from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css';
 import Login from './components/login';
 import Profile from './components/users/profile';
 import Home from './components/HomeComponent';
