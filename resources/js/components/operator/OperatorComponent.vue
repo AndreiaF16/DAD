@@ -19,12 +19,14 @@
       </div>
     <div class="form-group">
         <label for="inputPaymentType">Payment Type</label>
-        <select class="btn btn-xs btn-primary dropdown-toggle btn-block" name="PaymentType" id="PaymentType" v-model="movement.type_payment">
+        <select class="btn btn-xs btn-primary dropdown-toggle btn-block" name="PaymentType" id="PaymentType" v-model="movement.type_payment" required>
+            <option disabled selected> -- select an option -- </option>
             <option value="c">Cash</option>
             <option value="bt">Bank Transfer</option>
             <option value="mb">MB payment</option>
         </select>
     </div>
+    <div v-if="this.movement.type_payment == 'bt'" >
 
       <div class="form-group">
         <label for="inputSrc_Desc">Source Description</label>
@@ -33,16 +35,17 @@
         </textarea>
       </div>
 
-      <div class="form-group">
-        <label for="inputIBAN">IBAN</label>
-        <input type="text" class="form-control" v-model="movement.iban" name="IBAN" id="inputIBAN"
-        placeholder="Enter IBAN">
-      </div>
+        <div class="form-group">
+            <label for="inputIBAN">IBAN</label>
+            <input type="text" class="form-control" v-model="movement.iban" name="IBAN" id="inputIBAN"
+            placeholder="Enter IBAN">
+        </div>
+</div>
+        <div class="form-group">
+            <a class="btn btn-primary" v-on:click.prevent="registerIncome">Create Income</a>
+        </div>
 
-      <div class="form-group">
-        <a class="btn btn-primary" v-on:click.prevent="registerIncome">Create Income</a>
-      </div>
-    </div>
+</div>
 </template>
 
 <script>

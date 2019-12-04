@@ -2293,6 +2293,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2843,9 +2846,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/showMessage.vue */ "./resources/js/components/helpers/showMessage.vue");
-//
-//
-//
 //
 //
 //
@@ -54245,7 +54245,7 @@ var render = function() {
             }
           ],
           staticClass: "btn btn-xs btn-primary dropdown-toggle btn-block",
-          attrs: { name: "PaymentType", id: "PaymentType" },
+          attrs: { name: "PaymentType", id: "PaymentType", required: "" },
           on: {
             change: function($event) {
               var $$selectedVal = Array.prototype.filter
@@ -54265,6 +54265,10 @@ var render = function() {
           }
         },
         [
+          _c("option", { attrs: { disabled: "", selected: "" } }, [
+            _vm._v(" -- select an option -- ")
+          ]),
+          _vm._v(" "),
           _c("option", { attrs: { value: "c" } }, [_vm._v("Cash")]),
           _vm._v(" "),
           _c("option", { attrs: { value: "bt" } }, [_vm._v("Bank Transfer")]),
@@ -54274,69 +54278,77 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "inputSrc_Desc" } }, [
-        _vm._v("Source Description")
-      ]),
-      _vm._v(" "),
-      _c("textarea", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.movement.source_decription,
-            expression: "movement.source_decription"
-          }
-        ],
-        staticClass: "form-control",
-        attrs: {
-          type: "text",
-          name: "Src_Desc",
-          id: "inputSrc_Desc",
-          placeholder: "Enter the Source Description"
-        },
-        domProps: { value: _vm.movement.source_decription },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.movement, "source_decription", $event.target.value)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "inputIBAN" } }, [_vm._v("IBAN")]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.movement.iban,
-            expression: "movement.iban"
-          }
-        ],
-        staticClass: "form-control",
-        attrs: {
-          type: "text",
-          name: "IBAN",
-          id: "inputIBAN",
-          placeholder: "Enter IBAN"
-        },
-        domProps: { value: _vm.movement.iban },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.movement, "iban", $event.target.value)
-          }
-        }
-      })
-    ]),
+    this.movement.type_payment == "bt"
+      ? _c("div", [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "inputSrc_Desc" } }, [
+              _vm._v("Source Description")
+            ]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.movement.source_decription,
+                  expression: "movement.source_decription"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "Src_Desc",
+                id: "inputSrc_Desc",
+                placeholder: "Enter the Source Description"
+              },
+              domProps: { value: _vm.movement.source_decription },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.movement,
+                    "source_decription",
+                    $event.target.value
+                  )
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "inputIBAN" } }, [_vm._v("IBAN")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.movement.iban,
+                  expression: "movement.iban"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "IBAN",
+                id: "inputIBAN",
+                placeholder: "Enter IBAN"
+              },
+              domProps: { value: _vm.movement.iban },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.movement, "iban", $event.target.value)
+                }
+              }
+            })
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
       _c(
@@ -55040,28 +55052,19 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
-      _c(
-        "vue-good-table",
-        {
-          attrs: {
-            styleClass: "vgt-table",
-            columns: _vm.columns,
-            rows: _vm.movements,
-            "pagination-options": {
-              enabled: true,
-              mode: "records",
-              perPage: 15
-            }
-          },
-          on: {
-            click: function($event) {
-              return _vm.getMovements()
-            }
-          }
+      _c("vue-good-table", {
+        attrs: {
+          styleClass: "vgt-table",
+          columns: _vm.columns,
+          rows: _vm.movements,
+          "pagination-options": { enabled: true, mode: "records", perPage: 15 }
         },
-        [_c("template", { slot: "table-row" })],
-        2
-      )
+        on: {
+          click: function($event) {
+            return _vm.getMovements()
+          }
+        }
+      })
     ],
     1
   )
