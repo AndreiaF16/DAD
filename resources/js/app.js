@@ -22,6 +22,7 @@ import Movements from './components/movements/movements';
 
 import Vuex from 'vuex';
 
+
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(VueGoodTable);

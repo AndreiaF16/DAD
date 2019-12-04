@@ -141,19 +141,15 @@
                             label: "Date",
                             field: 'date',
                             type:'date',
-                            dateInputFormat: 'y-MM-dd HH:mm:ss',
+                            dateInputFormat: 'yyyy-MM-dd HH:mm:ss',
                             dateOutputFormat: 'dd/MM/yyyy HH:mm:ss',
-                            filterOptions: {
-                                enabled: true,
+                           filterOptions: {
+                               enabled: true,
+                                placeholder: 'Enter a date',
+                            },filterOptions: {
+                               enabled: true,
                                 placeholder: 'Enter a date',
                             },
-                          //  type: 'date',
-                            // dateInputFormat: 'YYYY-MM-DD HH:mm:ss',
-                            //dateOutputFormat: 'DD/MM/YYYY HH:mm:ss',
-                           // filterOptions: {
-                             //   enabled: true,
-                              //  placeholder: 'Enter a date',
-                           // },
 
                         },
 

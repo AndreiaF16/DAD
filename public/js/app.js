@@ -2846,6 +2846,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/showMessage.vue */ "./resources/js/components/helpers/showMessage.vue");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3034,24 +3036,20 @@ __webpack_require__.r(__webpack_exports__);
             text: 'other income'
           }]
         }
-      }, {
+      }, _defineProperty({
         label: "Date",
         field: 'date',
         type: 'date',
-        dateInputFormat: 'y-MM-dd HH:mm:ss',
+        dateInputFormat: 'yyyy-MM-dd HH:mm:ss',
         dateOutputFormat: 'dd/MM/yyyy HH:mm:ss',
         filterOptions: {
           enabled: true,
           placeholder: 'Enter a date'
-        } //  type: 'date',
-        // dateInputFormat: 'YYYY-MM-DD HH:mm:ss',
-        //dateOutputFormat: 'DD/MM/YYYY HH:mm:ss',
-        // filterOptions: {
-        //   enabled: true,
-        //  placeholder: 'Enter a date',
-        // },
-
-      }]
+        }
+      }, "filterOptions", {
+        enabled: true,
+        placeholder: 'Enter a date'
+      })]
     };
   },
   methods: {
