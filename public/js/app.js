@@ -2065,13 +2065,6 @@ __webpack_require__.r(__webpack_exports__);
           _this.message = "User authenticated correctly";
           _this.typeofmsg = "alert-success";
           _this.showMessage = true;
-          axios.get('/api/users/movements/' + _this.$store.getters.user.id, _this.$store.getters.user.id).then(function (response) {
-            console.log(response.data.data);
-
-            _this.$store.commit('movements', response.data.data);
-
-            localStorage.setItem("movements", JSON.stringify(response.data.data));
-          });
         });
 
         _this.$router.push('/home');
@@ -2305,10 +2298,8 @@ __webpack_require__.r(__webpack_exports__);
       showMessage: false,
       showErrors: false,
       message: "",
-      user: {
-        email: ""
-      },
       movement: {
+        email: "",
         value: "",
         type_payment: "",
         iban: "",
@@ -2710,7 +2701,7 @@ __webpack_require__.r(__webpack_exports__);
             }
             ).then(response =>{
                 this.$store.commit('setUser',response.data.data);
-             })
+              })
             .catch(function(){
             console.log('FAILURE!!');
             });
@@ -54374,8 +54365,8 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.user.email,
-            expression: "user.email"
+            value: _vm.movement.email,
+            expression: "movement.email"
           }
         ],
         staticClass: "form-control",
@@ -54385,13 +54376,13 @@ var render = function() {
           id: "inputEmail",
           placeholder: "Enter email address"
         },
-        domProps: { value: _vm.user.email },
+        domProps: { value: _vm.movement.email },
         on: {
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.$set(_vm.user, "email", $event.target.value)
+            _vm.$set(_vm.movement, "email", $event.target.value)
           }
         }
       })
@@ -54490,8 +54481,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.movement.source_decription,
-                  expression: "movement.source_decription"
+                  value: _vm.movement.source_description,
+                  expression: "movement.source_description"
                 }
               ],
               staticClass: "form-control",
@@ -54501,7 +54492,7 @@ var render = function() {
                 id: "inputSrc_Desc",
                 placeholder: "Enter the Source Description"
               },
-              domProps: { value: _vm.movement.source_decription },
+              domProps: { value: _vm.movement.source_description },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
@@ -54509,7 +54500,7 @@ var render = function() {
                   }
                   _vm.$set(
                     _vm.movement,
-                    "source_decription",
+                    "source_description",
                     $event.target.value
                   )
                 }
@@ -71447,7 +71438,11 @@ var routes = [{
   path: '/myVirtualWallets',
   component: _components_wallets_wallets__WEBPACK_IMPORTED_MODULE_9__["default"],
   beforeEnter: function beforeEnter(to, from, next) {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+
     if (localStorage.getItem("token") == null) {
+      next("/");
+    } else if ($userGet.wallet == null) {
       next("/");
     } else {
       next();
@@ -71457,7 +71452,11 @@ var routes = [{
   path: '/operator',
   component: _components_operator_OperatorComponent__WEBPACK_IMPORTED_MODULE_7__["default"],
   beforeEnter: function beforeEnter(to, from, next) {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+
     if (localStorage.getItem("token") == null) {
+      next("/");
+    } else if ($userGet.type != "o") {
       next("/");
     } else {
       next();
@@ -71536,17 +71535,11 @@ var app = new Vue({
 
       if (localStorage.getItem('user') != null) {
         this.$store.commit('setUser', JSON.parse(localStorage.getItem('user')));
-        this.$store.commit('setMovements', JSON.parse(localStorage.getItem('movement')));
       } else {
         axios.get('/api/users/me').then(function (response) {
           _this.$store.commit('setUser', response.data);
 
           localStorage.setItem("user", JSON.stringify(response.data));
-        });
-        axios.get('/api/movements').then(function (response) {
-          _this.$store.commit('movements', response.data.data);
-
-          localStorage.setItem("movements", JSON.stringify(response.data.data));
         });
       }
     }
@@ -72411,8 +72404,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

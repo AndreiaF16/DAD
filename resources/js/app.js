@@ -40,14 +40,20 @@ const routes = [
         }
     }},
     {path: '/myVirtualWallets', component:listVirtualWallets, beforeEnter: (to, from, next) => {
+        var $userGet = JSON.parse(localStorage.getItem('user'));
         if(localStorage.getItem("token")==null){
+            next("/");
+        }else if($userGet.wallet == null){
             next("/");
         }else{
             next();
         }
     }},
     {path: '/operator', component:Operator, beforeEnter: (to, from, next) => {
+        var $userGet = JSON.parse(localStorage.getItem('user'));
         if(localStorage.getItem("token")==null){
+            next("/");
+        }else if($userGet.type!="o"){
             next("/");
         }else{
             next();
@@ -116,17 +122,11 @@ const app = new Vue({
             axios.defaults.headers.common.Authorization = "Bearer " + token;
             if(localStorage.getItem('user')!=null){
                 this.$store.commit('setUser',JSON.parse(localStorage.getItem('user')));
-                this.$store.commit('setMovements',JSON.parse(localStorage.getItem('movement')));
             }else{
             axios.get('/api/users/me')
                 .then(response => {
                     this.$store.commit('setUser',response.data);
                     localStorage.setItem("user",JSON.stringify(response.data));
-                });
-            axios.get('/api/movements')
-                .then(response => {
-                    this.$store.commit('movements',response.data.data);
-                    localStorage.setItem("movements",JSON.stringify(response.data.data));
                 });
             }
         }

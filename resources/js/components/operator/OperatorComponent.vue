@@ -8,7 +8,7 @@
       </div>
       <div class="form-group">
         <label for="inputEmail">Email</label>
-        <input type="email" class="form-control"  v-model="user.email"  name="email"
+        <input type="email" class="form-control"  v-model="movement.email"  name="email"
           id="inputEmail" placeholder="Enter email address">
       </div>
 
@@ -30,7 +30,7 @@
 
       <div class="form-group">
         <label for="inputSrc_Desc">Source Description</label>
-        <textarea type="text" class="form-control" v-model="movement.source_decription" name="Src_Desc" id="inputSrc_Desc"
+        <textarea type="text" class="form-control" v-model="movement.source_description" name="Src_Desc" id="inputSrc_Desc"
           placeholder="Enter the Source Description">
         </textarea>
       </div>
@@ -60,11 +60,8 @@
       showMessage: false,
       showErrors: false,
       message:"",
-      user:{
-          email: "",
-      },
       movement: {
-
+        email: "",
         value: "",
         type_payment: "",
         iban: "",

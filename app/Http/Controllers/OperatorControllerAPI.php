@@ -15,49 +15,44 @@ class OperatorControllerAPI extends Controller
 {
     public function registerIncome(Request $request){
         if($request->type_payment == 'bt'){
-            $request->validate([
+            $validated = $request->validate([
                 'value' => 'required|numeric|min:0.01|max:5000',
                 'email' => 'required|string|email|max:255',
                 'type_payment' => 'required|in:c,mb,bt',
                 'iban' => 'nullable|regex:/^[A-Za-z]{2}[0-9]{23}/',
                 'source_description' => 'max:255'
             ]);
-            }else{
-                $request->validate([
-
-                'email' => 'required|string|email|max:255',
-                'value' => 'required|numeric|min:0.01|max:5000',
-                'type_payment' => 'required|in:c,mb,bt',
-                ]);
-            }
-
-
-        $walletsId = DB::table('wallets')->where('email',$request->email)->get();
-        if($walletsId == isEmpty()){
-            return response('Email is not valid!');
-            //return response()->json([
-            //    'email' => 'The mail does not exist'
-           // ], 422);
+        }else{
+            $validated = $request->validate([
+            'email' => 'required|string|email|max:255',
+            'value' => 'required|numeric|min:0.01|max:5000',
+            'type_payment' => 'required|in:c,mb,bt',
+            ]);
         }
 
-        $balance = DB::table('wallets')->select('balance')->where('email', $request->email)->get();
-
         //Alterar balance da wallet destino
-        $wallet = Wallet::findOrFail($walletsId[0]->id);
-        $wallet->balance = $balance[0]->balance + $request->value;
+        $wallet = Wallet::where('email',$request->email)->first();
+        if($wallet == null){
+            return response('Email is not valid!');
+        }
+        $wallet->balance = $wallet->balance + $request->value;
         $wallet->save();
 
          //Date/Time atual
         $date = Carbon::now();
 
         $movement = new Movement();
-        $movement->fill($request->all());
-        $movement->wallet_id = $walletsId[0]->id;
+        $movement->fill($validated);
+        $movement->wallet_id = $wallet->id;
         $movement->type = "i";
-        $movement->start_balance = $balance[0]->balance;
-        $movement->end_balance = $balance[0]->balance + $request->value;
+        $movement->start_balance = $wallet->balance;
+        $movement->end_balance = $wallet->balance + $request->value;
         $movement->transfer=0;
         $movement->date = $date->toDateTimeString();
+        if($movement->type_payment == "bt"){
+            $movement->iban = $request->iban;
+            $movement->source_description = $request->source_description;
+        }
 
       /*  $movement->end_balance = $wallets->balance + $request->value;
         $movement->wallet_id = $wallets->id;

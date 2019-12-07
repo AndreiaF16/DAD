@@ -63,12 +63,6 @@
                                 this.message = "User authenticated correctly";
                                 this.typeofmsg = "alert-success";
                                 this.showMessage = true;
-                            axios.get('/api/users/movements/'+this.$store.getters.user.id,this.$store.getters.user.id)
-                                .then(response => {
-                                    console.log(response.data.data);
-                                    this.$store.commit('movements',response.data.data);
-                                    localStorage.setItem("movements",JSON.stringify(response.data.data));
-                                });
                             });
                             
                         this.$router.push('/home');
