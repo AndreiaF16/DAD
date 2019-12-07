@@ -2701,7 +2701,7 @@ __webpack_require__.r(__webpack_exports__);
             }
             ).then(response =>{
                 this.$store.commit('setUser',response.data.data);
-              })
+             })
             .catch(function(){
             console.log('FAILURE!!');
             });
@@ -2891,7 +2891,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       rows: [],
       // totalRecords: 0,
       columns: [{
-        label: "Id",
+        label: "Id of Movement",
         field: 'id',
         filterOptions: {
           enabled: true,
@@ -3040,7 +3040,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, "filterOptions", {
         enabled: true,
         placeholder: 'Enter a date'
-      })]
+      }), {
+        label: "Start Balance",
+        field: 'start_balance'
+      }, {
+        label: "End Balance",
+        field: 'end_balance'
+      }, {
+        label: "Value",
+        field: 'value'
+      }]
     };
   },
   methods: {
@@ -72404,8 +72413,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

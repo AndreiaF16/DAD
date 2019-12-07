@@ -54,7 +54,7 @@
                    // totalRecords: 0,
                     columns: [
                         {
-                            label: "Id",
+                            label: "Id of Movement",
                             field: 'id',
 
                             filterOptions: {
@@ -151,6 +151,18 @@
                                 placeholder: 'Enter a date',
                             },
 
+                        },
+                        {
+                            label: "Start Balance",
+                            field: 'start_balance',
+                        },
+                         {
+                            label: "End Balance",
+                            field: 'end_balance',
+                        },
+                         {
+                            label: "Value",
+                            field: 'value',
                         },
 
                     ],
