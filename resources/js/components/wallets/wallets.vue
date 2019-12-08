@@ -22,12 +22,6 @@
             @click="getMovements()"
               theme="white-rhino"
                >
-
-
-                <template slot="table-row" slot-scope="props">
-
-
-                 </template>
             </vue-good-table>
             <!--<button @click="getMovements()"></button>-->
         </div>
@@ -98,7 +92,7 @@
                             },
                         },
                         {
-                            label: "Categoty",
+                            label: "Category",
                             field: 'category',
                             filterOptions: {
                                 enabled: true,
@@ -132,7 +126,6 @@
                                     { value: '27', text: 'loan repayment' },
                                     { value: '28', text: 'loan' },
                                     { value: '29', text: 'other income' },
-
                                 ],
 
                             },
@@ -142,15 +135,11 @@
                             field: 'date',
                             type:'date',
                             dateInputFormat: 'yyyy-MM-dd HH:mm:ss',
-                            dateOutputFormat: 'dd/MM/yyyy HH:mm:ss',
+                            dateOutputFormat: 'yyyy-MM-dd HH:mm:ss',
                            filterOptions: {
                                enabled: true,
                                 placeholder: 'Enter a date',
-                            },filterOptions: {
-                               enabled: true,
-                                placeholder: 'Enter a date',
-                            },
-
+                            }
                         },
                         {
                             label: "Start Balance",

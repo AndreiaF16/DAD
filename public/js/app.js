@@ -2447,7 +2447,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -2464,16 +2463,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showErrors: false,
       typeofmsg: "",
       message: '',
+      user: {},
       file: '',
-      user: []
-    }, _defineProperty(_ref, "file", ''), _defineProperty(_ref, "password_old", ''), _defineProperty(_ref, "message", ''), _defineProperty(_ref, "password", ''), _defineProperty(_ref, "password_confirmation", ''), _ref;
+      password_old: ''
+    }, _defineProperty(_ref, "message", ''), _defineProperty(_ref, "password", ''), _defineProperty(_ref, "password_confirmation", ''), _ref;
   },
   methods: {
     onFileChanged: function onFileChanged(fileSelected) {
       this.file = fileSelected;
     },
     clear: function clear() {
-      this.name = ''; //  this.username = ''
+      this.name = '';
     },
     cancelEdit: function cancelEdit() {
       this.$router.push('/home');
@@ -2519,7 +2519,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.showMessage = false;
       this.showErrors = false;
-      axios.put('/api/users/updateProfile/', this.user).then(function (response) {
+      var formdata = new FormData();
+      formdata.append('name', this.user.name);
+      formdata.append('nif', this.user.nif);
+      formdata.append('file', this.file);
+      formdata.append('_method', 'PUT');
+      console.log(this.file); //https://laracasts.com/discuss/channels/laravel/ajax-formdata-and-put-fails
+
+      axios.post('/api/users/updateProfile', formdata).then(function (response) {
         _this2.showErrors = false;
         _this2.showMessage = true;
         _this2.message = 'Profile updated with success';
@@ -2528,6 +2535,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this2.$store.commit('setUser', response.data);
 
         localStorage.setItem("user", JSON.stringify(response.data));
+        _this2.user.photo = response.data.photo;
+
+        _this2.getActualPhoto();
       })["catch"](function (error) {
         if (error.response.status == 401) {
           _this2.showMessage = true;
@@ -2548,43 +2558,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             _this2.errors = error.response.data.errors;
           }
         }
-      }); // localStorage.setItem("user",JSON.stringify(this.user));
+      });
     },
     getActualPhoto: function getActualPhoto() {
-      return this.actualPhoto;
+      return 'storage/fotos/' + this.user.photo || false;
     },
     close: function close() {
       this.showErrors = false;
       this.showMessage = false;
-    } //  submitFile(){
-    //let formData = new FormData();
-    //criar link strorage para as fts
-    // Add the form data we need to submit
-
-    /*  formData.append('file', this.file);
-      axios.post('/api/user/updatePhoto/' + this.user.id, formData,
-      {
-          headers: {
-              'Content-Type': 'multipart/form-data'
-          }
-      }
-      .then(response =>{
-          this.$store.commit('setUser',response.data);
-       })
-      .catch(function(){
-      console.log('FAILURE!!');
-      });*/
-    // },
-
-    /*  handleFileUpload(){
-          this.file = this.$refs.file.files[0];
-      }*/
-
+    }
   },
   mounted: function mounted() {
-    // this.getUserInfor();
     this.user = JSON.parse(localStorage.getItem('user'));
-    ; // this.getInformationFromLoggedUser();
   },
   components: {
     'error-validation': _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -2701,7 +2686,7 @@ __webpack_require__.r(__webpack_exports__);
             }
             ).then(response =>{
                 this.$store.commit('setUser',response.data.data);
-             })
+              })
             .catch(function(){
             console.log('FAILURE!!');
             });
@@ -2837,14 +2822,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/showMessage.vue */ "./resources/js/components/helpers/showMessage.vue");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2934,7 +2911,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }]
         }
       }, {
-        label: "Categoty",
+        label: "Category",
         field: 'category',
         filterOptions: {
           enabled: true,
@@ -3027,20 +3004,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             text: 'other income'
           }]
         }
-      }, _defineProperty({
+      }, {
         label: "Date",
         field: 'date',
         type: 'date',
         dateInputFormat: 'yyyy-MM-dd HH:mm:ss',
-        dateOutputFormat: 'dd/MM/yyyy HH:mm:ss',
+        dateOutputFormat: 'yyyy-MM-dd HH:mm:ss',
         filterOptions: {
           enabled: true,
           placeholder: 'Enter a date'
         }
-      }, "filterOptions", {
-        enabled: true,
-        placeholder: 'Enter a date'
-      }), {
+      }, {
         label: "Start Balance",
         field: 'start_balance'
       }, {
@@ -54726,6 +54700,20 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("div", { staticClass: "form-group" }, [
+          _c("img", {
+            staticStyle: {
+              width: "150px",
+              height: "150px",
+              "border-radius": "50%",
+              "margin-bottom": "25px",
+              "margin-right": "25px",
+              float: "left"
+            },
+            attrs: { src: _vm.getActualPhoto() }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
           _c(
             "a",
             {
@@ -55254,15 +55242,7 @@ var render = function() {
           click: function($event) {
             return _vm.getMovements()
           }
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "table-row",
-            fn: function(props) {
-              return undefined
-            }
-          }
-        ])
+        }
       })
     ],
     1
@@ -72413,8 +72393,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
