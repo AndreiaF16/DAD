@@ -52,3 +52,6 @@ Route::middleware('auth:api')->get('getAuthUser','UserControllerAPI@getAuthUser'
 //us2
 Route::post('registerUser', 'RegisterControllerAPI@create');
 Route::post('api/users/updatePhoto/', 'RegisterControllerAPI@changePhoto');
+
+//7
+Route::middleware('auth:api')->get('movements/{id}', 'MovementControllerAPI@getUserMovements');

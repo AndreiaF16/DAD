@@ -40,4 +40,10 @@ class Movement extends Authenticatable
     {
         return $this->hasOne(Category::class,"id","category_id");
     }
+
+   public function transfer_wallet() //atenção ao create credit!
+    {
+        return $this->hasOne(Wallet::class,  'id', 'transfer_wallet_id');
+
+    }
 }

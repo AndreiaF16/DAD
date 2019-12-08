@@ -19,10 +19,20 @@ class User extends Authenticatable
     protected $fillable = [
         'name','email','type','active','photo','nif','password',
     ];
-    
-    public function wallet()
+
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+   public function wallet()
      {
-         return $this->hasOne('App\Wallet','id','id');
+         return $this->hasOne(Wallet::class,'id','id');
      }
+
+
 
 }

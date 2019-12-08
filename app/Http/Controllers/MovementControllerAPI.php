@@ -7,7 +7,7 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Facades\DB;
 use App\Movement;
 use App\Http\Resources\Movement as MovementResource;
-use Hash;
+
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,6 +42,14 @@ class MovementControllerAPI extends Controller
         return MovementResource::collection($movements);
     }
 
+
+    public function getUserMovements($id){
+        //$movements = DB::table('movements')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(20);//tirar paginate paginate(20)
+        //$wallet = Wallet::findOrFail($id);
+        //return $wallet->movements()->orderBy('date', 'desc');
+        $movements = Movement::with('category', 'transfer_wallet', 'transfer_wallet.user')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(10);
+        return $movements;
+    }
 
     public function store(Request $request)
     {

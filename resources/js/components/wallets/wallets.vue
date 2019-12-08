@@ -22,12 +22,22 @@
             @click="getMovements()"
               theme="white-rhino"
                >
-
-
+             :totalRows="totalRecords">
                 <template slot="table-row" slot-scope="props">
 
+                   <span v-if="props.column.field=='actions'">
+                        <span>
+                            <button @click="movementDetails(props.row)" class="btn btn-outline-info btn-xs"><i class="fas fa-eye">&nbsp;</i>Details</button>
+                        </span>
+                    </span>
 
-                 </template>
+                    <span v-else>
+                        {{props.formattedRow[props.column.field]}}
+                    </span>
+
+                </template>
+
+
             </vue-good-table>
             <!--<button @click="getMovements()"></button>-->
         </div>
@@ -35,6 +45,7 @@
 
 <script type="text/javascript">
     /*jshint esversion: 6 */
+     //   import MovementDetailsComponent from "./MovementDetails.vue";
     import showMessage from '../helpers/showMessage.vue';
 
     export default {
@@ -164,6 +175,11 @@
                             label: "Value",
                             field: 'value',
                         },
+                            {
+                            label: 'Actions',
+                            field: 'actions',
+                            sortable: false,
+                        }
 
                     ],
                 };
@@ -193,7 +209,10 @@
             onColumnFilter(params) {
 				this.updateParams(params);
 				this.getMovements();
-			},
+            },
+             movementDetails: function(movement){
+                this.selectedMovement = movement;
+            },
 
         },
         mounted(){
@@ -204,6 +223,7 @@
         },
         components: {
             'show-message':showMessage,
+                       // "movementDetails": MovementDetailsComponent,
         },
     };
 </script>

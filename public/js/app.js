@@ -2874,8 +2874,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /*jshint esversion: 6 */
+//   import MovementDetailsComponent from "./MovementDetails.vue";
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3049,6 +3060,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         label: "Value",
         field: 'value'
+      }, {
+        label: 'Actions',
+        field: 'actions',
+        sortable: false
       }]
     };
   },
@@ -3076,6 +3091,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     onColumnFilter: function onColumnFilter(params) {
       this.updateParams(params);
       this.getMovements();
+    },
+    movementDetails: function movementDetails(movement) {
+      this.selectedMovement = movement;
     }
   },
   mounted: function mounted() {
@@ -3085,7 +3103,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.getMovements();
   },
   components: {
-    'show-message': _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    'show-message': _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_0__["default"] // "movementDetails": MovementDetailsComponent,
+
   }
 });
 
@@ -55239,31 +55258,69 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
-      _c("vue-good-table", {
-        attrs: {
-          styleClass: "vgt-table striped",
-          columns: _vm.columns,
-          rows: _vm.movements,
-          "pagination-options": { enabled: true, mode: "records", perPage: 15 },
-          "search-options": { enabled: true },
-          "row-style-class": _vm.rowStyleFn,
-          theme: "white-rhino"
-        },
-        on: {
-          "on-row-click": _vm.onRowClick,
-          click: function($event) {
-            return _vm.getMovements()
-          }
-        },
-        scopedSlots: _vm._u([
-          {
-            key: "table-row",
-            fn: function(props) {
-              return undefined
+      _c(
+        "vue-good-table",
+        {
+          attrs: {
+            styleClass: "vgt-table striped",
+            columns: _vm.columns,
+            rows: _vm.movements,
+            "pagination-options": {
+              enabled: true,
+              mode: "records",
+              perPage: 15
+            },
+            "search-options": { enabled: true },
+            "row-style-class": _vm.rowStyleFn,
+            theme: "white-rhino"
+          },
+          on: {
+            "on-row-click": _vm.onRowClick,
+            click: function($event) {
+              return _vm.getMovements()
             }
-          }
-        ])
-      })
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "table-row",
+              fn: function(props) {
+                return [
+                  props.column.field == "actions"
+                    ? _c("span", [
+                        _c("span", [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-outline-info btn-xs",
+                              on: {
+                                click: function($event) {
+                                  return _vm.movementDetails(props.row)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", { staticClass: "fas fa-eye" }, [
+                                _vm._v(" ")
+                              ]),
+                              _vm._v("Details")
+                            ]
+                          )
+                        ])
+                      ])
+                    : _c("span", [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(props.formattedRow[props.column.field]) +
+                            "\n            "
+                        )
+                      ])
+                ]
+              }
+            }
+          ])
+        },
+        [_vm._v('\n     :totalRows="totalRecords">\n        ')]
+      )
     ],
     1
   )
