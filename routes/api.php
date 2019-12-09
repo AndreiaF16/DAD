@@ -55,3 +55,10 @@ Route::post('api/users/updatePhoto/', 'RegisterControllerAPI@changePhoto');
 
 //7
 Route::middleware('auth:api')->get('movements/{id}', 'MovementControllerAPI@getUserMovements');
+
+
+
+Route::middleware('auth:api')->post('movements/credit', 'MovementControllerAPI@createCredit');
+Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');
+Route::middleware('auth:api')->post('movements/filter', 'MovementControllerAPI@getFilteredMovements');
+Route::middleware('auth:api')->put('movements/{id}', 'MovementControllerAPI@update');

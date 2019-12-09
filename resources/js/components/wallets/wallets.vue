@@ -22,8 +22,18 @@
             @click="getMovements()"
               theme="white-rhino"
                >
-             :totalRows="totalRecords">
+           <!--  :totalRows="totalRecords">-->
                 <template slot="table-row" slot-scope="props">
+
+<!--
+<div class="col-md-3">
+                <div class="form-group">
+                    <input type="text" name="data_sup" class="form-control" placeholder="Date Superior To (yyyy-mm-dd)" v-model="search.data_sup">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="data_inf" class="form-control" placeholder="Date Inferior To (yyyy-mm-dd)" v-model="search.data_inf">
+                </div>
+            </div>-->
 
                    <span v-if="props.column.field=='actions'">
                         <span>
@@ -63,6 +73,11 @@
                     current_page: 1,
                     rows: [],
                    // totalRecords: 0,
+                    search:{
+
+                    data_inf: '',
+                    data_sup: '',
+                },
                     columns: [
                         {
                             label: "Id of Movement",
@@ -109,7 +124,7 @@
                             },
                         },
                         {
-                            label: "Categoty",
+                            label: "Category",
                             field: 'category',
                             filterOptions: {
                                 enabled: true,
@@ -143,7 +158,6 @@
                                     { value: '27', text: 'loan repayment' },
                                     { value: '28', text: 'loan' },
                                     { value: '29', text: 'other income' },
-
                                 ],
 
                             },
@@ -153,14 +167,14 @@
                             field: 'date',
                             type:'date',
                             dateInputFormat: 'yyyy-MM-dd HH:mm:ss',
-                            dateOutputFormat: 'dd/MM/yyyy HH:mm:ss',
+                            dateOutputFormat: 'yyyy-MM-dd HH:mm:ss',
                            filterOptions: {
                                enabled: true,
                                 placeholder: 'Enter a date',
-                            },filterOptions: {
-                               enabled: true,
-                                placeholder: 'Enter a date',
-                            },
+                            }
+
+
+
 
                         },
                         {

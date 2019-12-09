@@ -20,6 +20,7 @@ import Users from './components/users/users';
 import listVirtualWallets from './components/wallets/wallets';
 import Movements from './components/movements/movements';
 
+import WalletComponent from './components/wallets/Wallet';
 import Vuex from 'vuex';
 
 
@@ -67,6 +68,9 @@ const routes = [
         }
     }},
 
+    {path:'/wallet', component:WalletComponent},
+
+
 ]
 
 const router = new VueRouter({
@@ -80,6 +84,8 @@ Vue.component('profile', Profile)
 Vue.component('myVirtualWallets', listVirtualWallets)
 Vue.component('operator', Operator)
 Vue.component('movements', Movements)
+Vue.component('wallet', WalletComponent)
+
 
 const store = new Vuex.Store({
     state: {
