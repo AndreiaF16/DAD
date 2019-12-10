@@ -3,8 +3,8 @@
             <div class="jumbotron row justify-content-center">
                 <h1>{{tittle}}</h1>
         </div>
-           <div class="form-group">
-               <label for="inputBalance">Balance of My Virtual Wallet</label>
+         <div class="form-group">
+                <label for="inputBalance">Balance of My Virtual Wallet</label>
                 <input type="text" class="form-control"
                         name="balance" id="inputBalance"
                         placeholder="Balance" v-model="wallet.balance" readonly/>
@@ -68,7 +68,6 @@
 			<button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
 			<strong>{{ successMessage }}</strong>
 		</div>
-
         <div>
             <table class="table table-striped">
                 <thead>
@@ -125,7 +124,8 @@
    import MovementEditComponent from "./MovementEdit.vue";
 
     export default {
-        data: function(){
+        data:
+        function() {
             return{
                   tittle: "My Virtual Wallet",
                     user: {},
@@ -137,13 +137,13 @@
                     current_page: 1,
                     rows: [],
 
-                user: this.$store.state.user,
+               user: this.$store.state.user,
                 movements: {},
                 selectedMovement: null,
                 selectedMovementEdit: null,
                 balance: "",
                 search:{
-                    user_id: this.$store.state.user.id,
+                   user_id: (this.$store.state.user)?this.$store.state.user.id:'',
                     id: '',
                     type: '',
                     category: '',
@@ -217,6 +217,8 @@
 
         mounted() {
             this.getFilteredMovements();
+            this.wallet = this.user.wallet;
+
         }
     }
 </script>

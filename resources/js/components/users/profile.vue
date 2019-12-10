@@ -2,11 +2,17 @@
 <div class="content">
     <div class="jumbotron row justify-content-center">
             <h1>{{tittle}}</h1>
+
     </div>
+
+     <div class="row justify-content-center">
+            <img v-bind:src="getActualPhoto()" style="width:130px; height:130px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;">
+        </div>
 
     <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
 
     <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
+
 
     <div>
         <div class="row justify-content-right">
@@ -38,11 +44,8 @@
             <div class="form-group">
             <file-upload v-on:fileChanged="onFileChanged"> </file-upload>
         </div>
-        
-        <div class="form-group">
-            <img v-bind:src="getActualPhoto()" style="width:150px; height:150px; border-radius:50%; margin-bottom:25px; margin-right:25px; float:left;">
-        </div>
-        
+
+
             <div class="form-group">
                 <a class="btn btn-primary" v-on:click.prevent="savedUser">Save Changes</a>
                 <a class="btn btn-danger" v-on:click.prevent="cancelEdit">Cancel</a>
@@ -91,7 +94,7 @@ export default {
 
     data: function() {
       return {
-            tittle: 'Profile',
+            tittle: 'My Profile',
             tittle2: 'Change Personal Information',
             tittle3:'Change Password',
             errors: [],

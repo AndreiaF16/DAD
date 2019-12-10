@@ -17,7 +17,7 @@ import Home from './components/HomeComponent';
 import RegisterUser from './components/users/registerUser';
 import Operator from './components/operator/OperatorComponent';
 import Users from './components/users/users';
-import listVirtualWallets from './components/wallets/wallets';
+//import listVirtualWallets from './components/wallets/wallets';
 import Movements from './components/movements/movements';
 
 import WalletComponent from './components/wallets/Wallet';
@@ -40,7 +40,7 @@ const routes = [
             next();
         }
     }},
-    {path: '/myVirtualWallets', component:listVirtualWallets, beforeEnter: (to, from, next) => {
+    {path: '/myWallets', component:WalletComponent, beforeEnter: (to, from, next) => {
         var $userGet = JSON.parse(localStorage.getItem('user'));
         if(localStorage.getItem("token")==null){
             next("/");
@@ -68,7 +68,7 @@ const routes = [
         }
     }},
 
-    {path:'/wallet', component:WalletComponent},
+   // {path:'/wallet', component:WalletComponent},
 
 
 ]
@@ -81,10 +81,10 @@ Vue.component('login', Login)
 Vue.component('home', Home)
 Vue.component('register',RegisterUser)
 Vue.component('profile', Profile)
-Vue.component('myVirtualWallets', listVirtualWallets)
+//Vue.component('myWallets', listVirtualWallets)
 Vue.component('operator', Operator)
 Vue.component('movements', Movements)
-Vue.component('wallet', WalletComponent)
+Vue.component('myWallets', WalletComponent)
 
 
 const store = new Vuex.Store({
@@ -121,7 +121,7 @@ const app = new Vue({
     router,
     store,
     data: {
-    },mounted(){
+    },created(){
         const token = localStorage.getItem("token")
         if(token != null){
             this.$store.commit('setToken',token);
