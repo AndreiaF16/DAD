@@ -13,8 +13,8 @@ class RegisterUserRequest extends FormRequest
             'name' => 'required|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|min:3',
-            //'photo' => 'string|mimes:jpg,jpeg,png',
-            'nif' => 'required|max:9'
+            'photo' => 'nullable|image|max:2048',
+            'nif' => 'required|max:9|min:9'
             
             
         ];

@@ -2592,6 +2592,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/showErrors.vue */ "./resources/js/components/helpers/showErrors.vue");
+/* harmony import */ var _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/showMessage.vue */ "./resources/js/components/helpers/showMessage.vue");
+/* harmony import */ var _helpers_uploadFile_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/uploadFile.vue */ "./resources/js/components/helpers/uploadFile.vue");
 //
 //
 //
@@ -2635,10 +2638,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//import fileUpload from './helpers/uploadFile';
-//module.exports = {
+
+
+ //module.exports = {
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2656,7 +2659,14 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
-      axios.post("api/registerUser", this.user).then(function (response) {
+      var formdata = new FormData();
+      formdata.append('name', this.user.name);
+      formdata.append('nif', this.user.nif);
+      formdata.append('email', this.user.email);
+      formdata.append('password', this.user.password);
+      formdata.append('photo', this.user.photo);
+      formdata.append('_method', 'POST');
+      axios.post("api/registerUser", formdata).then(function (response) {
         console.log("response", response);
       })["catch"](function (error) {
         console.log(error);
@@ -2672,33 +2682,14 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    cancelEdit: function cancelEdit() {
-      this.$router.push('/home');
+    onFileChanged: function onFileChanged(fileSelected) {
+      this.user.photo = fileSelected;
     }
-    /*onFileChanged(fileSelected) {
-                this.file = fileSelected
-            }, submitFile(){
-            let formData = new FormData();
-            // Add the form data we need to submit
-            formData.append('file', this.file);
-            axios.post('/api/users/updatePhoto/' + this.user.id, formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }
-            ).then(response =>{
-                this.$store.commit('setUser',response.data.data);
-             })
-            .catch(function(){
-            console.log('FAILURE!!');
-            });
-        },*/
-
   },
-  components: {//'error-validation':errorValidation,
+  components: {
+    //'error-validation':errorValidation,
     //'show-message':showMessage,
-    //   'file-upload': fileUpload,
+    'file-upload': _helpers_uploadFile_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
 
@@ -55123,6 +55114,13 @@ var render = function() {
           }
         })
       ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [_c("file-upload", { on: { fileChanged: _vm.onFileChanged } })],
+        1
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "inputNif" } }, [_vm._v("Nif")]),

@@ -6,6 +6,7 @@
         <div class="jumbotron row justify-content-center">
                 <h1>{{tittle}}</h1>
         </div>
+      
         <div class="form-group">
             <label for="inputName">Name</label>
             <input type="name" class="form-control" v-model.trim="user.name" name="name" id="inputName"
@@ -23,12 +24,9 @@
         <input type="password" class="form-control" v-model="user.password" name="password" id="inputPassword"
         placeholder="Enter password">
       </div>
-      <!--<div class="form-group">
-        <file-upload v-on:fileChanged="onFileChanged">
-            <a class="btn btn-primary" v-on:click.prevent="submitFile">Submit Photo</a>
-        </file-upload>
-
-        </div>-->
+       <div class="form-group">
+            <file-upload v-on:fileChanged="onFileChanged"> </file-upload>
+        </div>
       <div class="form-group">
         <label for="inputNif">Nif</label>
         <input type="text" class="form-control" v-model="user.nif" name="nif" id="inputNif" placeholder="Enter nif">
@@ -43,8 +41,10 @@
 
 </template>
 
-<script type="text/javascript">
-//import fileUpload from './helpers/uploadFile';
+<script>
+import errorValidation from '../helpers/showErrors.vue';
+import showMessage from '../helpers/showMessage.vue';
+ import fileUpload from '../helpers/uploadFile.vue';
 
 //module.exports = {
 export default {
@@ -62,8 +62,15 @@ export default {
   },
   methods: {
     register() {
+      let formdata = new FormData();
+            formdata.append('name', this.user.name);
+            formdata.append('nif', this.user.nif);
+            formdata.append('email',this.user.email);
+          formdata.append('password',this.user.password);
+            formdata.append('photo', this.user.photo);
+            formdata.append('_method', 'POST');
       axios
-        .post("api/registerUser", this.user)
+        .post("api/registerUser", formdata)
         .then(response => {
           console.log("response", response);
 
@@ -79,34 +86,14 @@ export default {
             }
           }
         });
-    },cancelEdit() {
-            this.$router.push('/home' );
-        },
-    /*onFileChanged(fileSelected) {
-                this.file = fileSelected
-            }, submitFile(){
-            let formData = new FormData();
-            // Add the form data we need to submit
-            formData.append('file', this.file);
-            axios.post('/api/users/updatePhoto/' + this.user.id, formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }
-            ).then(response =>{
-                this.$store.commit('setUser',response.data.data);
-
-            })
-            .catch(function(){
-            console.log('FAILURE!!');
-            });
-        },*/
+    },onFileChanged(fileSelected) {
+                this.user.photo = fileSelected
+            },
   },
   components: {
             //'error-validation':errorValidation,
             //'show-message':showMessage,
-         //   'file-upload': fileUpload,
+            'file-upload': fileUpload,
         },
 };
 </script>
