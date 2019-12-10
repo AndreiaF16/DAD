@@ -13,10 +13,15 @@ class RegisterControllerAPI extends Controller
             'name' => $request['name'],
             'email' => $request['email'],
             'password' => $request['password'],
-            'photo' => $request['photo'],
+            
             'nif' => $request['nif']
         ]);
-        
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+
+            $fileName = $user->id . '_' . $request->file('photo')->hashName();
+            $request->file('photo')->storeAs('public/fotos', $fileName);
+            $user->fill(['photo' => $fileName,]);
+        }
         
             
        

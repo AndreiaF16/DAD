@@ -2089,6 +2089,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_uploadFile_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers/uploadFile.vue */ "./resources/js/components/helpers/uploadFile.vue");
 //
 //
 //
@@ -2155,12 +2156,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//import fileUpload from './helpers/uploadFile';
-//module.exports = {
+ //module.exports = {
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2177,7 +2174,14 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
-      axios.post("api/registerUser", this.user).then(function (response) {
+      var formdata = new FormData();
+      formdata.append('name', this.user.name);
+      formdata.append('nif', this.user.nif);
+      formdata.append('email', this.user.email);
+      formdata.append('password', this.user.password);
+      formdata.append('photo', this.user.photo);
+      formdata.append('_method', 'POST');
+      axios.post("api/registerUser", formdata).then(function (response) {
         console.log("response", response);
       })["catch"](function (error) {
         console.log(error);
@@ -2192,33 +2196,15 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       });
+    },
+    onFileChanged: function onFileChanged(fileSelected) {
+      this.user.photo = fileSelected;
     }
-    /*onFileChanged(fileSelected) {
-              this.file = fileSelected
-          }, submitFile(){
-          let formData = new FormData();
-          // Add the form data we need to submit
-          formData.append('file', this.file);
-          axios.post('/api/users/updatePhoto/' + this.user.id, formData,
-          {
-              headers: {
-                  'Content-Type': 'multipart/form-data'
-              }
-          }
-          ).then(response =>{
-              this.$store.commit('setUser',response.data.data);
-              
-          })
-          .catch(function(){
-          console.log('FAILURE!!');
-          });
-      },*/
-
   },
   components: {
     //'error-validation':errorValidation,
     //'show-message':showMessage,
-    'file-upload': fileUpload
+    'file-upload': _helpers_uploadFile_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -38293,6 +38279,13 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [_c("file-upload", { on: { fileChanged: _vm.onFileChanged } })],
+        1
+      ),
+      _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "inputNif" } }, [_vm._v("Nif")]),
         _vm._v(" "),
@@ -54874,7 +54867,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_HomeComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/HomeComponent */ "./resources/js/components/HomeComponent.vue");
 /* harmony import */ var _components_registerUser_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/registerUser.vue */ "./resources/js/components/registerUser.vue");
 /* harmony import */ var _components_users_users__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/users/users */ "./resources/js/components/users/users.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -54890,7 +54883,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 
 
-Vue.use(vuex__WEBPACK_IMPORTED_MODULE_7__["default"]);
+Vue.use(vuex__WEBPACK_IMPORTED_MODULE_6__["default"]);
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var routes = [{
   path: '/',
@@ -54915,7 +54908,7 @@ Vue.component('login', _components_login__WEBPACK_IMPORTED_MODULE_1__["default"]
 Vue.component('home', _components_HomeComponent__WEBPACK_IMPORTED_MODULE_3__["default"]);
 Vue.component('register', _components_registerUser_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
 Vue.component('profile', _components_users_profile__WEBPACK_IMPORTED_MODULE_2__["default"]);
-var store = new vuex__WEBPACK_IMPORTED_MODULE_7__["default"].Store({
+var store = new vuex__WEBPACK_IMPORTED_MODULE_6__["default"].Store({
   state: {
     token: "",
     user: null,
@@ -55383,15 +55376,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************************!*\
   !*** ./resources/js/components/registerUser.vue ***!
   \**************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _registerUser_vue_vue_type_template_id_7f607dd9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./registerUser.vue?vue&type=template&id=7f607dd9& */ "./resources/js/components/registerUser.vue?vue&type=template&id=7f607dd9&");
 /* harmony import */ var _registerUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./registerUser.vue?vue&type=script&lang=js& */ "./resources/js/components/registerUser.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _registerUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _registerUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -55421,7 +55413,7 @@ component.options.__file = "resources/js/components/registerUser.vue"
 /*!***************************************************************************!*\
   !*** ./resources/js/components/registerUser.vue?vue&type=script&lang=js& ***!
   \***************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

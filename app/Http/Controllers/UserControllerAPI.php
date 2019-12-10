@@ -23,6 +23,7 @@ class UserControllerAPI extends Controller
             'name' => 'string|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
             'email' => 'string|email|max:255|unique:users,email,'.$request->id,
             'password' => 'min:3','password',
+            'photo' => 'nullable|image|max:2048',
             'nif' => 'min:9|max:9',
         ]);
         $user = Auth::user();
