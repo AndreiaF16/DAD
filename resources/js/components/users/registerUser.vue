@@ -6,6 +6,7 @@
         <div class="jumbotron row justify-content-center">
                 <h1>{{tittle}}</h1>
         </div>
+      
         <div class="form-group">
             <label for="inputName">Name</label>
             <input type="name" class="form-control" v-model.trim="user.name" name="name" id="inputName"
@@ -41,6 +42,8 @@
 </template>
 
 <script>
+import errorValidation from '../helpers/showErrors.vue';
+import showMessage from '../helpers/showMessage.vue';
  import fileUpload from '../helpers/uploadFile.vue';
 
 //module.exports = {

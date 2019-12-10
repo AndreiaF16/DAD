@@ -2589,7 +2589,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _helpers_uploadFile_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/uploadFile.vue */ "./resources/js/components/helpers/uploadFile.vue");
+/* harmony import */ var _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/showErrors.vue */ "./resources/js/components/helpers/showErrors.vue");
+/* harmony import */ var _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/showMessage.vue */ "./resources/js/components/helpers/showMessage.vue");
+/* harmony import */ var _helpers_uploadFile_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/uploadFile.vue */ "./resources/js/components/helpers/uploadFile.vue");
 //
 //
 //
@@ -2632,6 +2634,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
+
  //module.exports = {
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2681,7 +2686,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     //'error-validation':errorValidation,
     //'show-message':showMessage,
-    'file-upload': _helpers_uploadFile_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    'file-upload': _helpers_uploadFile_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
 
