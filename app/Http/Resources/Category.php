@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Http\Resources;
-
 use Illuminate\Http\Resources\Json\Resource;
-
-class User extends Resource
+class Category extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -17,12 +14,7 @@ class User extends Resource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
             'type' => $this->type,
-            'active' => $this->active,
-            'photo' => $this->photo,
-            'nif'=> $this->nif,
-            'wallet' => $this->wallet
         ];
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use Hash;
+
 use App\User;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
@@ -25,17 +25,25 @@ class UserControllerAPI extends Controller
             'password' => 'min:3','password',
             'photo' => 'nullable|image|max:2048',
             'nif' => 'min:9|max:9',
+            'file' => 'nullable|image|max:2048',
         ]);
         $user = Auth::user();
 
-        $user->fill($validated);
+        $user->fill($request->except(['file']));
 
 
-      /*  if($request->photo != null) {
-            $image = $request->file('photo');
+        /*if($request->file != null) {
+            $image = $request->file('file');
             $path = basename($image->store('profiles', 'public'));
             $user->photo = basename($path);
         }*/
+
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+
+            $fileName = $user->id . '_' . $request->file('file')->hashName();
+            $request->file('file')->storeAs('public/fotos', $fileName);
+            $user->fill(['photo' => $fileName,]);
+        }
 
         $user->save();
 

@@ -9,22 +9,68 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
+import VueGoodTable from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css';
 import Login from './components/login';
 import Profile from './components/users/profile';
 import Home from './components/HomeComponent';
-import RegisterUser from './components/registerUser.vue';
+import RegisterUser from './components/users/registerUser';
+import Operator from './components/operator/OperatorComponent';
 import Users from './components/users/users';
+import listVirtualWallets from './components/wallets/wallets';
+import Movements from './components/movements/movements';
+
+import WalletComponent from './components/wallets/Wallet';
 import Vuex from 'vuex';
+
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
+Vue.use(VueGoodTable);
 
 const routes = [
     {path:'/', redirect:'/home'},
     {path:'/home', component:Home},
     {path:'/login', component:Login},
     {path:'/register', component:RegisterUser},
-    {path: '/profile', component:Profile},
+    {path: '/profile', component:Profile, beforeEnter: (to, from, next) => {
+        if(localStorage.getItem("token")==null){
+            next("/home");
+        }else{
+            next();
+        }
+    }},
+    {path: '/myVirtualWallets', component:listVirtualWallets, beforeEnter: (to, from, next) => {
+        var $userGet = JSON.parse(localStorage.getItem('user'));
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else if($userGet.wallet == null){
+            next("/");
+        }else{
+            next();
+        }
+    }},
+    {path: '/operator', component:Operator, beforeEnter: (to, from, next) => {
+        var $userGet = JSON.parse(localStorage.getItem('user'));
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else if($userGet.type!="o"){
+            next("/");
+        }else{
+            next();
+        }
+    }},
+    {path: '/movements', component:Movements, beforeEnter: (to, from, next) => {
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else{
+            next();
+        }
+    }},
+
+    {path:'/wallet', component:WalletComponent},
+
+
 ]
 
 const router = new VueRouter({
@@ -35,12 +81,18 @@ Vue.component('login', Login)
 Vue.component('home', Home)
 Vue.component('register',RegisterUser)
 Vue.component('profile', Profile)
+Vue.component('myVirtualWallets', listVirtualWallets)
+Vue.component('operator', Operator)
+Vue.component('movements', Movements)
+Vue.component('wallet', WalletComponent)
+
 
 const store = new Vuex.Store({
     state: {
       token: "",
       user: null,
-      loggedin: false
+      loggedin: false,
+      movements: null,
     },
     mutations: {
         setUser(state, user) {
@@ -50,13 +102,17 @@ const store = new Vuex.Store({
             state.token = received_token;
         },
         logIn(state, boll) {
-        state.loggedin = boll;
+            state.loggedin = boll;
+        },
+        setMovements(state, movements){
+            state.movements = movements
         }
     },
     getters: {
         token: state => state.token,
         loggedin: state => state.loggedin,
-        user: state => state.user
+        user: state => state.user,
+        movements: state => state.movements
       }
 });
 
