@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\User as UserResource;
+use App\Http\Controllers\Requests\RegisterUserRequest;
 
 class UserControllerAPI extends Controller
 {
@@ -53,9 +55,17 @@ class UserControllerAPI extends Controller
     public function changePassword(Request $request){
 
        $validated = $request->validate([
-            'password_old'=>'required',
+            'password_old'=>'required|min:3',
             'password'=>'required|confirmed|min:3|different:password_old',
             'password_confirmation'=>'required|same:password',
+       ], [
+            'password_old.required' => 'Is necessary insert the old password',
+            'password.required' => 'Is necessary insert the new password',
+            'password_confirmation.required' => 'Is necessary confirm the new password',
+            'password_old.min' => 'The old password needs at least 3 characters',
+            'password.min' => 'The new password needs at least 3 characters',
+            'password_confirmation.min' => 'Password confirmation must be at least 3 characters',
+            'password_confirmation.same' => 'Verification password must match password'
         ]);
         $user = Auth::user();
 
@@ -73,5 +83,87 @@ class UserControllerAPI extends Controller
         $user->save();
 
         return new UserResource($user);
+    }
+    public function store(RegisterUserRequest $request) {
+        $user = new User([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => $request['password'],
+
+            'nif' => $request['nif']
+        ]);
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+
+            $fileName = $user->id . '_' . $request->file('photo')->hashName();
+            $request->file('photo')->storeAs('public/fotos', $fileName);
+            $user->fill(['photo' => $fileName,]);
+        }
+
+        /*$p = new OAuth();
+        $t = $p->generateToken($request['email']);
+        $user->remember_token = $t;*/
+        $token = bin2hex($request['email']);
+        $user->remember_token = $token;
+
+
+        $user->save();
+        return new UserResource($user);
+    }
+
+    public function deactivateUser($id){
+        $user = User::findOrFail($id);
+        $balance = DB::table('wallets')->select('balance')->where('id', $id)->get();
+        if($balance[0]->balance == 0){
+            $user->active = 0;
+            $user->save();
+        }else{
+
+            return "Wallet balance must be 0.00 to deactivate a user!";
+        }
+        return new UserResource($user);
+    }
+
+    public function activateUser($id){
+        $user = User::findOrFail($id);
+        $user->active = 1;
+        $user->save();
+        return new UserResource($user);
+    }
+
+    public function getFilteredUsers(Request $request){
+
+        if(!is_null($request->name) || !is_null($request->type) || !is_null($request->email) || !is_null($request->active)){
+
+            $users = User::with('wallet')->select('*');
+
+            if(!is_null($request->name)){
+                $users = $users->where('name', 'like', $request->name . '%');
+            }
+            if(!is_null($request->type)){
+                $users = $users->where('type', $request->type);
+            }
+            if(!is_null($request->email)){
+                $users = $users->where('email', 'like', $request->email . '%');
+            }
+            if(!is_null($request->active)){
+                if($request->type == null || $request->type == 'u'){
+                    $users = $users->where('active', $request->active);
+                }else{
+                    return "Can't search by status and type at the sime time, because the type of user is different from 'Platform User'!";
+                }
+            }
+
+            $users = $users->paginate(10);
+
+        }else{
+            $users = User::with('wallet')->select('*')->paginate(10);
+        }
+        return $users;
+    }
+
+    public function destroy($id) {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json(null, 204);
     }
 }

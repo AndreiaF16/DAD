@@ -20,13 +20,23 @@ import Users from './components/users/users';
 //import listVirtualWallets from './components/wallets/wallets';
 import Movements from './components/movements/movements';
 
+import CreateUser from './components/admin/createUser';
+import User from './components/admin/users';
+
 import WalletComponent from './components/wallets/Wallet';
 import Vuex from 'vuex';
 
+import Vue from 'vue'
+import VueSidebarMenu from 'vue-sidebar-menu'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+
+import PaginationComponent from 'laravel-vue-pagination';
+Vue.component('pagination', PaginationComponent);
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(VueGoodTable);
+Vue.use(VueSidebarMenu);
 
 const routes = [
     {path:'/', redirect:'/home'},
@@ -67,6 +77,8 @@ const routes = [
             next();
         }
     }},
+   {path:'/createUser', component:CreateUser},
+   {path:'/users', component:User},
 
    // {path:'/wallet', component:WalletComponent},
 
@@ -85,6 +97,9 @@ Vue.component('profile', Profile)
 Vue.component('operator', Operator)
 Vue.component('movements', Movements)
 Vue.component('myWallets', WalletComponent)
+Vue.component('createUser', CreateUser)
+
+Vue.component('users', User)
 
 
 const store = new Vuex.Store({

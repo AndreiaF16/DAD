@@ -105,6 +105,9 @@
             </table>
         </div>
 
+ <div class="card-footer">
+            <pagination :data="movements" :limit=4 @pagination-change-page="getResults"></pagination>
+        </div>
 
         <div class="alert alert-danger" v-if="showErrorEdit">
 			<button type="button" class="close-btn" v-on:click="showErrorEdit=false">&times;</button>
@@ -127,6 +130,8 @@
         data:
         function() {
             return{
+                pagination: [],
+
                   tittle: "My Virtual Wallet",
                     user: {},
                     wallet: {},

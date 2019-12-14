@@ -63,3 +63,10 @@ Route::middleware('auth:api')->post('movements/credit', 'MovementControllerAPI@c
 Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');
 Route::middleware('auth:api')->post('movements/filter', 'MovementControllerAPI@getFilteredMovements');
 Route::middleware('auth:api')->put('movements/{id}', 'MovementControllerAPI@update');
+
+//us 15 e 16
+Route::middleware('auth:api')->post('users/create', 'UserControllerAPI@store');
+Route::middleware('auth:api')->post('users/filter', 'UserControllerAPI@getFilteredUsers');
+Route::middleware('auth:api')->put('users/deactivate/{id}', 'UserControllerAPI@deactivateUser');
+Route::middleware('auth:api')->put('users/activate/{id}', 'UserControllerAPI@activateUser');
+Route::middleware('auth:api')->delete('users/{id}', 'UserControllerAPI@destroy');

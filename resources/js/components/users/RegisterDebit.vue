@@ -28,7 +28,7 @@
         <div class="form-group">
             <label for="type_payment">Type Of Payment:</label>
             <select name="type_payment" id="type_payment" class="form-control" v-model="type_payment" required>
-                <option disabled selected> -- select an option -- </option>
+                <option value='' selected> -- Select the Type Of Payment -- </option>
                 <option value="c">Cash</option>
                 <option value="bt">Bank Transfer</option>
                 <option value="mb">MB Payment</option>
