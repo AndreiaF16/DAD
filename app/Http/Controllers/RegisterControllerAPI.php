@@ -14,8 +14,7 @@ class RegisterControllerAPI extends Controller
         $user = new User([
             'name' => $request['name'],
             'email' => $request['email'],
-            'password' => $request['password'],
-           
+            'password' => bcrypt($request['password']),
             'nif' => $request['nif']
         ]);
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
@@ -24,13 +23,6 @@ class RegisterControllerAPI extends Controller
             $request->file('photo')->storeAs('public/fotos', $fileName);
             $user->fill(['photo' => $fileName,]);
         }
-
-        /*$p = new OAuth();
-        $t = $p->generateToken($request['email']);
-        $user->remember_token = $t;*/
-        $token = bin2hex($request['email']);
-        $user->remember_token = $token;
-
 
         $user->save();
         $user1 = User::Where('email',$request['email'])->first();
