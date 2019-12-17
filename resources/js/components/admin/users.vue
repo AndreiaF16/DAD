@@ -155,7 +155,7 @@ pagination: [],
             deactivateUser: function(user){
                 axios.put('api/users/deactivate/'+user.id)
                 .then(response => {
-                   if(response.data == "Wallet Balance must be 0.00 to deactivate a user!"){
+                   if(response.data == "Wallet balance must be 0.00 to deactivate a user!"){
                        this.errorMessage = response.data;
                        this.showError = true;
                    }else{

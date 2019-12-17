@@ -57,14 +57,13 @@
                         axios.defaults.headers.common.Authorization = "Bearer " + this.user.remember_token;
                         axios.get('/api/users/me')
                             .then(response => {
-                                console.log(response.data);
                                 this.$store.commit('setUser',response.data.data);
                                 localStorage.setItem("user",JSON.stringify(response.data.data));
                                 this.message = "User authenticated correctly";
                                 this.typeofmsg = "alert-success";
                                 this.showMessage = true;
                             });
-                            
+
                         this.$router.push('/home');
                     })
                     .catch(error => {

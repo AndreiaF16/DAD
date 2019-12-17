@@ -66,7 +66,7 @@
              register() {
       let formdata = new FormData();
             formdata.append('name', this.user.name);
-            formdata.append('nif', this.user.nif);
+
             formdata.append('email',this.user.email);
             formdata.append('type',this.user.type);
           formdata.append('password',this.user.password);
@@ -75,7 +75,8 @@
       axios
         .post("api/createUser", formdata)
         .then(response => {
-          console.log("response", response);
+            this.successMessage = "User created with sucess!";
+            this.showSuccess = true;
 
         })
         .catch(error => {
@@ -90,34 +91,6 @@
           }
         });
     },
-          /*  createUserAdmin: function() {
-                axios.post('api/createUser', this.user)
-                .then(response => {
-                    console.log(response);
-                    this.$emit('admin-created');
-                })
-                .catch(error => {
-                    console.error(error);
-                    if(error.response.data.errors.name){
-                        this.successMessage = error.response.data.errors.name[0];
-                        this.showError = true;
-                    }else if(error.response.data.errors.email){
-                        this.successMessage = error.response.data.errors.email[0];
-                        this.showError = true;
-                    }
-                    else if(error.response.data.errors.password){
-                        this.successMessage = error.response.data.errors.password[0];
-                        this.showError = true;
-                    }
-                    else if(error.response.data.errors.type){
-                        this.successMessage = error.response.data.errors.type[0];
-                        this.showError = true;
-                    }else if (error.response.data.errors.photo){
-                        this.successMessage = error.response.data.errors.photo[0];
-                        this.showError = true;
-                    }
-                });
-            },*/
             cancelCreate: function(){
                 this.$emit('create-canceled');
             },

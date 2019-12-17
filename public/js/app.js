@@ -1959,14 +1959,14 @@ __webpack_require__.r(__webpack_exports__);
 
       var formdata = new FormData();
       formdata.append('name', this.user.name);
-      formdata.append('nif', this.user.nif);
       formdata.append('email', this.user.email);
       formdata.append('type', this.user.type);
       formdata.append('password', this.user.password);
       formdata.append('photo', this.user.photo);
       formdata.append('_method', 'POST');
       axios.post("api/createUser", formdata).then(function (response) {
-        console.log("response", response);
+        _this.successMessage = "User created with sucess!";
+        _this.showSuccess = true;
       })["catch"](function (error) {
         console.log(error);
         var data = error.response.data.errors;
@@ -1981,35 +1981,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-
-    /*  createUserAdmin: function() {
-          axios.post('api/createUser', this.user)
-          .then(response => {
-              console.log(response);
-              this.$emit('admin-created');
-          })
-          .catch(error => {
-              console.error(error);
-              if(error.response.data.errors.name){
-                  this.successMessage = error.response.data.errors.name[0];
-                  this.showError = true;
-              }else if(error.response.data.errors.email){
-                  this.successMessage = error.response.data.errors.email[0];
-                  this.showError = true;
-              }
-              else if(error.response.data.errors.password){
-                  this.successMessage = error.response.data.errors.password[0];
-                  this.showError = true;
-              }
-              else if(error.response.data.errors.type){
-                  this.successMessage = error.response.data.errors.type[0];
-                  this.showError = true;
-              }else if (error.response.data.errors.photo){
-                  this.successMessage = error.response.data.errors.photo[0];
-                  this.showError = true;
-              }
-          });
-      },*/
     cancelCreate: function cancelCreate() {
       this.$emit('create-canceled');
     },
@@ -2189,7 +2160,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       axios.put('api/users/deactivate/' + user.id).then(function (response) {
-        if (response.data == "Wallet Balance must be 0.00 to deactivate a user!") {
+        if (response.data == "Wallet balance must be 0.00 to deactivate a user!") {
           _this4.errorMessage = response.data;
           _this4.showError = true;
         } else {
@@ -2394,8 +2365,6 @@ __webpack_require__.r(__webpack_exports__);
         localStorage.setItem("token", _this.user.remember_token);
         axios.defaults.headers.common.Authorization = "Bearer " + _this.user.remember_token;
         axios.get('/api/users/me').then(function (response) {
-          console.log(response.data);
-
           _this.$store.commit('setUser', response.data.data);
 
           localStorage.setItem("user", JSON.stringify(response.data.data));
@@ -2553,9 +2522,7 @@ __webpack_require__.r(__webpack_exports__);
     close: function close() {}
   },
   mounted: function mounted() {
-    this.getMovements(); //    console.log(this.movements);
-    // this.rows = Array.from(this.movements);
-    //   console.log(this.rows);
+    this.getMovements();
   },
   components: {
     //            'movement-list':moventsListReference,
@@ -2863,8 +2830,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       formdata.append('name', this.user.name);
       formdata.append('nif', this.user.nif);
       formdata.append('file', this.file);
-      formdata.append('_method', 'PUT');
-      console.log(this.file); //https://laracasts.com/discuss/channels/laravel/ajax-formdata-and-put-fails
+      formdata.append('_method', 'PUT'); //https://laracasts.com/discuss/channels/laravel/ajax-formdata-and-put-fails
 
       axios.post('/api/users/updateProfile', formdata).then(function (response) {
         _this2.showErrors = false;
@@ -3401,6 +3367,49 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3418,7 +3427,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       typeofmsg: "",
       current_page: 1,
       rows: []
-    }, _defineProperty(_ref, "user", this.$store.state.user), _defineProperty(_ref, "movements", {}), _defineProperty(_ref, "selectedMovement", null), _defineProperty(_ref, "selectedMovementEdit", null), _defineProperty(_ref, "balance", ""), _defineProperty(_ref, "search", {
+    }, _defineProperty(_ref, "movements", {}), _defineProperty(_ref, "selectedMovement", null), _defineProperty(_ref, "selectedMovementEdit", null), _defineProperty(_ref, "balance", ""), _defineProperty(_ref, "search", {
       user_id: this.$store.state.user ? this.$store.state.user.id : '',
       id: '',
       type: '',
@@ -3484,6 +3493,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     "movement-edit": _MovementEdit_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   mounted: function mounted() {
+    this.user = JSON.parse(localStorage.getItem('user'));
     this.getFilteredMovements();
     this.wallet = this.user.wallet;
   }
@@ -57210,31 +57220,117 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "col-md-3" }, [
           _c("div", { staticClass: "form-group" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.search.category,
-                  expression: "search.category"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                name: "category",
-                placeholder: "Search By Category"
-              },
-              domProps: { value: _vm.search.category },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.search.category,
+                    expression: "search.category"
                   }
-                  _vm.$set(_vm.search, "category", $event.target.value)
+                ],
+                staticClass: "form-control",
+                attrs: { name: "type" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.search,
+                      "category",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
                 }
-              }
-            })
+              },
+              [
+                _c("option", { attrs: { value: "", selected: "" } }, [
+                  _vm._v(" -- Type Of Category -- ")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "1" } }, [_vm._v("Groceries")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "2" } }, [_vm._v("Restaurant")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "3" } }, [_vm._v("Clothes")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "4" } }, [_vm._v("Shoes")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "5" } }, [_vm._v("School")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "6" } }, [_vm._v("Services")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "7" } }, [
+                  _vm._v("Electricity")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "8" } }, [_vm._v("Phone")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "9" } }, [_vm._v(" Fuel")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "10" } }, [
+                  _vm._v("Mortgage Payment")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "11" } }, [
+                  _vm._v("Car Payment")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "12" } }, [
+                  _vm._v("Entertainment")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "13" } }, [_vm._v("Gadget")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "14" } }, [_vm._v("Computer")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "15" } }, [_vm._v("Vacation")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "16" } }, [_vm._v("Hobby")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "17" } }, [
+                  _vm._v("Loan Repayment")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "18" } }, [_vm._v("Loan")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "19" } }, [
+                  _vm._v("Other Expense")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "20" } }, [_vm._v("Salary")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "21" } }, [_vm._v("Bonus")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "22" } }, [_vm._v("Royalties")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "23" } }, [_vm._v("Interests")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "24" } }, [_vm._v("Gifts")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "25" } }, [_vm._v("Dividends")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "26" } }, [_vm._v("Sales")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "27" } }, [
+                  _vm._v("Loan Repayment")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "28" } }, [_vm._v("Loan ")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "29" } }, [
+                  _vm._v("Other Income")
+                ])
+              ]
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
@@ -57449,21 +57545,41 @@ var render = function() {
                 [
                   _c("td", [_vm._v(_vm._s(movement.id))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(movement.type))]),
+                  movement.type == "e"
+                    ? _c("td", [_vm._v("Expense")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  movement.type == "i"
+                    ? _c("td", [_vm._v("Income")])
+                    : _vm._e(),
                   _vm._v(" "),
                   movement.transfer_wallet_id != undefined
                     ? _c("td", [_vm._v(_vm._s(movement.transfer_wallet.email))])
                     : _vm._e(),
                   _vm._v(" "),
-                  movement.transfer_wallet_id == null ? _c("td") : _vm._e(),
+                  movement.transfer_wallet_id == null
+                    ? _c("td", [_vm._v("---")])
+                    : _vm._e(),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(movement.type_payment))]),
+                  movement.type_payment == "c"
+                    ? _c("td", [_vm._v("Cash")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  movement.type_payment == "bt"
+                    ? _c("td", [_vm._v("Bank Transfer")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  movement.type_payment == "mb"
+                    ? _c("td", [_vm._v("MB Payment")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  movement.type_payment == null
+                    ? _c("td", [_vm._v("---")])
+                    : _vm._e(),
                   _vm._v(" "),
                   movement.category
                     ? _c("td", [_vm._v(_vm._s(movement.category.name))])
                     : _vm._e(),
-                  _vm._v(" "),
-                  !movement.category ? _c("td") : _vm._e(),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(movement.date))]),
                   _vm._v(" "),
@@ -73820,7 +73936,14 @@ var routes = [{
   component: _components_HomeComponent__WEBPACK_IMPORTED_MODULE_5__["default"]
 }, {
   path: '/login',
-  component: _components_login__WEBPACK_IMPORTED_MODULE_3__["default"]
+  component: _components_login__WEBPACK_IMPORTED_MODULE_3__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (localStorage.getItem("token") != null) {
+      next("/home");
+    } else {
+      next();
+    }
+  }
 }, {
   path: '/register',
   component: _components_users_registerUser__WEBPACK_IMPORTED_MODULE_6__["default"]

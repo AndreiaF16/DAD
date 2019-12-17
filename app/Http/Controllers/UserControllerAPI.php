@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\User as UserResource;
 use App\Http\Controllers\Requests\RegisterUserRequest;
+use App\Http\Controllers\Requests\RegisterUserAdminOpRequest;
 
 class UserControllerAPI extends Controller
 {
@@ -84,13 +85,12 @@ class UserControllerAPI extends Controller
 
         return new UserResource($user);
     }
-    public function store(RegisterUserRequest $request) {
+    public function store(RegisterUserAdminOpRequest $request) {
         $user = new User([
             'name' => $request['name'],
+            'type' => $request ['type'],
             'email' => $request['email'],
-            'password' => $request['password'],
-
-            'nif' => $request['nif']
+            'password' => bcrypt($request['password']),
         ]);
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
 
@@ -98,14 +98,6 @@ class UserControllerAPI extends Controller
             $request->file('photo')->storeAs('public/fotos', $fileName);
             $user->fill(['photo' => $fileName,]);
         }
-
-        /*$p = new OAuth();
-        $t = $p->generateToken($request['email']);
-        $user->remember_token = $t;*/
-        $token = bin2hex($request['email']);
-        $user->remember_token = $token;
-
-
         $user->save();
         return new UserResource($user);
     }
@@ -117,7 +109,6 @@ class UserControllerAPI extends Controller
             $user->active = 0;
             $user->save();
         }else{
-
             return "Wallet balance must be 0.00 to deactivate a user!";
         }
         return new UserResource($user);

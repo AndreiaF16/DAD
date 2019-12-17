@@ -65,7 +65,7 @@ Route::middleware('auth:api')->post('movements/filter', 'MovementControllerAPI@g
 Route::middleware('auth:api')->put('movements/{id}', 'MovementControllerAPI@update');
 
 //us 15 e 16
-Route::middleware('auth:api')->post('users/create', 'UserControllerAPI@store');
+Route::middleware('auth:api')->post('createUser', 'UserControllerAPI@store');
 Route::middleware('auth:api')->post('users/filter', 'UserControllerAPI@getFilteredUsers');
 Route::middleware('auth:api')->put('users/deactivate/{id}', 'UserControllerAPI@deactivateUser');
 Route::middleware('auth:api')->put('users/activate/{id}', 'UserControllerAPI@activateUser');

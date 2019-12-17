@@ -120,9 +120,6 @@
         },
         mounted(){
             this.getMovements();
-        //    console.log(this.movements);
-           // this.rows = Array.from(this.movements);
-         //   console.log(this.rows);
         },
         components: {
             //            'movement-list':moventsListReference,

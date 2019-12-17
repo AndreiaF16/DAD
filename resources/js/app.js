@@ -41,7 +41,12 @@ Vue.use(VueSidebarMenu);
 const routes = [
     {path:'/', redirect:'/home'},
     {path:'/home', component:Home},
-    {path:'/login', component:Login},
+    {path:'/login', component:Login, beforeEnter: (to, from, next) => {
+        if(localStorage.getItem("token")!=null){
+            next("/home");
+        }else{
+            next();
+        }}},
     {path:'/register', component:RegisterUser},
     {path: '/profile', component:Profile, beforeEnter: (to, from, next) => {
         if(localStorage.getItem("token")==null){
