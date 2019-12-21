@@ -130,12 +130,6 @@ class MovementControllerAPI extends Controller
         $wallet->balance = $wallet->balance - $request->value;
         $wallet->save();
 
-
-        $wallet_dest = Wallet::where('email',$request->destination_email)->first();
-        if($wallet_dest == null){
-            return response('Destination Email is invalid!');
-        }
-
         $date = Carbon::now();
         $movement->wallet_id = $wallet->id;
         $movement->type = "e";
@@ -145,19 +139,23 @@ class MovementControllerAPI extends Controller
         $movement->save();
 
         if($request->transfer == 1){
-            $wallet_dest->balance = $wallet->balance + $request->value;
+            
+            $wallet_dest = Wallet::where('email',$request->destination_email)->first();
+            if($wallet_dest == null){
+                return response('Destination Email is invalid!');
+            }
+
+            $wallet_dest->balance = $wallet_dest->balance + $request->value;
             $wallet_dest->save();
 
             $date = Carbon::now();
 
             $movement_dest = new Movement();
             $movement_dest->fill($request->except(['destination_email',"email"]));
-            $movement_dest->email = $request->destination_email;
             $movement_dest->wallet_id = $wallet_dest->id;
             $movement_dest->type = "i";
             $movement_dest->start_balance = $wallet_dest->balance;
             $movement_dest->end_balance = $wallet_dest->balance + $request->value;
-            $movement_dest->transfer=0;
             $movement_dest->date = $date->toDateTimeString();
             $movement_dest->transfer_movement_id = $movement->id;
             $movement_dest->transfer_wallet_id = $wallet->id;
