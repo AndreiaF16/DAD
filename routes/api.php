@@ -56,3 +56,9 @@ Route::middleware('auth:api')->post('users/filter', 'UserControllerAPI@getFilter
 Route::middleware('auth:api')->put('users/deactivate/{id}', 'UserControllerAPI@deactivateUser');
 Route::middleware('auth:api')->put('users/activate/{id}', 'UserControllerAPI@activateUser');
 Route::middleware('auth:api')->delete('users/{id}', 'UserControllerAPI@destroy');
+
+
+Route::get('getphotobyemail/{email}','UserControllerAPI@getPhotoByEmail');
+
+//us 9
+Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');

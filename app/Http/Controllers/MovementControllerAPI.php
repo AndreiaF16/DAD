@@ -36,50 +36,20 @@ class MovementControllerAPI extends Controller
     public function show($id)
     {
         $movements = Auth::user()->wallet->movement;
-        //return $movements;
-        //$movements = Movement::where("wallet_id",$id)->get();
-        //return $movements;
         return MovementResource::collection($movements);
     }
 
 
     public function getUserMovements($id){
-        //$movements = DB::table('movements')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(20);//tirar paginate paginate(20)
-        //$wallet = Wallet::findOrFail($id);
-        //return $wallet->movements()->orderBy('date', 'desc');
+
         $movements = Auth::user()->wallet->movement->with('category', 'transfer_wallet', 'transfer_wallet.user')->orderBy('date', 'desc')->paginate(10);
-
-
-       // $movements = Movement::with('category', 'transfer_wallet', 'transfer_wallet.user')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(10);
         return $movements;
     }
 
     public function store(Request $request)
     {
-      /*   $request->validate([
-                'email' => 'required|email|unique:users,email',
-                ''
 
-            ]);
-        $user = new User();
-        $user->fill($request->all());
-        $user->password = Hash::make($user->password);
-        $user->save();
-        return response()->json(new UserResource($user), 201);*/
     }
-
-    /* public function update(Request $request, $id)
-    {
-        $request->validate([
-                'name' => 'required|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
-                'email' => 'required|email|unique:users,email,'.$id,
-                //'type' => 'enum('u','o','a')'
-            ]);
-        $user = User::findOrFail($id);
-        $user->update($request->all());
-        return new UserResource($user);
-    } */
-
 
 
     public function getFilteredMovements(Request $request){
@@ -141,6 +111,9 @@ class MovementControllerAPI extends Controller
 
         $movement->save();
         return new MovementResource($movement);
+    }
+
+    public function createDebit(Request $request) {
     }
 }
 

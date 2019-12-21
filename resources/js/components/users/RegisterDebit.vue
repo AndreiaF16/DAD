@@ -2,10 +2,10 @@
     <div class="jumbotron">
         <h2>Register Debit</h2>
 
-        <div class="alert alert-danger" v-if="showError">
-            <button type="button" class="close-btn" v-on:click="showError=false">&times;</button>
-            <strong>{{ successMessage }}</strong>
-        </div>
+
+    <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
+
+    <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
 
         <div class="form-group">
             <label for="inputEmail">Email To Debit:</label>
@@ -28,7 +28,7 @@
         <div class="form-group">
             <label for="type_payment">Type Of Payment:</label>
             <select name="type_payment" id="type_payment" class="form-control" v-model="type_payment" required>
-                <option value='' selected> -- Select the Type Of Payment -- </option>
+                <option disabled selected> -- select an option -- </option>
                 <option value="c">Cash</option>
                 <option value="bt">Bank Transfer</option>
                 <option value="mb">MB Payment</option>
@@ -56,18 +56,51 @@
 
         <div class="form-group">
             <a class="btn btn-success" v-on:click.prevent="createCredit()">Create Credit</a>
-            <a class="btn btn-light" v-on:click.prevent="cancelCredit()">Cancel</a>
+            <a class="btn btn-danger" v-on:click.prevent="cancelDebit()">Cancel</a>
         </div>
 
     </div>
 </template>
 
-<script>
-    export default {
-        name: "RegisterDebit"
-    }
+<script type="text/javascript">
+  import errorValidation from '../helpers/showErrors.vue';
+    import showMessage from '../helpers/showMessage.vue';
+
+   export default {
+           data: function() {
+            return {
+
+                name: "RegisterDebit",
+                email: '',
+                typeofmsg: "",
+                message:'',
+                showErrors: false,
+                showMessage: false,
+                errors: [],
+                type_payment: '',
+                value: '',
+
+            }
+      },
+    methods: {
+        createCredit(){
+                this.$emit('createCredit', this.currentMovement);
+            },
+             cancelDebit(){
+                this.$emit('cancel-debit');
+            },
+        close(){
+                this.showErrors=false;
+                this.showMessage=false;
+            },
+    },
+    components: {
+        'error-validation':errorValidation,
+        'show-message':showMessage,
+    },
+
+   }
 </script>
 
 <style scoped>
-
 </style>

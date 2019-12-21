@@ -3,11 +3,22 @@
             <div class="jumbotron row justify-content-center">
                 <h1>{{tittle}}</h1>
         </div>
+
+            <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
+    <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
+
          <div class="form-group">
                 <label for="inputBalance">Balance of My Virtual Wallet</label>
                 <input type="text" class="form-control"
                         name="balance" id="inputBalance"
                         placeholder="Balance" v-model="wallet.balance" readonly/>
+            </div>
+
+              <div class="form-group">
+                <label for="inputEmail">My Email</label>
+                <input type="text" class="form-control"
+                        name="email" id="inputEmail"
+                        placeholder="Email" v-model="wallet.email" readonly/>
             </div>
 
 
@@ -133,6 +144,7 @@
 
 
                         <td v-if="movement.category">{{ movement.category.name }}</td>
+                        <td v-if="movement.category == null">---</td>
 
 
                         <td>{{ movement.date }}</td>
@@ -166,6 +178,9 @@
 </template>
 
 <script type="text/javascript">
+  import errorValidation from '../helpers/showErrors.vue';
+    import showMessage from '../helpers/showMessage.vue';
+
   import MovementDetailsComponent from "./MovementDetails.vue";
    import MovementEditComponent from "./MovementEdit.vue";
 
@@ -178,12 +193,17 @@
                   tittle: "My Virtual Wallet",
                     user: {},
                     wallet: {},
+                    errors: [],
                     movements: [],
                     showMessage:false,
+                    showErrors: false,
+                    typeofmsg: "",
+                    message:'',
                     message:'',
                     typeofmsg: "",
                     current_page: 1,
                     rows: [],
+                    photo:'',
 
                //user: this.$store.state.user,
                 movements: {},
@@ -255,12 +275,19 @@
             showCategoryError: function(){
                 this.showErrorEdit = true;
                 this.errorMessageEdit = 'Category does not exist for this type of movement';
-            }
+            },
+            close(){
+                this.showErrors=false;
+                this.showMessage=false;
+            },
         },
 
         components: {
            "movement-details": MovementDetailsComponent,
             "movement-edit": MovementEditComponent,
+            'show-message':showMessage,
+            'error-validation':errorValidation,
+
         },
 
         mounted() {

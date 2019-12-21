@@ -35,6 +35,9 @@
                 <router-link class="nav-item nav-link" to="/createUser" v-show="this.$store.state.user && this.$store.state.user.type=='a'">Create User</router-link>
                 <router-link class="nav-item nav-link" to="/users" v-show="this.$store.state.user && this.$store.state.user.type=='a'">Users</router-link>
 
+                <router-link class="nav-item nav-link" to="/debit" v-show="this.$store.state.user && this.$store.state.user.type=='u'">Register Debit</router-link>
+
+
         </div>
 
         <div style="margin-left:17%">
