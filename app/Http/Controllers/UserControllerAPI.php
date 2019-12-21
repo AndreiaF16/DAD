@@ -21,9 +21,9 @@ class UserControllerAPI extends Controller
     }
 
     public function getUser($email){
-        $user = User::where("email","=",$email)->get();
-        return $user;
-        //return new UserResource($user);
+        $user = User::where("email","=",$email)->first();
+        //return $user;
+        return new UserResource($user);
     }
 
     public function update(Request $request)

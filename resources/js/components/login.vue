@@ -62,8 +62,8 @@
                                 this.message = "User authenticated correctly";
                                 this.typeofmsg = "alert-success";
                                 this.showMessage = true;
+                                this.$socket.emit("user_enter",response.data.data);
                             });
-
                         this.$router.push('/home');
                     })
                     .catch(error => {

@@ -157,6 +157,16 @@ const app = new Vue({
     router,
     store,
     data: {
+    },
+    sockets: {
+        movementReceived(dataFromServer) {
+            this.$toasted.show(dataFromServer);
+        },
+        privateMessage_unavailable(destUser) {
+            this.$toasted.error(
+                'User "' + destUser.name + '" is not available'
+            );
+        },
     },created(){
         const token = localStorage.getItem("token")
         if(token != null){
@@ -169,6 +179,7 @@ const app = new Vue({
                 .then(response => {
                     this.$store.commit('setUser',response.data);
                     localStorage.setItem("user",JSON.stringify(response.data));
+                    this.$socket.emit("user_enter",response.data);
                 });
             }
         }
@@ -177,6 +188,7 @@ const app = new Vue({
             this.$store.commit('setUser',null);
             this.$store.commit('setToken',"");
             this.$store.commit('logIn', false);
+            this.$socket.disconnect();
             axios.defaults.headers.common.Authorization = null;
             localStorage.clear();
         },

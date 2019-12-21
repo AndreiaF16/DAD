@@ -53,24 +53,10 @@ class OperatorControllerAPI extends Controller
             $movement->iban = $request->iban;
             $movement->source_description = $request->source_description;
         }
-
-      /*  $movement->end_balance = $wallets->balance + $request->value;
-        $movement->wallet_id = $wallets->id;
-        $movement->date = date('Y-m-d H:i:s');
-        $movement->value = $request->value;
-        $movement->type_payment = $request->type_payment;
-        $movement->source_description = $request->source_description;
-        if($movement->type_payment == "bt"){
-            $movement->iban = $request->iban;
-        }*/
         $movement->save();
-
-        /*$wallets->balance = $movement->end_balance;
-        $wallets->save();*/
 
        // return response()->json(new MovementResource($movement), 201);
 
-       return new MovementResource($movement);
-
+       return response()->json(["id"=> $wallet->id, "email" => $wallet->email], 201);
     }
 }

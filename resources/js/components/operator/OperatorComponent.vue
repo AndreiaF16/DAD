@@ -78,7 +78,9 @@
 					this.showMessage=true;
 					this.message='Income registered with success';
           this.typeofmsg= "alert-success";
-          this.sendMsgText()
+          let msg = "A new income of "+ this.movement.value + " is added to your account";
+          this.$socket.emit("notifyMovement",msg,{ email:response.data.email, id: response.data.id})
+          this.$toasted.success("Income created!");
 					this.$router.push('/home');
 				}).catch(error=>{
 					if(error.response.status==401){
@@ -100,21 +102,10 @@
 						}
 					}
 				});
-    },
-    sendMsgText () {
-      let user= {};
-      axios.get("api/users/"+this.movement.email)
-      .then(response=>{
-          user = response.data;
-          this.$socket.emit("notifyIncome",msg,user)
-				});
-      let msg = user + "=> A new income of "+ this.movement.value + " is added to "+ this.movement.email +" account";
-      this.notificationMsg = msg;
-      this.$toasted.success("Income Created!");
     }
   },
     sockets:{
-      notifyIncome: function(msg){
+      notifyMovement: function(msg){
         this.notificationMsg = msg;
       }
     },

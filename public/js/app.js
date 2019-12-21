@@ -2371,6 +2371,8 @@ __webpack_require__.r(__webpack_exports__);
           _this.message = "User authenticated correctly";
           _this.typeofmsg = "alert-success";
           _this.showMessage = true;
+
+          _this.$socket.emit("user_enter", response.data.data);
         });
 
         _this.$router.push('/home');
@@ -2614,8 +2616,14 @@ __webpack_require__.r(__webpack_exports__);
         _this.showMessage = true;
         _this.message = 'Income registered with success';
         _this.typeofmsg = "alert-success";
+        var msg = "A new income of " + _this.movement.value + " is added to your account";
 
-        _this.sendMsgText();
+        _this.$socket.emit("notifyMovement", msg, {
+          email: response.data.email,
+          id: response.data.id
+        });
+
+        _this.$toasted.success("Income created!");
 
         _this.$router.push('/home');
       })["catch"](function (error) {
@@ -2639,23 +2647,10 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       });
-    },
-    sendMsgText: function sendMsgText() {
-      var _this2 = this;
-
-      var user = {};
-      axios.get("api/users/" + this.movement.email).then(function (response) {
-        user = response.data;
-
-        _this2.$socket.emit("notifyIncome", msg, user);
-      });
-      var msg = user + "=> A new income of " + this.movement.value + " is added to " + this.movement.email + " account";
-      this.notificationMsg = msg;
-      this.$toasted.success("Income Created!");
     }
   },
   sockets: {
-    notifyIncome: function notifyIncome(msg) {
+    notifyMovement: function notifyMovement(msg) {
       this.notificationMsg = msg;
     }
   },
@@ -8179,7 +8174,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\ntr.activerow[data-v-8095078e] {\n  background: #09090a !important;\n  color: #fff !important;\n}\n", ""]);
+exports.push([module.i, "\ntr.activerow[data-v-8095078e] {\r\n  background: #09090a !important;\r\n  color: #fff !important;\n}\r\n", ""]);
 
 // exports
 
@@ -74417,18 +74412,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_admin_users__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/admin/users */ "./resources/js/components/admin/users.vue");
 /* harmony import */ var _components_wallets_Wallet__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/wallets/Wallet */ "./resources/js/components/wallets/Wallet.vue");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var vue_sidebar_menu__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vue-sidebar-menu */ "./node_modules/vue-sidebar-menu/dist/vue-sidebar-menu.js");
-/* harmony import */ var vue_sidebar_menu__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(vue_sidebar_menu__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var vue_sidebar_menu_dist_vue_sidebar_menu_css__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! vue-sidebar-menu/dist/vue-sidebar-menu.css */ "./node_modules/vue-sidebar-menu/dist/vue-sidebar-menu.css");
-/* harmony import */ var vue_sidebar_menu_dist_vue_sidebar_menu_css__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(vue_sidebar_menu_dist_vue_sidebar_menu_css__WEBPACK_IMPORTED_MODULE_16__);
-/* harmony import */ var laravel_vue_pagination__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js");
-/* harmony import */ var laravel_vue_pagination__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(laravel_vue_pagination__WEBPACK_IMPORTED_MODULE_17__);
-/* harmony import */ var vue_socket_io__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! vue-socket.io */ "./node_modules/vue-socket.io/dist/vue-socketio.js");
-/* harmony import */ var vue_socket_io__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(vue_socket_io__WEBPACK_IMPORTED_MODULE_18__);
-/* harmony import */ var vue_toasted__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! vue-toasted */ "./node_modules/vue-toasted/dist/vue-toasted.min.js");
-/* harmony import */ var vue_toasted__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(vue_toasted__WEBPACK_IMPORTED_MODULE_19__);
+/* harmony import */ var _components_users_RegisterDebit__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/users/RegisterDebit */ "./resources/js/components/users/RegisterDebit.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var vue_sidebar_menu__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! vue-sidebar-menu */ "./node_modules/vue-sidebar-menu/dist/vue-sidebar-menu.js");
+/* harmony import */ var vue_sidebar_menu__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(vue_sidebar_menu__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var vue_sidebar_menu_dist_vue_sidebar_menu_css__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! vue-sidebar-menu/dist/vue-sidebar-menu.css */ "./node_modules/vue-sidebar-menu/dist/vue-sidebar-menu.css");
+/* harmony import */ var vue_sidebar_menu_dist_vue_sidebar_menu_css__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(vue_sidebar_menu_dist_vue_sidebar_menu_css__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var laravel_vue_pagination__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js");
+/* harmony import */ var laravel_vue_pagination__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(laravel_vue_pagination__WEBPACK_IMPORTED_MODULE_18__);
+/* harmony import */ var vue_socket_io__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! vue-socket.io */ "./node_modules/vue-socket.io/dist/vue-socketio.js");
+/* harmony import */ var vue_socket_io__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(vue_socket_io__WEBPACK_IMPORTED_MODULE_19__);
+/* harmony import */ var vue_toasted__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! vue-toasted */ "./node_modules/vue-toasted/dist/vue-toasted.min.js");
+/* harmony import */ var vue_toasted__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(vue_toasted__WEBPACK_IMPORTED_MODULE_20__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -74456,18 +74452,19 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_14___default.a.component('pagination', laravel_vue_pagination__WEBPACK_IMPORTED_MODULE_17___default.a);
-vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_13__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(vue_good_table__WEBPACK_IMPORTED_MODULE_1__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(vue_sidebar_menu__WEBPACK_IMPORTED_MODULE_15___default.a);
 
-vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(new vue_socket_io__WEBPACK_IMPORTED_MODULE_18___default.a({
+vue__WEBPACK_IMPORTED_MODULE_15___default.a.component('pagination', laravel_vue_pagination__WEBPACK_IMPORTED_MODULE_18___default.a);
+vue__WEBPACK_IMPORTED_MODULE_15___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_13__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_15___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_15___default.a.use(vue_good_table__WEBPACK_IMPORTED_MODULE_1__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_15___default.a.use(vue_sidebar_menu__WEBPACK_IMPORTED_MODULE_16___default.a);
+
+vue__WEBPACK_IMPORTED_MODULE_15___default.a.use(new vue_socket_io__WEBPACK_IMPORTED_MODULE_19___default.a({
   debug: true,
   connection: 'http://127.0.0.1:8080'
 }));
 
-vue__WEBPACK_IMPORTED_MODULE_14___default.a.use(vue_toasted__WEBPACK_IMPORTED_MODULE_19___default.a, {
+vue__WEBPACK_IMPORTED_MODULE_15___default.a.use(vue_toasted__WEBPACK_IMPORTED_MODULE_20___default.a, {
   position: "bottom-center",
   duration: 5000,
   type: "info"
@@ -74603,6 +74600,14 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_15___default.a({
   router: router,
   store: store,
   data: {},
+  sockets: {
+    movementReceived: function movementReceived(dataFromServer) {
+      this.$toasted.show(dataFromServer);
+    },
+    privateMessage_unavailable: function privateMessage_unavailable(destUser) {
+      this.$toasted.error('User "' + destUser.name + '" is not available');
+    }
+  },
   created: function created() {
     var _this = this;
 
@@ -74619,6 +74624,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_15___default.a({
           _this.$store.commit('setUser', response.data);
 
           localStorage.setItem("user", JSON.stringify(response.data));
+
+          _this.$socket.emit("user_enter", response.data);
         });
       }
     }
@@ -74628,6 +74635,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_15___default.a({
       this.$store.commit('setUser', null);
       this.$store.commit('setToken', "");
       this.$store.commit('logIn', false);
+      this.$socket.disconnect();
       axios.defaults.headers.common.Authorization = null;
       localStorage.clear();
     },
@@ -75831,8 +75839,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

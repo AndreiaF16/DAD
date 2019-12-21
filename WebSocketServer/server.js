@@ -53,9 +53,28 @@ io.on('connection', function (socket) {
     // socket.on('messageType_from_client_to_server', function (data){
 
     // });
-    socket.on("notifyIncome",(msg,user)=>{
-        console.log("Message: "+ msg);
-        socket.to(`${user.email}`).emit("notifyIncome",msg);
-        //io.to(`${socketId}`).emit('hey', 'I just met you');
-    })
+    socket.on("user_enter", function(user) {
+    if (user) {
+        console.dir(user);
+        loggedUsers.addUserInfo(user, socket.id);
+    }
+    });
+
+    socket.on("notifyMovement", function(msg, destUser) {
+    let userInfo = loggedUsers.userInfoByID(destUser.id);
+    let socket_id = userInfo !== undefined ? userInfo.socketID : null;
+    if (socket_id === null) {
+        console.log("user is offline");
+        //socket.emit("privateMessage_unavailable", destUser);
+    } else {
+        io.to(socket_id).emit("movementReceived", msg);
+    }
+    });
+
+    socket.on("disconnect", function() {
+        loggedUsers.removeUserInfoBySocketID(socket.id);
+        console.log(
+          "user disconnected (socket ID = " + socket.id + ")"
+        );
+      });
 });
