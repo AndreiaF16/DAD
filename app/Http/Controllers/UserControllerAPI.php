@@ -163,4 +163,9 @@ class UserControllerAPI extends Controller
         $user->delete();
         return response()->json(null, 204);
     }
+
+    public function getPhotoByEmail($email){
+        $photo = User::where('email', '=', $email)->pluck('photo');
+        return $photo;
+    }
 }

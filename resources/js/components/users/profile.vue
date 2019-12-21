@@ -105,7 +105,6 @@ export default {
             user: {},
             file:'',
             password_old:'',
-             message:'',
 			password:'',
             password_confirmation:'',
       }

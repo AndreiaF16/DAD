@@ -26,6 +26,9 @@ import User from './components/admin/users';
 import WalletComponent from './components/wallets/Wallet';
 import Vuex from 'vuex';
 
+import RegisterDebit from './components/users/RegisterDebit';
+
+
 import Vue from 'vue'
 import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
@@ -99,9 +102,7 @@ const routes = [
     }},
    {path:'/createUser', component:CreateUser},
    {path:'/users', component:User},
-
-   // {path:'/wallet', component:WalletComponent},
-
+   {path:'/debit', component:RegisterDebit},
 
 ]
 
