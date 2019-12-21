@@ -37,7 +37,7 @@
 
         <div class="form-group">
             <label for="category">Category:</label>
-            <select name="category" id="category" class="form-control" v-model="category" required>
+            <select name="category" id="category" class="form-control" v-model="category_id" required>
                 <option disabled selected> -- select an option -- </option>
                 <option v-for="paymentType in paymentTypes" :key="paymentType.id" v-bind:value="paymentType.id">{{ paymentType.name }}</option>
             </select>
@@ -58,7 +58,7 @@
             <div class="form-group">
                 <label for="inputEntity">Entity:</label>
                 <input
-                    type="number" class="form-control" v-model="entity"
+                    type="number" class="form-control" v-model="mb_entity_code"
                     name="entity" id="inputEntity"
                     placeholder="Insert Entity" required/>
             </div>
@@ -66,7 +66,7 @@
             <div class="form-group">
                 <label for="inputReference">Reference:</label>
                 <input
-                    type="number" class="form-control" v-model="reference"
+                    type="number" class="form-control" v-model="mb_payment_reference"
                     name="reference" id="inputReference"
                     placeholder="Insert Reference" required/>
             </div>
@@ -90,11 +90,11 @@
 
         <div v-if="this.transfer == '1'">
             <div class="form-group">
-                <label for="inputSourceEmail">Source email</label>
+                <label for="inputSourceEmail">Destination wallet email</label>
                 <input
-                    type="email" class="form-control" v-model="source_email"
-                    name="source_email" id="inputSourceEmail"
-                    placeholder="Source email address"/>
+                    type="email" class="form-control" v-model="destination_email"
+                    name="destination_email" id="inputDestinationEmail"
+                    placeholder="Destination wallet email address"/>
             </div>
             <div class="form-group">
                 <label for="inputSourceDescription">Source Description:</label>
@@ -120,34 +120,47 @@
    export default {
            data: function() {
             return {
-
                 name: "RegisterDebit",
-                email: '',
                 typeofmsg: '',
                 message:'',
                 showErrors: false,
                 showMessage: false,
                 errors: [],
+                email: '',
                 type_payment: '',
                 value: '',
-                category: '',
+                category_id: '',
                 iban: '',
                 source_description: '',
-                entity: '',
+                mb_entity_code: '',
                 description: '',
-                reference: '',
-                source_email: '',
+                mb_payment_reference: '',
+                destination_email: '',
                 transfer: 0,
                 paymentTypes: []
             }
       },
     methods: {
         createCredit(){
-                this.$emit('createCredit', this.currentMovement);
-            },
-             cancelDebit(){
-                this.$emit('cancel-debit');
-            },
+            let formdata = new FormData();
+            formdata.append('email', this.email);
+            formdata.append('type_payment', this.type_payment);
+            formdata.append('value', this.value);
+            formdata.append('iban', this.iban);
+            formdata.append('source_description', this.source_description);
+            formdata.append('description', this.description);
+            formdata.append('mb_payment_reference', this.mb_payment_reference);
+            formdata.append('destination_email', this.destination_email);
+            formdata.append('transfer', this.transfer);
+            formdata.append('_method', 'POST');
+            axios.post('/api/movements/debit',formdata)
+            .then(response => {
+                this.paymentTypes = response.data.data;
+            });
+        },
+        cancelDebit(){
+            this.$emit('cancel-debit');
+        },
         close(){
                 this.showErrors=false;
                 this.showMessage=false;

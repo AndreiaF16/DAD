@@ -7,9 +7,11 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Facades\DB;
 use App\Movement;
 use App\Http\Resources\Movement as MovementResource;
-
+use App\Http\Controllers\Requests\DebitMovementRequest;
 use App\User;
+use App\Wallet;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class MovementControllerAPI extends Controller
 {
@@ -113,7 +115,60 @@ class MovementControllerAPI extends Controller
         return new MovementResource($movement);
     }
 
-    public function createDebit(Request $request) {
+    public function createDebit(DebitMovementRequest $request) {
+        $movement = new Movement();
+        $movement->fill($request->except(['destination_email',"email"]));
+
+        if($request->email == $request->destination_email){
+            return response('Email and Destination Email are the same!');
+        }
+
+        $wallet = Wallet::where('email',$request->email)->first();
+        if($wallet == null){
+            return response('Email is not valid!');
+        }
+        $wallet->balance = $wallet->balance - $request->value;
+        $wallet->save();
+
+        $date = Carbon::now();
+        $movement->wallet_id = $wallet->id;
+        $movement->type = "e";
+        $movement->start_balance = $wallet->balance + $request->value;
+        $movement->end_balance = $wallet->balance;
+        $movement->date = $date->toDateTimeString();
+        $movement->save();
+
+        if($request->transfer == 1){
+            
+            $wallet_dest = Wallet::where('email',$request->destination_email)->first();
+            if($wallet_dest == null){
+                return response('Destination Email is invalid!');
+            }
+
+            $wallet_dest->balance = $wallet_dest->balance + $request->value;
+            $wallet_dest->save();
+
+            $date = Carbon::now();
+
+            $movement_dest = new Movement();
+            $movement_dest->fill($request->except(['destination_email',"email"]));
+            $movement_dest->wallet_id = $wallet_dest->id;
+            $movement_dest->type = "i";
+            $movement_dest->start_balance = $wallet_dest->balance;
+            $movement_dest->end_balance = $wallet_dest->balance + $request->value;
+            $movement_dest->date = $date->toDateTimeString();
+            $movement_dest->transfer_movement_id = $movement->id;
+            $movement_dest->transfer_wallet_id = $wallet->id;
+            $movement_dest->iban = $request->iban;
+            $movement_dest->source_description = $request->source_description;
+            
+            $movement_dest->save();
+
+            $movement->transfer_movement_id = $movement_dest->id;
+            $movement->transfer_wallet_id = $wallet_dest->id;
+                    
+            $movement->save();
+        }
     }
 }
 

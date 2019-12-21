@@ -2794,28 +2794,43 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       name: "RegisterDebit",
-      email: '',
       typeofmsg: '',
       message: '',
       showErrors: false,
       showMessage: false,
       errors: [],
+      email: '',
       type_payment: '',
       value: '',
-      category: '',
+      category_id: '',
       iban: '',
       source_description: '',
-      entity: '',
+      mb_entity_code: '',
       description: '',
-      reference: '',
-      source_email: '',
+      mb_payment_reference: '',
+      destination_email: '',
       transfer: 0,
       paymentTypes: []
     };
   },
   methods: {
     createCredit: function createCredit() {
-      this.$emit('createCredit', this.currentMovement);
+      var _this = this;
+
+      var formdata = new FormData();
+      formdata.append('email', this.email);
+      formdata.append('type_payment', this.type_payment);
+      formdata.append('value', this.value);
+      formdata.append('iban', this.iban);
+      formdata.append('source_description', this.source_description);
+      formdata.append('description', this.description);
+      formdata.append('mb_payment_reference', this.mb_payment_reference);
+      formdata.append('destination_email', this.destination_email);
+      formdata.append('transfer', this.transfer);
+      formdata.append('_method', 'POST');
+      axios.post('/api/movements/debit', formdata).then(function (response) {
+        _this.paymentTypes = response.data.data;
+      });
     },
     cancelDebit: function cancelDebit() {
       this.$emit('cancel-debit');
@@ -2826,10 +2841,10 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     axios.get('/api/categories/expense').then(function (response) {
-      _this.paymentTypes = response.data.data;
+      _this2.paymentTypes = response.data.data;
     });
   },
   components: {
@@ -56608,8 +56623,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.category,
-                expression: "category"
+                value: _vm.category_id,
+                expression: "category_id"
               }
             ],
             staticClass: "form-control",
@@ -56624,7 +56639,7 @@ var render = function() {
                     var val = "_value" in o ? o._value : o.value
                     return val
                   })
-                _vm.category = $event.target.multiple
+                _vm.category_id = $event.target.multiple
                   ? $$selectedVal
                   : $$selectedVal[0]
               }
@@ -56696,8 +56711,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.entity,
-                    expression: "entity"
+                    value: _vm.mb_entity_code,
+                    expression: "mb_entity_code"
                   }
                 ],
                 staticClass: "form-control",
@@ -56708,13 +56723,13 @@ var render = function() {
                   placeholder: "Insert Entity",
                   required: ""
                 },
-                domProps: { value: _vm.entity },
+                domProps: { value: _vm.mb_entity_code },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.entity = $event.target.value
+                    _vm.mb_entity_code = $event.target.value
                   }
                 }
               })
@@ -56730,8 +56745,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.reference,
-                    expression: "reference"
+                    value: _vm.mb_payment_reference,
+                    expression: "mb_payment_reference"
                   }
                 ],
                 staticClass: "form-control",
@@ -56742,13 +56757,13 @@ var render = function() {
                   placeholder: "Insert Reference",
                   required: ""
                 },
-                domProps: { value: _vm.reference },
+                domProps: { value: _vm.mb_payment_reference },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.reference = $event.target.value
+                    _vm.mb_payment_reference = $event.target.value
                   }
                 }
               })
@@ -56834,7 +56849,7 @@ var render = function() {
         ? _c("div", [
             _c("div", { staticClass: "form-group" }, [
               _c("label", { attrs: { for: "inputSourceEmail" } }, [
-                _vm._v("Source email")
+                _vm._v("Destination wallet email")
               ]),
               _vm._v(" "),
               _c("input", {
@@ -56842,24 +56857,24 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.source_email,
-                    expression: "source_email"
+                    value: _vm.destination_email,
+                    expression: "destination_email"
                   }
                 ],
                 staticClass: "form-control",
                 attrs: {
                   type: "email",
-                  name: "source_email",
-                  id: "inputSourceEmail",
-                  placeholder: "Source email address"
+                  name: "destination_email",
+                  id: "inputDestinationEmail",
+                  placeholder: "Destination wallet email address"
                 },
-                domProps: { value: _vm.source_email },
+                domProps: { value: _vm.destination_email },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.source_email = $event.target.value
+                    _vm.destination_email = $event.target.value
                   }
                 }
               })
