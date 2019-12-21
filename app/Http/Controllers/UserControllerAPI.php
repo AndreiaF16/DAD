@@ -20,6 +20,12 @@ class UserControllerAPI extends Controller
         return new UserResource(Auth::user());
     }
 
+    public function getUser($email){
+        $user = User::where("email","=",$email)->get();
+        return $user;
+        //return new UserResource($user);
+    }
+
     public function update(Request $request)
     {
         $validated = $request->validate([

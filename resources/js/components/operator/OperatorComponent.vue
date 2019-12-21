@@ -66,7 +66,8 @@
         type_payment: "",
         iban: "",
         source_description: "",
-      }
+      },
+      notificationMsg: ""
     };
   },
   methods: {
@@ -76,7 +77,8 @@
 					this.showErrors=false;
 					this.showMessage=true;
 					this.message='Income registered with success';
-					this.typeofmsg= "alert-success";
+          this.typeofmsg= "alert-success";
+          this.sendMsgText()
 					this.$router.push('/home');
 				}).catch(error=>{
 					if(error.response.status==401){
@@ -98,12 +100,28 @@
 						}
 					}
 				});
+    },
+    sendMsgText () {
+      let user= {};
+      axios.get("api/users/"+this.movement.email)
+      .then(response=>{
+          user = response.data;
+          this.$socket.emit("notifyIncome",msg,user)
+				});
+      let msg = user + "=> A new income of "+ this.movement.value + " is added to "+ this.movement.email +" account";
+      this.notificationMsg = msg;
+      this.$toasted.success("Income Created!");
     }
   },
+    sockets:{
+      notifyIncome: function(msg){
+        this.notificationMsg = msg;
+      }
+    },
   components: {
-            'error-validation':errorValidation,
-            'show-message':showMessage,
-        },
+    'error-validation':errorValidation,
+    'show-message':showMessage,
+  },
 };
 </script>
 

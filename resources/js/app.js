@@ -38,6 +38,21 @@ Vue.use(VueRouter);
 Vue.use(VueGoodTable);
 Vue.use(VueSidebarMenu);
 
+import VueSocketIO from "vue-socket.io";
+Vue.use(new VueSocketIO({
+    debug: true,
+    connection: 'http://127.0.0.1:8080'
+   })
+); 
+
+import Toasted from "vue-toasted";
+
+Vue.use(Toasted, {
+    position: "bottom-center",
+    duration: 5000,
+    type: "info"
+});
+
 const routes = [
     {path:'/', redirect:'/home'},
     {path:'/home', component:Home},

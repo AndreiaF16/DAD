@@ -39,6 +39,7 @@ Route::post('operator/registerIncome','OperatorControllerAPI@registerIncome');
 //us1
 Route::get('home', 'WalletControllerAPI@index');
 Route::middleware('auth:api')->get('users/me','UserControllerAPI@getAuthUser');
+Route::middleware('auth:api')->get('users/{email}','UserControllerAPI@getUser');
 Route::middleware('auth:api')->get('getAuthUser','UserControllerAPI@getAuthUser');
 //us2
 Route::post('registerUser', 'RegisterControllerAPI@create');
