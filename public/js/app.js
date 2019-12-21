@@ -3276,21 +3276,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['movement'],
   data: function data() {
@@ -3308,10 +3293,9 @@ __webpack_require__.r(__webpack_exports__);
 
       this.movementPhoto = null;
 
-      if (this.movement.email) {
-        axios.get("api/getphotobyemail/" + this.movement.email).then(function (response) {
-          _this.movementPhoto = response.data;
-          _this.movementPhoto = "storage/fotos/" + _this.movementPhoto;
+      if (this.movement.transfer_wallet) {
+        axios.get("api/getphotobyemail/" + this.movement.transfer_wallet.email).then(function (response) {
+          _this.movementPhoto = "storage/fotos/" + response.data[0];
         })["catch"](function (error) {
           _this.movementPhoto = null;
         });
@@ -3321,11 +3305,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.getPhoto();
-  },
-  watch: {
-    movement: function movement() {
-      this.getPhoto();
-    }
   }
 });
 
@@ -74499,7 +74478,7 @@ var routes = [{
     }
   }
 }, {
-  path: '/myWallets',
+  path: '/myVirtualWallet',
   component: _components_wallets_Wallet__WEBPACK_IMPORTED_MODULE_12__["default"],
   beforeEnter: function beforeEnter(to, from, next) {
     var $userGet = JSON.parse(localStorage.getItem('user'));
@@ -74556,7 +74535,7 @@ vue__WEBPACK_IMPORTED_MODULE_15___default.a.component('profile', _components_use
 
 vue__WEBPACK_IMPORTED_MODULE_15___default.a.component('operator', _components_operator_OperatorComponent__WEBPACK_IMPORTED_MODULE_7__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_15___default.a.component('movements', _components_movements_movements__WEBPACK_IMPORTED_MODULE_9__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_15___default.a.component('myWallets', _components_wallets_Wallet__WEBPACK_IMPORTED_MODULE_12__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_15___default.a.component('myVirtualWallet', _components_wallets_Wallet__WEBPACK_IMPORTED_MODULE_12__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_15___default.a.component('createUser', _components_admin_createUser__WEBPACK_IMPORTED_MODULE_10__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_15___default.a.component('users', _components_admin_users__WEBPACK_IMPORTED_MODULE_11__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_13__["default"].Store({

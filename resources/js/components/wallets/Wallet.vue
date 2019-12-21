@@ -160,7 +160,7 @@
             </table>
         </div>
 
- <div class="card-footer">
+        <div class="card-footer">
             <pagination :data="movements" :limit=4 @pagination-change-page="getResults"></pagination>
         </div>
 

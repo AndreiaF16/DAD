@@ -73,7 +73,7 @@ const routes = [
             next();
         }
     }},
-    {path: '/myWallets', component:WalletComponent, beforeEnter: (to, from, next) => {
+    {path: '/myVirtualWallet', component:WalletComponent, beforeEnter: (to, from, next) => {
         var $userGet = JSON.parse(localStorage.getItem('user'));
         if(localStorage.getItem("token")==null){
             next("/");
@@ -117,7 +117,7 @@ Vue.component('profile', Profile)
 //Vue.component('myWallets', listVirtualWallets)
 Vue.component('operator', Operator)
 Vue.component('movements', Movements)
-Vue.component('myWallets', WalletComponent)
+Vue.component('myVirtualWallet', WalletComponent)
 Vue.component('createUser', CreateUser)
 
 Vue.component('users', User)

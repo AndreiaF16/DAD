@@ -22,7 +22,6 @@ class UserControllerAPI extends Controller
 
     public function getUser($email){
         $user = User::where("email","=",$email)->first();
-        //return $user;
         return new UserResource($user);
     }
 
@@ -39,13 +38,6 @@ class UserControllerAPI extends Controller
         $user = Auth::user();
 
         $user->fill($request->except(['file']));
-
-
-        /*if($request->file != null) {
-            $image = $request->file('file');
-            $path = basename($image->store('profiles', 'public'));
-            $user->photo = basename($path);
-        }*/
 
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
 

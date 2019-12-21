@@ -65,7 +65,6 @@ io.on('connection', function (socket) {
     let socket_id = userInfo !== undefined ? userInfo.socketID : null;
     if (socket_id === null) {
         console.log("user is offline");
-        //socket.emit("privateMessage_unavailable", destUser);
     } else {
         io.to(socket_id).emit("movementReceived", msg);
     }

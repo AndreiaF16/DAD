@@ -29,9 +29,9 @@
                 <router-link class="nav-item nav-link" v-on:click.native="logout" v-show="this.$store.state.user" to="/">Logout</router-link>
                 <router-link class="nav-item nav-link" to="/home">Home</router-link>
                 <router-link class="nav-item nav-link" to="/profile" v-show="this.$store.state.user">Profile</router-link>
-                <router-link class="nav-item nav-link" to="/operator" v-show="this.$store.state.user && this.$store.state.user.type=='o'"> Create an income </router-link>
+                <router-link class="nav-item nav-link" to="/operator" v-show="this.$store.state.user && this.$store.state.user.type=='o'">Create an income</router-link>
                 <router-link class="nav-item nav-link" to="/register" v-show="!this.$store.state.user"> Create an account </router-link>
-                <router-link class="nav-item nav-link" to="/myWallets" v-show="this.$store.state.user && this.$store.state.user.type=='u'">My Virtual Wallets</router-link>
+                <router-link class="nav-item nav-link" to="/myVirtualWallet" v-show="this.$store.state.user && this.$store.state.user.type=='u'">My Virtual Wallet</router-link>
                 <router-link class="nav-item nav-link" to="/createUser" v-show="this.$store.state.user && this.$store.state.user.type=='a'">Create User</router-link>
                 <router-link class="nav-item nav-link" to="/users" v-show="this.$store.state.user && this.$store.state.user.type=='a'">Users</router-link>
 
