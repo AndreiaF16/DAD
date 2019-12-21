@@ -63,3 +63,5 @@ Route::get('getphotobyemail/{email}','UserControllerAPI@getPhotoByEmail');
 
 //us 9
 Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');
+
+Route::middleware('auth:api')->get('categories/expense', 'CategoryControllerAPI@CategoriesExpense');

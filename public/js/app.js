@@ -2737,6 +2737,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2744,13 +2795,22 @@ __webpack_require__.r(__webpack_exports__);
     return {
       name: "RegisterDebit",
       email: '',
-      typeofmsg: "",
+      typeofmsg: '',
       message: '',
       showErrors: false,
       showMessage: false,
       errors: [],
       type_payment: '',
-      value: ''
+      value: '',
+      category: '',
+      iban: '',
+      source_description: '',
+      entity: '',
+      description: '',
+      reference: '',
+      source_email: '',
+      transfer: 0,
+      paymentTypes: []
     };
   },
   methods: {
@@ -2764,6 +2824,13 @@ __webpack_require__.r(__webpack_exports__);
       this.showErrors = false;
       this.showMessage = false;
     }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/api/categories/expense').then(function (response) {
+      _this.paymentTypes = response.data.data;
+    });
   },
   components: {
     'error-validation': _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -56531,6 +56598,55 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "category" } }, [_vm._v("Category:")]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.category,
+                expression: "category"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "category", id: "category", required: "" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.category = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          [
+            _c("option", { attrs: { disabled: "", selected: "" } }, [
+              _vm._v(" -- select an option -- ")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.paymentTypes, function(paymentType) {
+              return _c(
+                "option",
+                { key: paymentType.id, domProps: { value: paymentType.id } },
+                [_vm._v(_vm._s(paymentType.name))]
+              )
+            })
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
       this.type_payment == "bt"
         ? _c("div", [
             _c("div", { staticClass: "form-group" }, [
@@ -56561,6 +56677,189 @@ var render = function() {
                       return
                     }
                     _vm.iban = $event.target.value
+                  }
+                }
+              })
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      this.type_payment == "mb"
+        ? _c("div", [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputEntity" } }, [
+                _vm._v("Entity:")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.entity,
+                    expression: "entity"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  name: "entity",
+                  id: "inputEntity",
+                  placeholder: "Insert Entity",
+                  required: ""
+                },
+                domProps: { value: _vm.entity },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.entity = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputReference" } }, [
+                _vm._v("Reference:")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.reference,
+                    expression: "reference"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  name: "reference",
+                  id: "inputReference",
+                  placeholder: "Insert Reference",
+                  required: ""
+                },
+                domProps: { value: _vm.reference },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.reference = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputDescription" } }, [
+                _vm._v("Description:")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.description,
+                    expression: "description"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  name: "description",
+                  id: "inputDescription",
+                  placeholder: "Insert a description",
+                  required: ""
+                },
+                domProps: { value: _vm.description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.description = $event.target.value
+                  }
+                }
+              })
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "inputTransfer" } }, [_vm._v("Transfer:")]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.transfer,
+                expression: "transfer"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "transfer", id: "transfer", required: "" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.transfer = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          [
+            _c("option", { attrs: { value: "0" } }, [_vm._v("No")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "1" } }, [_vm._v("Yes")])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      this.transfer == "1"
+        ? _c("div", [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputSourceEmail" } }, [
+                _vm._v("Source email")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.source_email,
+                    expression: "source_email"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "email",
+                  name: "source_email",
+                  id: "inputSourceEmail",
+                  placeholder: "Source email address"
+                },
+                domProps: { value: _vm.source_email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.source_email = $event.target.value
                   }
                 }
               })

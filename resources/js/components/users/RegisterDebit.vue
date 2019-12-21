@@ -35,6 +35,14 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <select name="category" id="category" class="form-control" v-model="category" required>
+                <option disabled selected> -- select an option -- </option>
+                <option v-for="paymentType in paymentTypes" :key="paymentType.id" v-bind:value="paymentType.id">{{ paymentType.name }}</option>
+            </select>
+        </div>
+
         <div v-if="this.type_payment == 'bt'" >
             <div class="form-group">
                 <label for="inputIBAN">IBAN:</label>
@@ -44,7 +52,50 @@
                     placeholder="Insert IBAN" required
                     title="INAN must be 2 upper letters followed by 23 numbers"/>
             </div>
+        </div>
 
+        <div v-if="this.type_payment == 'mb'" >
+            <div class="form-group">
+                <label for="inputEntity">Entity:</label>
+                <input
+                    type="number" class="form-control" v-model="entity"
+                    name="entity" id="inputEntity"
+                    placeholder="Insert Entity" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="inputReference">Reference:</label>
+                <input
+                    type="number" class="form-control" v-model="reference"
+                    name="reference" id="inputReference"
+                    placeholder="Insert Reference" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="inputDescription">Description:</label>
+                <input
+                    type="text" class="form-control" v-model="description"
+                    name="description" id="inputDescription"
+                    placeholder="Insert a description" required/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputTransfer">Transfer:</label>
+            <select name="transfer" id="transfer" class="form-control" v-model="transfer" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+
+        <div v-if="this.transfer == '1'">
+            <div class="form-group">
+                <label for="inputSourceEmail">Source email</label>
+                <input
+                    type="email" class="form-control" v-model="source_email"
+                    name="source_email" id="inputSourceEmail"
+                    placeholder="Source email address"/>
+            </div>
             <div class="form-group">
                 <label for="inputSourceDescription">Source Description:</label>
                 <input
@@ -72,14 +123,22 @@
 
                 name: "RegisterDebit",
                 email: '',
-                typeofmsg: "",
+                typeofmsg: '',
                 message:'',
                 showErrors: false,
                 showMessage: false,
                 errors: [],
                 type_payment: '',
                 value: '',
-
+                category: '',
+                iban: '',
+                source_description: '',
+                entity: '',
+                description: '',
+                reference: '',
+                source_email: '',
+                transfer: 0,
+                paymentTypes: []
             }
       },
     methods: {
@@ -93,6 +152,11 @@
                 this.showErrors=false;
                 this.showMessage=false;
             },
+    },mounted(){
+        axios.get('/api/categories/expense')
+        .then(response => {
+            this.paymentTypes = response.data.data;
+        });
     },
     components: {
         'error-validation':errorValidation,
