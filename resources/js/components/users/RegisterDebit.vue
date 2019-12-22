@@ -2,11 +2,6 @@
     <div class="jumbotron">
         <h2>Register Debit</h2>
 
-
-    <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
-
-    <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
-
         <div class="form-group">
             <label for="inputEmail">Email To Debit:</label>
             <input
@@ -28,8 +23,7 @@
         <div class="form-group">
             <label for="type_payment">Type Of Payment:</label>
             <select name="type_payment" id="type_payment" class="form-control" v-model="movement.type_payment" required>
-                <option disabled selected> -- select an option -- </option>
-                <option value="c">Cash</option>
+                <option value='' selected> -- Select the Type Of Payment -- </option>
                 <option value="bt">Bank Transfer</option>
                 <option value="mb">MB Payment</option>
             </select>
@@ -38,7 +32,7 @@
         <div class="form-group">
             <label for="category">Category:</label>
             <select name="category" id="category" class="form-control" v-model="movement.category_id" required>
-                <option disabled selected> -- select an option -- </option>
+                <option value='' selected> -- Select a Category -- </option>
                 <option v-for="paymentType in paymentTypes" :key="paymentType.id" v-bind:value="paymentType.id">{{ paymentType.name }}</option>
             </select>
         </div>
@@ -163,17 +157,13 @@
         cancelDebit(){
             this.$router.push('/home');
         },
-        close(){
-                this.showErrors=false;
-                this.showMessage=false;
-            },
     },mounted(){
         axios.get('/api/categories/expense')
         .then(response => {
             this.paymentTypes = response.data.data;
         });
         this.user = JSON.parse(localStorage.getItem('user'));
-        this.movement.email = this.user.email; 
+        this.movement.email = this.user.email;
     },
    }
 </script>
