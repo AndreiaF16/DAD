@@ -25,22 +25,21 @@
                 placeholder="Insert value to credit" required
                 title="Value needs to be between 0.1 and 5000"/>
         </div>
-
+        
         <div class="form-group">
-            <label for="type_payment">Type Of Payment:</label>
-            <select name="type_payment" id="type_payment" class="form-control" v-model="movement.type_payment" required>
-                <option disabled selected> -- select an option -- </option>
-                <option value="c">Cash</option>
-                <option value="bt">Bank Transfer</option>
-                <option value="mb">MB Payment</option>
+            <label for="category">Category:</label>
+            <select name="category" id="category" class="form-control" v-model="movement.category_id" required>
+                <option value='' selected> -- Select the Category -- </option>
+                <option v-for="paymentType in paymentTypes" :key="paymentType.id" v-bind:value="paymentType.id">{{ paymentType.name }}</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label for="category">Category:</label>
-            <select name="category" id="category" class="form-control" v-model="movement.category_id" required>
-                <option disabled selected> -- select an option -- </option>
-                <option v-for="paymentType in paymentTypes" :key="paymentType.id" v-bind:value="paymentType.id">{{ paymentType.name }}</option>
+            <label for="type_payment">Type Of Payment:</label>
+            <select name="type_payment" id="type_payment" class="form-control" v-model="movement.type_payment" required>
+                <option value='' selected> -- Select the Type Of Payment -- </option>
+                <option value="bt">Bank Transfer</option>
+                <option value="mb">MB Payment</option>
             </select>
         </div>
 
@@ -91,7 +90,7 @@
 
         <div v-if="this.movement.transfer == '1'">
             <div class="form-group">
-                <label for="inputSourceEmail">Destination wallet email</label>
+                <label for="inputSourceEmail">Destination Wallet Email:</label>
                 <input
                     type="email" class="form-control" v-model="movement.destination_email"
                     name="destination_email" id="inputDestinationEmail"
@@ -170,9 +169,9 @@
             this.$router.push('/home');
         },
         close(){
-                this.showErrors=false;
-                this.showMessage=false;
-            },
+            this.showErrors=false;
+            this.showMessage=false;
+        },
     },
     components: {
         'show-message':showMessage,

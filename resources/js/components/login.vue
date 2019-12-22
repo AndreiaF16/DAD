@@ -1,11 +1,9 @@
 <template>
 <div>
-            <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
-
     <div class="jumbotron">
             <h1>User Login</h1>
         </div>
-
+        <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
         <form>
             <div class="form-group">
                 <label for="inputEmail">Email</label>
@@ -48,9 +46,6 @@
             userLogin(){
                 axios.post('/api/login', this.user)
                     .then(response => {
-                        this.message = "User authenticated correctly";
-                        this.showMessage = true;
-                        this.user.remember_token = response.data.access_token;
                         this.$store.commit('setToken',this.user.remember_token);
                         this.$store.commit('logIn',true);
                         localStorage.setItem("token", this.user.remember_token);
@@ -59,9 +54,6 @@
                             .then(response => {
                                 this.$store.commit('setUser',response.data.data);
                                 localStorage.setItem("user",JSON.stringify(response.data.data));
-                                this.message = "User authenticated correctly";
-                                this.typeofmsg = "alert-success";
-                                this.showMessage = true;
                                 this.$socket.emit("user_enter",response.data.data);
                             });
                         this.$router.push('/home');
@@ -70,23 +62,20 @@
                         console.log(error);
                         this.showMessage=true;
                         this.message = "Invalid credentials";
-                       //this.message=error.response.data.unauthorized;
                         this.typeofmsg= "alert-danger";
                         return;
-
-
                     });
             },
              close(){
                 this.showMessage = false;
-            }
-        },
+            },
             cancelLogin() {
                 this.$router.push('/home');
-            },
-             components: {
-            'show-message':showMessage,
+            }
         },
+        components: {
+        'show-message':showMessage,
+    },
 
     };
 </script>

@@ -1,12 +1,12 @@
 <template>
-
-
 <div>
     <div class="container">
         <div class="jumbotron row justify-content-center">
                 <h1>{{tittle}}</h1>
         </div>
       
+        <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
+
         <div class="form-group">
             <label for="inputName">Name</label>
             <input type="name" class="form-control" v-model.trim="user.name" name="name" id="inputName"
@@ -43,14 +43,14 @@
 
 <script>
 import errorValidation from '../helpers/showErrors.vue';
-import showMessage from '../helpers/showMessage.vue';
  import fileUpload from '../helpers/uploadFile.vue';
-
-//module.exports = {
+ 
 export default {
   data: function() {
     return {
         tittle:'Regist User',
+        showErrors:false,
+        errors:[],
       user: {
         name: "",
         email: "",
@@ -73,28 +73,22 @@ export default {
         .post("api/registerUser", formdata)
         .then(response => {
           console.log("response", response);
-
         })
         .catch(error => {
-          console.log(error);
-          let data = error.response.data.errors;
-          for (let key in this.errors) {
-            this.errors[key] = [];
-            let errorMessage = data[key];
-            if (errorMessage) {
-              this.errors[key] = errorMessage;
-            }
-          }
+          this.showErrors = true;
+          this.errors = error.response.data.errors;
         });
     },onFileChanged(fileSelected) {
-                this.user.photo = fileSelected
-            },
+        this.user.photo = fileSelected
+    },
+    close(){
+        this.showErrors=false;
+    },
   },
   components: {
-            //'error-validation':errorValidation,
-            //'show-message':showMessage,
-            'file-upload': fileUpload,
-        },
+      'error-validation':errorValidation,
+      'file-upload': fileUpload,
+  },
 };
 </script>
 

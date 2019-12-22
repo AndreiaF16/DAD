@@ -3,11 +3,11 @@
 
 <div>
    <div class="container">
-         <div class="jumbotron row justify-content-center">
-                <h1>{{tittle}}</h1>
-        </div>
+      <div class="jumbotron row justify-content-center">
+        <h1>{{tittle}}</h1>
+      </div>
 
-
+      <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
 
       </div>
       <div class="form-group">
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+  import errorValidation from '../helpers/showErrors.vue';
   export default{
   data: function() {
     return {
@@ -82,6 +83,8 @@
           this.$socket.emit("notifyMovement",msg,{ email:response.data.email, id: response.data.id})
 					this.$router.push('/home');
 				}).catch(error=>{
+          this.showErrors = true;
+          this.errors = error.response.data.errors;
 					if(error.response.status == 401){
 					  this.$toasted.error(error.response.data.unauthorized);
 				  }else if(error.response.status == 422){
@@ -90,7 +93,14 @@
             this.$toasted.error(error.response.data.error);
           }
 				});
-    }
+    },
+    close(){
+        this.showErrors=false;
+        this.showMessage=false;
+    },
+  },
+  components: {
+      'error-validation':errorValidation,
   },
   sockets:{
     notifyMovement: function(msg){
