@@ -14,7 +14,7 @@ class DebitMovementRequest extends FormRequest
         return [
             'value' => 'required|numeric|min:0.01|max:5000',
             'email' => 'required|string|email|max:255|exists:wallets,email',
-            'type_payment' => 'required|in:c,mb,bt',
+            'type_payment' => 'required|in:mb,bt',
             'iban' => 'nullable|required_if:type_payment,bt|regex:/^[A-Za-z]{2}[0-9]{23}/',
             'category_id' => 'required|exists:categories,id',
             'mb_entity_code'=> 'nullable|required_if:type_payment,==,mb|max:5|min:5',

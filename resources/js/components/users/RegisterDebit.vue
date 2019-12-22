@@ -152,6 +152,14 @@
                     this.$socket.emit("notifyMovement",msg,{ email:response.data.email, id: response.data.id});
                 }
                 this.$router.push('/home');
+            }).catch(error => {
+                if(error.response.status==401){
+					this.$toasted.error(error.response.data.unauthorized);
+				}else if(error.response.status == 422){
+                    this.$toasted.error(error.response.data.message)
+                }else{
+                    this.$toasted.error(error.response.data.error);
+                }
             });
         },
         cancelDebit(){

@@ -60,7 +60,7 @@ Route::middleware('auth:api')->delete('users/{id}', 'UserControllerAPI@destroy')
 
 
 Route::get('getphotobyemail/{email}','UserControllerAPI@getPhotoByEmail');
-Route::get('users/email','UserControllerAPI@sendEmail');
+Route::post('users/email','UserControllerAPI@sendEmail');
 
 //us 9
 //Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');

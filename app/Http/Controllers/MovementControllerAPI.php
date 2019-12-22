@@ -118,19 +118,24 @@ class MovementControllerAPI extends Controller
 
     public function createDebit(DebitMovementRequest $request) {
         $movement = new Movement();
-        $movement->fill($request->except(['destination_email',"email"]));
+        if($request->type_payment == "bt"){
+            $movement->fill($request->except(['destination_email',"email",'mb_entity_code','mb_payment_reference','description',"source_description"]));
+        }
+        if($request->type_payment == "mb"){
+            $movement->fill($request->except(['destination_email',"email",'iban','source_description']));
+        }
 
         if($request->email == $request->destination_email){
-            return response('Email and Destination Email are the same!');
+            return response()->json(["error"=> "Email and Destination Email are the same!"], 400);
         }
 
         $wallet = Wallet::where('email',$request->email)->first();
         if($wallet == null){
-            return response('Email is not valid!');
+            return response()->json(["error"=> "Email is not valid!"], 400);
         }
 
         if($wallet->balance - $request->value < 0){
-
+            return response()->json(["error"=> "The balance would be negative with this debit! Debit not allowed"], 400);
         }
 
         $date = Carbon::now();
@@ -148,7 +153,7 @@ class MovementControllerAPI extends Controller
             
             $wallet_dest = Wallet::where('email',$request->destination_email)->first();
             if($wallet_dest == null){
-                return response('Destination Email is invalid!');
+                return response()->json(["error"=> "Destination Email is invalid!"], 400);
             }       
 
             $date = Carbon::now();
@@ -169,6 +174,7 @@ class MovementControllerAPI extends Controller
             $wallet_dest->balance = $wallet_dest->balance + $request->value;
             $wallet_dest->save();
 
+            $movement->source_description = $request->source_description;
             $movement->transfer_movement_id = $movement_dest->id;
             $movement->transfer_wallet_id = $wallet_dest->id;
                     

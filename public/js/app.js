@@ -2832,6 +2832,14 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         _this.$router.push('/home');
+      })["catch"](function (error) {
+        if (error.response.status == 401) {
+          _this.$toasted.error(error.response.data.unauthorized);
+        } else if (error.response.status == 422) {
+          _this.$toasted.error(error.response.data.message);
+        } else {
+          _this.$toasted.error(error.response.data.error);
+        }
       });
     },
     cancelDebit: function cancelDebit() {
