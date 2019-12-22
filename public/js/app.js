@@ -3391,6 +3391,10 @@ __webpack_require__.r(__webpack_exports__);
       if (this.movement.transfer_wallet) {
         axios.get("api/getphotobyemail/" + this.movement.transfer_wallet.email).then(function (response) {
           _this.movementPhoto = "storage/fotos/" + response.data[0];
+
+          if (response.data[0] == null) {
+            _this.movementPhoto = "http://neoleader.com.br/wp-content/uploads/2015/05/geral_adulto-300x300.png";
+          }
         })["catch"](function (error) {
           _this.movementPhoto = null;
         });
