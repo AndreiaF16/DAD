@@ -114,9 +114,6 @@
 </template>
 
 <script type="text/javascript">
-  import errorValidation from '../helpers/showErrors.vue';
-    import showMessage from '../helpers/showMessage.vue';
-
    export default {
            data: function() {
             return {
@@ -178,11 +175,6 @@
         this.user = JSON.parse(localStorage.getItem('user'));
         this.movement.email = this.user.email; 
     },
-    components: {
-        'error-validation':errorValidation,
-        'show-message':showMessage,
-    },
-
    }
 </script>
 

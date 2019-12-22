@@ -2536,8 +2536,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/showErrors.vue */ "./resources/js/components/helpers/showErrors.vue");
-/* harmony import */ var _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/showMessage.vue */ "./resources/js/components/helpers/showMessage.vue");
 //
 //
 //
@@ -2587,9 +2585,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2612,10 +2607,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post("api/operator/registerIncome", this.movement).then(function (response) {
-        _this.showErrors = false;
-        _this.showMessage = true;
-        _this.message = 'Income registered with success';
-        _this.typeofmsg = "alert-success";
+        _this.$toasted.success("Income registered with success!");
+
         var msg = "A new income of " + _this.movement.value + " is added to your account";
 
         _this.$socket.emit("notifyMovement", msg, {
@@ -2623,28 +2616,14 @@ __webpack_require__.r(__webpack_exports__);
           id: response.data.id
         });
 
-        _this.$toasted.success("Income created!");
-
         _this.$router.push('/home');
       })["catch"](function (error) {
         if (error.response.status == 401) {
-          _this.showMessage = true;
-          _this.message = error.response.data.unauthorized;
-          _this.typeofmsg = "alert-danger";
-          return;
-        }
-
-        if (error.response.status == 422) {
-          if (error.response.data.errors == undefined) {
-            _this.showErrors = false;
-            _this.showMessage = true;
-            _this.message = error.response.data.email;
-            _this.typeofmsg = "alert-danger";
-          } else {
-            _this.showMessage = false;
-            _this.showErrors = true;
-            _this.errors = error.response.data.errors;
-          }
+          _this.$toasted.error(error.response.data.unauthorized);
+        } else if (error.response.status == 422) {
+          _this.$toasted.error(error.response.data.message);
+        } else {
+          _this.$toasted.error(error.response.data.error);
         }
       });
     }
@@ -2653,10 +2632,6 @@ __webpack_require__.r(__webpack_exports__);
     notifyMovement: function notifyMovement(msg) {
       this.notificationMsg = msg;
     }
-  },
-  components: {
-    'error-validation': _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    'show-message': _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
@@ -2671,8 +2646,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/showErrors.vue */ "./resources/js/components/helpers/showErrors.vue");
-/* harmony import */ var _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/showMessage.vue */ "./resources/js/components/helpers/showMessage.vue");
 //
 //
 //
@@ -2788,8 +2761,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2859,10 +2830,6 @@ __webpack_require__.r(__webpack_exports__);
     });
     this.user = JSON.parse(localStorage.getItem('user'));
     this.movement.email = this.user.email;
-  },
-  components: {
-    'error-validation': _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    'show-message': _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
@@ -56368,9 +56335,7 @@ var render = function() {
           _vm._v(" "),
           _c("option", { attrs: { value: "c" } }, [_vm._v("Cash")]),
           _vm._v(" "),
-          _c("option", { attrs: { value: "bt" } }, [_vm._v("Bank Transfer")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "mb" } }, [_vm._v("MB payment")])
+          _c("option", { attrs: { value: "bt" } }, [_vm._v("Bank Transfer")])
         ]
       )
     ]),

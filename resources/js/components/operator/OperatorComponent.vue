@@ -23,7 +23,6 @@
             <option disabled selected> -- select an option -- </option>
             <option value="c">Cash</option>
             <option value="bt">Bank Transfer</option>
-            <option value="mb">MB payment</option>
         </select>
     </div>
     <div v-if="this.movement.type_payment == 'bt'" >
@@ -49,10 +48,6 @@
 </template>
 
 <script>
-
-  import errorValidation from '../helpers/showErrors.vue';
-  import showMessage from '../helpers/showMessage.vue';
-
   export default{
   data: function() {
     return {
@@ -74,44 +69,25 @@
     registerIncome() {
       axios.post("api/operator/registerIncome",this.movement)
       .then(response=>{
-					this.showErrors=false;
-					this.showMessage=true;
-					this.message='Income registered with success';
-          this.typeofmsg= "alert-success";
+          this.$toasted.success("Income registered with success!")
           let msg = "A new income of "+ this.movement.value + " is added to your account";
           this.$socket.emit("notifyMovement",msg,{ email:response.data.email, id: response.data.id})
-          this.$toasted.success("Income created!");
 					this.$router.push('/home');
 				}).catch(error=>{
-					if(error.response.status==401){
-						this.showMessage=true;
-						this.message=error.response.data.unauthorized;
-						this.typeofmsg= "alert-danger";
-						return;
-					}
-					if(error.response.status==422){
-						if(error.response.data.errors==undefined){
-							this.showErrors=false;
-							this.showMessage=true;
-							this.message=error.response.data.email;
-							this.typeofmsg= "alert-danger";
-						}else{
-							this.showMessage=false;
-							this.showErrors=true;
-							this.errors=error.response.data.errors;
-						}
-					}
+					if(error.response.status == 401){
+					  this.$toasted.error(error.response.data.unauthorized);
+				  }else if(error.response.status == 422){
+            this.$toasted.error(error.response.data.message)
+          }else{
+            this.$toasted.error(error.response.data.error);
+          }
 				});
     }
   },
-    sockets:{
-      notifyMovement: function(msg){
-        this.notificationMsg = msg;
-      }
-    },
-  components: {
-    'error-validation':errorValidation,
-    'show-message':showMessage,
+  sockets:{
+    notifyMovement: function(msg){
+      this.notificationMsg = msg;
+    }
   },
 };
 </script>

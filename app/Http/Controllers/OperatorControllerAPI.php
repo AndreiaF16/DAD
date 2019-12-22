@@ -26,7 +26,7 @@ class OperatorControllerAPI extends Controller
         //Alterar balance da wallet destino
         $wallet = Wallet::where('email',$request->email)->first();
         if($wallet == null){
-            return response('Email is not valid!');
+            return response()->json(["error"=> "Email does not have virtual wallet!"], 400); 
         }
         $wallet->balance = $wallet->balance + $request->value;
         $wallet->save();
@@ -43,8 +43,6 @@ class OperatorControllerAPI extends Controller
         $movement->date = $date->toDateTimeString();
 
         $movement->save();
-
-       // return response()->json(new MovementResource($movement), 201);
 
        return response()->json(["id"=> $wallet->id, "email" => $wallet->email], 201);
     }
