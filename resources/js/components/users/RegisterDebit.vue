@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-         <div class="jumbotron row justify-content-center">
+        <div class="jumbotron row justify-content-center">
                 <h1>{{tittle}}</h1>
         </div>
 
@@ -26,7 +26,8 @@
         <div class="form-group">
             <label for="type_payment">Type Of Payment:</label>
             <select name="type_payment" id="type_payment" class="form-control" v-model="movement.type_payment" required>
-                <option value='' selected> -- Select the Type Of Payment -- </option>
+                <option disabled selected> -- select an option -- </option>
+                <option value="c">Cash</option>
                 <option value="bt">Bank Transfer</option>
                 <option value="mb">MB Payment</option>
             </select>
@@ -35,7 +36,7 @@
         <div class="form-group">
             <label for="category">Category:</label>
             <select name="category" id="category" class="form-control" v-model="movement.category_id" required>
-                <option value='' selected> -- Select a Category -- </option>
+                <option disabled selected> -- select an option -- </option>
                 <option v-for="paymentType in paymentTypes" :key="paymentType.id" v-bind:value="paymentType.id">{{ paymentType.name }}</option>
             </select>
         </div>
@@ -161,6 +162,10 @@
         cancelDebit(){
             this.$router.push('/home');
         },
+        close(){
+                this.showErrors=false;
+                this.showMessage=false;
+            },
     },mounted(){
         axios.get('/api/categories/expense')
         .then(response => {

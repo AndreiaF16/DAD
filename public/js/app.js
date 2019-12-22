@@ -2766,6 +2766,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2822,6 +2823,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     cancelDebit: function cancelDebit() {
       this.$router.push('/home');
+    },
+    close: function close() {
+      this.showErrors = false;
+      this.showMessage = false;
     }
   },
   mounted: function mounted() {
@@ -8221,7 +8226,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\ntr.activerow[data-v-8095078e] {\r\n  background: #09090a !important;\r\n  color: #fff !important;\n}\r\n", ""]);
+exports.push([module.i, "\ntr.activerow[data-v-8095078e] {\n  background: #09090a !important;\n  color: #fff !important;\n}\n", ""]);
 
 // exports
 
@@ -56576,9 +56581,11 @@ var render = function() {
           }
         },
         [
-          _c("option", { attrs: { value: "", selected: "" } }, [
-            _vm._v(" -- Select the Type Of Payment -- ")
+          _c("option", { attrs: { disabled: "", selected: "" } }, [
+            _vm._v(" -- select an option -- ")
           ]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "c" } }, [_vm._v("Cash")]),
           _vm._v(" "),
           _c("option", { attrs: { value: "bt" } }, [_vm._v("Bank Transfer")]),
           _vm._v(" "),
@@ -56622,8 +56629,8 @@ var render = function() {
           }
         },
         [
-          _c("option", { attrs: { value: "", selected: "" } }, [
-            _vm._v(" -- Select a Category -- ")
+          _c("option", { attrs: { disabled: "", selected: "" } }, [
+            _vm._v(" -- select an option -- ")
           ]),
           _vm._v(" "),
           _vm._l(_vm.paymentTypes, function(paymentType) {
