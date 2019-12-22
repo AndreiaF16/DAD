@@ -13,7 +13,7 @@
                 type="email" class="form-control" v-model="movement.email"
                 name="email" id="inputEmail"
                 placeholder="Insert email of the account to receive the money" required
-                title="Email must be a valid user email"/>
+                title="Email must be a valid user email" readonly/>
         </div>
 
         <div class="form-group">
@@ -126,6 +126,7 @@
                 showErrors: false,
                 showMessage: false,
                 errors: [],
+                user:{},
                 movement:{
                     email: '',
                     type_payment: '',
@@ -174,6 +175,8 @@
         .then(response => {
             this.paymentTypes = response.data.data;
         });
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.movement.email = this.user.email; 
     },
     components: {
         'error-validation':errorValidation,

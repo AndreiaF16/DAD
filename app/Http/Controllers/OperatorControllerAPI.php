@@ -17,7 +17,7 @@ class OperatorControllerAPI extends Controller
         if($request->type_payment == 'bt'){
             $validated = $request->validate([
                 'value' => 'required|numeric|min:0.01|max:5000',
-                'email' => 'required|string|email|max:255',
+                'email' => 'required|string|email|max:255|exists:wallets,email',
                 'type_payment' => 'required|in:c,mb,bt',
                 'iban' => 'nullable|regex:/^[A-Za-z]{2}[0-9]{23}/',
                 'source_description' => 'max:255'

@@ -2799,6 +2799,7 @@ __webpack_require__.r(__webpack_exports__);
       showErrors: false,
       showMessage: false,
       errors: [],
+      user: {},
       movement: {
         email: '',
         type_payment: '',
@@ -2856,6 +2857,8 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/api/categories/expense').then(function (response) {
       _this2.paymentTypes = response.data.data;
     });
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.movement.email = this.user.email;
   },
   components: {
     'error-validation': _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -56526,7 +56529,8 @@ var render = function() {
             id: "inputEmail",
             placeholder: "Insert email of the account to receive the money",
             required: "",
-            title: "Email must be a valid user email"
+            title: "Email must be a valid user email",
+            readonly: ""
           },
           domProps: { value: _vm.movement.email },
           on: {
