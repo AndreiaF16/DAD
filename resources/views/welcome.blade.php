@@ -44,7 +44,7 @@
                 <div style="margin-right:2%">
 
                 <br>
-    <em>User: @{{this.$store.state.user != null ? this.$store.state.user.name : " ATENTION: ** No User Logged in ** " }}</em>
+    <em>Name of The User: @{{this.$store.state.user != null ? this.$store.state.user.name : " ATENTION: ** No User Logged in ** " }}</em>
             <router-view></router-view>
         </div>
        </div>

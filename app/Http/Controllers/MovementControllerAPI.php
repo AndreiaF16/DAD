@@ -150,11 +150,11 @@ class MovementControllerAPI extends Controller
         $wallet->save();
 
         if($request->transfer == 1){
-            
+
             $wallet_dest = Wallet::where('email',$request->destination_email)->first();
             if($wallet_dest == null){
                 return response()->json(["error"=> "Destination Email is invalid!"], 400);
-            }       
+            }
 
             $date = Carbon::now();
 
@@ -168,7 +168,7 @@ class MovementControllerAPI extends Controller
             $movement_dest->transfer_movement_id = $movement->id;
             $movement_dest->transfer_wallet_id = $wallet->id;
             $movement_dest->source_description = $request->source_description;
-            
+
             $movement_dest->save();
 
             $wallet_dest->balance = $wallet_dest->balance + $request->value;
@@ -177,7 +177,7 @@ class MovementControllerAPI extends Controller
             $movement->source_description = $request->source_description;
             $movement->transfer_movement_id = $movement_dest->id;
             $movement->transfer_wallet_id = $wallet_dest->id;
-                    
+
             $movement->save();
             return response()->json(["id"=> $wallet_dest->id, "email" => $wallet_dest->email], 201);
         }

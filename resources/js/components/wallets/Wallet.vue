@@ -188,9 +188,8 @@
         data:
         function() {
             return{
-                pagination: [],
-
-                  tittle: "My Virtual Wallet",
+                    pagination: [],
+                    tittle: "My Virtual Wallet",
                     user: {},
                     wallet: {},
                     errors: [],

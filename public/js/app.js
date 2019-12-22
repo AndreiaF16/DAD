@@ -2941,6 +2941,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -55423,7 +55426,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("Save")]
+          [_vm._v("Create")]
         ),
         _vm._v(" "),
         _c(
@@ -56999,7 +57002,7 @@ var render = function() {
       _vm._v(" "),
       _c("div", [
         _c("div", { staticClass: "row justify-content-right" }, [
-          _c("h5", [_vm._v(_vm._s(_vm.tittle2))])
+          _c("h5", [_c("b", [_vm._v(_vm._s(_vm.tittle2))])])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "form-group" }, [
@@ -57139,7 +57142,7 @@ var render = function() {
           _c("br"),
           _vm._v(" "),
           _c("div", { staticClass: "row justify-content-right" }, [
-            _c("h5", [_vm._v(_vm._s(_vm.tittle3))])
+            _c("h5", [_c("b", [_vm._v(_vm._s(_vm.tittle3))])])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
