@@ -181,7 +181,7 @@
   import errorValidation from '../helpers/showErrors.vue';
     import showMessage from '../helpers/showMessage.vue';
 
-  import MovementDetailsComponent from "./MovementDetails.vue";
+  import MovementDetailsComponent from "./movementDetails.vue";
    import MovementEditComponent from "./MovementEdit.vue";
 
     export default {
