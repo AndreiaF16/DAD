@@ -2799,17 +2799,19 @@ __webpack_require__.r(__webpack_exports__);
       showErrors: false,
       showMessage: false,
       errors: [],
-      email: '',
-      type_payment: '',
-      value: '',
-      category_id: '',
-      iban: '',
-      source_description: '',
-      mb_entity_code: '',
-      description: '',
-      mb_payment_reference: '',
-      destination_email: '',
-      transfer: 0,
+      movement: {
+        email: '',
+        type_payment: '',
+        value: '',
+        category_id: '',
+        iban: '',
+        source_description: '',
+        mb_entity_code: '',
+        description: '',
+        mb_payment_reference: '',
+        destination_email: '',
+        transfer: 0
+      },
       paymentTypes: []
     };
   },
@@ -2817,23 +2819,23 @@ __webpack_require__.r(__webpack_exports__);
     createCredit: function createCredit() {
       var _this = this;
 
-      var formdata = new FormData();
-      formdata.append('email', this.email);
-      formdata.append('type_payment', this.type_payment);
-      formdata.append('value', this.value);
-      formdata.append('iban', this.iban);
-      formdata.append('source_description', this.source_description);
-      formdata.append('description', this.description);
-      formdata.append('mb_payment_reference', this.mb_payment_reference);
-      formdata.append('destination_email', this.destination_email);
-      formdata.append('transfer', this.transfer);
-      formdata.append('_method', 'POST');
-      axios.post('/api/movements/debit', formdata).then(function (response) {
-        _this.paymentTypes = response.data.data;
+      axios.post('/api/movements/debit', this.movement).then(function (response) {
+        _this.$toasted.success("Debit Complete!");
+
+        var msg = "A new Income of " + _this.movement.value + " is added to your account by " + _this.$store.state.user.name;
+
+        if (response.data != null) {
+          _this.$socket.emit("notifyMovement", msg, {
+            email: response.data.email,
+            id: response.data.id
+          });
+        }
+
+        _this.$router.push('/home');
       });
     },
     cancelDebit: function cancelDebit() {
-      this.$emit('cancel-debit');
+      this.$router.push('/home');
     },
     close: function close() {
       this.showErrors = false;
@@ -56505,8 +56507,8 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.email,
-              expression: "email"
+              value: _vm.movement.email,
+              expression: "movement.email"
             }
           ],
           staticClass: "form-control",
@@ -56518,13 +56520,13 @@ var render = function() {
             required: "",
             title: "Email must be a valid user email"
           },
-          domProps: { value: _vm.email },
+          domProps: { value: _vm.movement.email },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.email = $event.target.value
+              _vm.$set(_vm.movement, "email", $event.target.value)
             }
           }
         })
@@ -56540,8 +56542,8 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.value,
-              expression: "value"
+              value: _vm.movement.value,
+              expression: "movement.value"
             }
           ],
           staticClass: "form-control",
@@ -56553,13 +56555,13 @@ var render = function() {
             required: "",
             title: "Value needs to be between 0.1 and 5000"
           },
-          domProps: { value: _vm.value },
+          domProps: { value: _vm.movement.value },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.value = $event.target.value
+              _vm.$set(_vm.movement, "value", $event.target.value)
             }
           }
         })
@@ -56577,8 +56579,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.type_payment,
-                expression: "type_payment"
+                value: _vm.movement.type_payment,
+                expression: "movement.type_payment"
               }
             ],
             staticClass: "form-control",
@@ -56593,9 +56595,11 @@ var render = function() {
                     var val = "_value" in o ? o._value : o.value
                     return val
                   })
-                _vm.type_payment = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
+                _vm.$set(
+                  _vm.movement,
+                  "type_payment",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
               }
             }
           },
@@ -56623,8 +56627,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.category_id,
-                expression: "category_id"
+                value: _vm.movement.category_id,
+                expression: "movement.category_id"
               }
             ],
             staticClass: "form-control",
@@ -56639,9 +56643,11 @@ var render = function() {
                     var val = "_value" in o ? o._value : o.value
                     return val
                   })
-                _vm.category_id = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
+                _vm.$set(
+                  _vm.movement,
+                  "category_id",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
               }
             }
           },
@@ -56662,7 +56668,7 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      this.type_payment == "bt"
+      this.movement.type_payment == "bt"
         ? _c("div", [
             _c("div", { staticClass: "form-group" }, [
               _c("label", { attrs: { for: "inputIBAN" } }, [_vm._v("IBAN:")]),
@@ -56672,8 +56678,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.iban,
-                    expression: "iban"
+                    value: _vm.movement.iban,
+                    expression: "movement.iban"
                   }
                 ],
                 staticClass: "form-control",
@@ -56685,13 +56691,13 @@ var render = function() {
                   required: "",
                   title: "INAN must be 2 upper letters followed by 23 numbers"
                 },
-                domProps: { value: _vm.iban },
+                domProps: { value: _vm.movement.iban },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.iban = $event.target.value
+                    _vm.$set(_vm.movement, "iban", $event.target.value)
                   }
                 }
               })
@@ -56699,7 +56705,7 @@ var render = function() {
           ])
         : _vm._e(),
       _vm._v(" "),
-      this.type_payment == "mb"
+      this.movement.type_payment == "mb"
         ? _c("div", [
             _c("div", { staticClass: "form-group" }, [
               _c("label", { attrs: { for: "inputEntity" } }, [
@@ -56711,8 +56717,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.mb_entity_code,
-                    expression: "mb_entity_code"
+                    value: _vm.movement.mb_entity_code,
+                    expression: "movement.mb_entity_code"
                   }
                 ],
                 staticClass: "form-control",
@@ -56723,13 +56729,17 @@ var render = function() {
                   placeholder: "Insert Entity",
                   required: ""
                 },
-                domProps: { value: _vm.mb_entity_code },
+                domProps: { value: _vm.movement.mb_entity_code },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.mb_entity_code = $event.target.value
+                    _vm.$set(
+                      _vm.movement,
+                      "mb_entity_code",
+                      $event.target.value
+                    )
                   }
                 }
               })
@@ -56745,8 +56755,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.mb_payment_reference,
-                    expression: "mb_payment_reference"
+                    value: _vm.movement.mb_payment_reference,
+                    expression: "movement.mb_payment_reference"
                   }
                 ],
                 staticClass: "form-control",
@@ -56757,13 +56767,17 @@ var render = function() {
                   placeholder: "Insert Reference",
                   required: ""
                 },
-                domProps: { value: _vm.mb_payment_reference },
+                domProps: { value: _vm.movement.mb_payment_reference },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.mb_payment_reference = $event.target.value
+                    _vm.$set(
+                      _vm.movement,
+                      "mb_payment_reference",
+                      $event.target.value
+                    )
                   }
                 }
               })
@@ -56779,8 +56793,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.description,
-                    expression: "description"
+                    value: _vm.movement.description,
+                    expression: "movement.description"
                   }
                 ],
                 staticClass: "form-control",
@@ -56791,13 +56805,13 @@ var render = function() {
                   placeholder: "Insert a description",
                   required: ""
                 },
-                domProps: { value: _vm.description },
+                domProps: { value: _vm.movement.description },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.description = $event.target.value
+                    _vm.$set(_vm.movement, "description", $event.target.value)
                   }
                 }
               })
@@ -56815,8 +56829,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.transfer,
-                expression: "transfer"
+                value: _vm.movement.transfer,
+                expression: "movement.transfer"
               }
             ],
             staticClass: "form-control",
@@ -56831,9 +56845,11 @@ var render = function() {
                     var val = "_value" in o ? o._value : o.value
                     return val
                   })
-                _vm.transfer = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
+                _vm.$set(
+                  _vm.movement,
+                  "transfer",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
               }
             }
           },
@@ -56845,7 +56861,7 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      this.transfer == "1"
+      this.movement.transfer == "1"
         ? _c("div", [
             _c("div", { staticClass: "form-group" }, [
               _c("label", { attrs: { for: "inputSourceEmail" } }, [
@@ -56857,8 +56873,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.destination_email,
-                    expression: "destination_email"
+                    value: _vm.movement.destination_email,
+                    expression: "movement.destination_email"
                   }
                 ],
                 staticClass: "form-control",
@@ -56868,13 +56884,17 @@ var render = function() {
                   id: "inputDestinationEmail",
                   placeholder: "Destination wallet email address"
                 },
-                domProps: { value: _vm.destination_email },
+                domProps: { value: _vm.movement.destination_email },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.destination_email = $event.target.value
+                    _vm.$set(
+                      _vm.movement,
+                      "destination_email",
+                      $event.target.value
+                    )
                   }
                 }
               })
@@ -56890,8 +56910,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.source_description,
-                    expression: "source_description"
+                    value: _vm.movement.source_description,
+                    expression: "movement.source_description"
                   }
                 ],
                 staticClass: "form-control",
@@ -56902,13 +56922,17 @@ var render = function() {
                   placeholder: "Insert a source description",
                   required: ""
                 },
-                domProps: { value: _vm.source_description },
+                domProps: { value: _vm.movement.source_description },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.source_description = $event.target.value
+                    _vm.$set(
+                      _vm.movement,
+                      "source_description",
+                      $event.target.value
+                    )
                   }
                 }
               })
@@ -74897,12 +74921,19 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_15___default.a({
     movementReceived: function movementReceived(dataFromServer) {
       this.$toasted.show(dataFromServer);
     },
-    privateMessage_unavailable: function privateMessage_unavailable(destUser) {
-      this.$toasted.error('User "' + destUser.name + '" is not available');
+    movementClientUnavailable: function movementClientUnavailable(dataFromServer) {
+      var _this = this;
+
+      axios.post("api/users/email", {
+        email: dataFromServer[0],
+        msg: dataFromServer[1]
+      }).then(function (response) {
+        _this.$toasted.show("User as offline! Email sent");
+      });
     }
   },
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
     var token = localStorage.getItem("token");
 
@@ -74914,11 +74945,11 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_15___default.a({
         this.$store.commit('setUser', JSON.parse(localStorage.getItem('user')));
       } else {
         axios.get('/api/users/me').then(function (response) {
-          _this.$store.commit('setUser', response.data);
+          _this2.$store.commit('setUser', response.data);
 
           localStorage.setItem("user", JSON.stringify(response.data));
 
-          _this.$socket.emit("user_enter", response.data);
+          _this2.$socket.emit("user_enter", response.data);
         });
       }
     }
@@ -76132,8 +76163,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
