@@ -2,8 +2,12 @@
 
 
 <div>
-    <div class="container">
-      <h2>Create an Income</h2>
+   <div class="container">
+         <div class="jumbotron row justify-content-center">
+                <h1>{{tittle}}</h1>
+        </div>
+
+
 
       </div>
       <div class="form-group">
@@ -20,10 +24,13 @@
     <div class="form-group">
         <label for="inputPaymentType">Payment Type</label>
         <select class="btn btn-xs btn-primary dropdown-toggle btn-block" name="PaymentType" id="PaymentType" v-model="movement.type_payment" required>
-            <option disabled selected> -- select an option -- </option>
+            <option value='' selected> -- Select the Type Of Payment -- </option>
             <option value="c">Cash</option>
             <option value="bt">Bank Transfer</option>
         </select>
+        <br>
+        <br>
+        <br>
     </div>
     <div v-if="this.movement.type_payment == 'bt'" >
 
@@ -51,6 +58,7 @@
   export default{
   data: function() {
     return {
+        tittle: 'Create an Income',
       errors: [],
       showMessage: false,
       showErrors: false,

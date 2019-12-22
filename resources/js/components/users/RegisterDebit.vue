@@ -1,6 +1,9 @@
 <template>
-    <div class="jumbotron">
-        <h2>Register Debit</h2>
+    <div class="container">
+         <div class="jumbotron row justify-content-center">
+                <h1>{{tittle}}</h1>
+        </div>
+
 
         <div class="form-group">
             <label for="inputEmail">Email To Debit:</label>
@@ -111,6 +114,7 @@
    export default {
            data: function() {
             return {
+                tittle: 'Register Debit',
                 name: "RegisterDebit",
                 typeofmsg: '',
                 message:'',

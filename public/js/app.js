@@ -2585,9 +2585,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      tittle: 'Create an Income',
       errors: [],
       showMessage: false,
       showErrors: false,
@@ -2755,9 +2763,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      tittle: 'Register Debit',
       name: "RegisterDebit",
       typeofmsg: '',
       message: '',
@@ -56218,7 +56230,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "jumbotron row justify-content-center" }, [
+        _c("h1", [_vm._v(_vm._s(_vm.tittle))])
+      ])
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
       _c("label", { attrs: { for: "inputEmail" } }, [_vm._v("Email")]),
@@ -56319,15 +56335,21 @@ var render = function() {
           }
         },
         [
-          _c("option", { attrs: { disabled: "", selected: "" } }, [
-            _vm._v(" -- select an option -- ")
+          _c("option", { attrs: { value: "", selected: "" } }, [
+            _vm._v(" -- Select the Type Of Payment -- ")
           ]),
           _vm._v(" "),
           _c("option", { attrs: { value: "c" } }, [_vm._v("Cash")]),
           _vm._v(" "),
           _c("option", { attrs: { value: "bt" } }, [_vm._v("Bank Transfer")])
         ]
-      )
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("br")
     ]),
     _vm._v(" "),
     this.movement.type_payment == "bt"
@@ -56419,16 +56441,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("h2", [_vm._v("Create an Income")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -56450,8 +56463,10 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "jumbotron" }, [
-    _c("h2", [_vm._v("Register Debit")]),
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "jumbotron row justify-content-center" }, [
+      _c("h1", [_vm._v(_vm._s(_vm.tittle))])
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
       _c("label", { attrs: { for: "inputEmail" } }, [
