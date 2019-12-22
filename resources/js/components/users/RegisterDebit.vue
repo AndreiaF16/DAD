@@ -4,6 +4,9 @@
                 <h1>{{tittle}}</h1>
         </div>
 
+        <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
+
+        <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
 
         <div class="form-group">
             <label for="inputEmail">Email To Debit:</label>
@@ -112,44 +115,48 @@
 </template>
 
 <script type="text/javascript">
-   export default {
-           data: function() {
-            return {
-                tittle: 'Register Debit',
-                name: "RegisterDebit",
-                typeofmsg: '',
-                message:'',
-                showErrors: false,
-                showMessage: false,
-                errors: [],
-                user:{},
-                movement:{
-                    email: '',
-                    type_payment: '',
-                    value: '',
-                    category_id: '',
-                    iban: '',
-                    source_description: '',
-                    mb_entity_code: '',
-                    description: '',
-                    mb_payment_reference: '',
-                    destination_email: '',
-                    transfer: 0
-                },
-                paymentTypes: []
-            }
-      },
+    import errorValidation from '../helpers/showErrors.vue';
+    import showMessage from '../helpers/showMessage.vue';
+    export default {
+        data: function() {
+        return {
+            tittle: 'Register Debit',
+            name: "RegisterDebit",
+            typeofmsg: '',
+            message:'',
+            showErrors: false,
+            showMessage: false,
+            errors: [],
+            user:{},
+            movement:{
+                email: '',
+                type_payment: '',
+                value: '',
+                category_id: '',
+                iban: '',
+                source_description: '',
+                mb_entity_code: '',
+                description: '',
+                mb_payment_reference: '',
+                destination_email: '',
+                transfer: 0
+            },
+            paymentTypes: []
+        }
+    },
     methods: {
         createCredit(){
             axios.post('/api/movements/debit',this.movement)
             .then(response => {
                 this.$toasted.success("Debit Complete!")
                 let msg = "A new Income of "+ this.movement.value + " is added to your account by " + this.$store.state.user.name;
-                if(response.data != null){
+                if(response.data.email != undefined){
                     this.$socket.emit("notifyMovement",msg,{ email:response.data.email, id: response.data.id});
                 }
                 this.$router.push('/home');
             }).catch(error => {
+                this.showErrors = true;
+                this.errors = error.response.data.errors;
                 if(error.response.status==401){
 					this.$toasted.error(error.response.data.unauthorized);
 				}else if(error.response.status == 422){
@@ -166,13 +173,18 @@
                 this.showErrors=false;
                 this.showMessage=false;
             },
-    },mounted(){
-        axios.get('/api/categories/expense')
-        .then(response => {
-            this.paymentTypes = response.data.data;
-        });
-        this.user = JSON.parse(localStorage.getItem('user'));
-        this.movement.email = this.user.email;
+    },
+    components: {
+        'show-message':showMessage,
+        'error-validation':errorValidation,
+    },
+    mounted(){
+    axios.get('/api/categories/expense')
+    .then(response => {
+        this.paymentTypes = response.data.data;
+    });
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.movement.email = this.user.email;
     },
    }
 </script>

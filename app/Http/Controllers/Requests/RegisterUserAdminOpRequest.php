@@ -15,8 +15,6 @@ class RegisterUserAdminOpRequest extends FormRequest
             'password' => 'required|min:3',
             'photo' => 'nullable|image|max:2048',
             'type' => 'required|in:a,o'
-
-
         ];
     }
 }

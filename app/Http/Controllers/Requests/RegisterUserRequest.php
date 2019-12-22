@@ -15,8 +15,6 @@ class RegisterUserRequest extends FormRequest
             'password' => 'required|min:3',
             'photo' => 'nullable|image|max:2048',
             'nif' => 'required|max:9|min:9'
-            
-            
         ];
     }
 } 

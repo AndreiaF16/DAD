@@ -2654,6 +2654,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/showErrors.vue */ "./resources/js/components/helpers/showErrors.vue");
+/* harmony import */ var _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/showMessage.vue */ "./resources/js/components/helpers/showMessage.vue");
 //
 //
 //
@@ -2767,6 +2769,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2803,7 +2810,7 @@ __webpack_require__.r(__webpack_exports__);
 
         var msg = "A new Income of " + _this.movement.value + " is added to your account by " + _this.$store.state.user.name;
 
-        if (response.data != null) {
+        if (response.data.email != undefined) {
           _this.$socket.emit("notifyMovement", msg, {
             email: response.data.email,
             id: response.data.id
@@ -2812,6 +2819,9 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$router.push('/home');
       })["catch"](function (error) {
+        _this.showErrors = true;
+        _this.errors = error.response.data.errors;
+
         if (error.response.status == 401) {
           _this.$toasted.error(error.response.data.unauthorized);
         } else if (error.response.status == 422) {
@@ -2828,6 +2838,10 @@ __webpack_require__.r(__webpack_exports__);
       this.showErrors = false;
       this.showMessage = false;
     }
+  },
+  components: {
+    'show-message': _helpers_showMessage_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'error-validation': _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   mounted: function mounted() {
     var _this2 = this;
@@ -8229,7 +8243,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\ntr.activerow[data-v-8095078e] {\n  background: #09090a !important;\n  color: #fff !important;\n}\n", ""]);
+exports.push([module.i, "\ntr.activerow[data-v-8095078e] {\r\n  background: #09090a !important;\r\n  color: #fff !important;\n}\r\n", ""]);
 
 // exports
 
@@ -56471,479 +56485,501 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "jumbotron row justify-content-center" }, [
-      _c("h1", [_vm._v(_vm._s(_vm.tittle))])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "inputEmail" } }, [
-        _vm._v("Email To Debit:")
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _c("div", { staticClass: "jumbotron row justify-content-center" }, [
+        _c("h1", [_vm._v(_vm._s(_vm.tittle))])
       ]),
       _vm._v(" "),
-      _c("input", {
-        directives: [
+      _c("show-message", {
+        class: _vm.typeofmsg,
+        attrs: { showSuccess: _vm.showMessage, successMessage: _vm.message },
+        on: { close: _vm.close }
+      }),
+      _vm._v(" "),
+      _c("error-validation", {
+        attrs: { showErrors: _vm.showErrors, errors: _vm.errors },
+        on: { close: _vm.close }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "inputEmail" } }, [
+          _vm._v("Email To Debit:")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.movement.email,
+              expression: "movement.email"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "email",
+            name: "email",
+            id: "inputEmail",
+            placeholder: "Insert email of the account to receive the money",
+            required: "",
+            title: "Email must be a valid user email",
+            readonly: ""
+          },
+          domProps: { value: _vm.movement.email },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.movement, "email", $event.target.value)
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "inputValue" } }, [
+          _vm._v("Value To Debit:")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.movement.value,
+              expression: "movement.value"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: "value",
+            id: "inputValue",
+            placeholder: "Insert value to credit",
+            required: "",
+            title: "Value needs to be between 0.1 and 5000"
+          },
+          domProps: { value: _vm.movement.value },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.movement, "value", $event.target.value)
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "type_payment" } }, [
+          _vm._v("Type Of Payment:")
+        ]),
+        _vm._v(" "),
+        _c(
+          "select",
           {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.movement.email,
-            expression: "movement.email"
-          }
-        ],
-        staticClass: "form-control",
-        attrs: {
-          type: "email",
-          name: "email",
-          id: "inputEmail",
-          placeholder: "Insert email of the account to receive the money",
-          required: "",
-          title: "Email must be a valid user email",
-          readonly: ""
-        },
-        domProps: { value: _vm.movement.email },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.movement.type_payment,
+                expression: "movement.type_payment"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "type_payment", id: "type_payment", required: "" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.$set(
+                  _vm.movement,
+                  "type_payment",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
+              }
             }
-            _vm.$set(_vm.movement, "email", $event.target.value)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "inputValue" } }, [
-        _vm._v("Value To Debit:")
+          },
+          [
+            _c("option", { attrs: { disabled: "", selected: "" } }, [
+              _vm._v(" -- select an option -- ")
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "c" } }, [_vm._v("Cash")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "bt" } }, [_vm._v("Bank Transfer")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "mb" } }, [_vm._v("MB Payment")])
+          ]
+        )
       ]),
       _vm._v(" "),
-      _c("input", {
-        directives: [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "category" } }, [_vm._v("Category:")]),
+        _vm._v(" "),
+        _c(
+          "select",
           {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.movement.value,
-            expression: "movement.value"
-          }
-        ],
-        staticClass: "form-control",
-        attrs: {
-          type: "text",
-          name: "value",
-          id: "inputValue",
-          placeholder: "Insert value to credit",
-          required: "",
-          title: "Value needs to be between 0.1 and 5000"
-        },
-        domProps: { value: _vm.movement.value },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.movement.category_id,
+                expression: "movement.category_id"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "category", id: "category", required: "" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.$set(
+                  _vm.movement,
+                  "category_id",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
+              }
             }
-            _vm.$set(_vm.movement, "value", $event.target.value)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "type_payment" } }, [
-        _vm._v("Type Of Payment:")
+          },
+          [
+            _c("option", { attrs: { disabled: "", selected: "" } }, [
+              _vm._v(" -- select an option -- ")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.paymentTypes, function(paymentType) {
+              return _c(
+                "option",
+                { key: paymentType.id, domProps: { value: paymentType.id } },
+                [_vm._v(_vm._s(paymentType.name))]
+              )
+            })
+          ],
+          2
+        )
       ]),
       _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.movement.type_payment,
-              expression: "movement.type_payment"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { name: "type_payment", id: "type_payment", required: "" },
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.$set(
-                _vm.movement,
-                "type_payment",
-                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-              )
-            }
-          }
-        },
-        [
-          _c("option", { attrs: { disabled: "", selected: "" } }, [
-            _vm._v(" -- select an option -- ")
-          ]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "c" } }, [_vm._v("Cash")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "bt" } }, [_vm._v("Bank Transfer")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "mb" } }, [_vm._v("MB Payment")])
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "category" } }, [_vm._v("Category:")]),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.movement.category_id,
-              expression: "movement.category_id"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { name: "category", id: "category", required: "" },
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.$set(
-                _vm.movement,
-                "category_id",
-                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-              )
-            }
-          }
-        },
-        [
-          _c("option", { attrs: { disabled: "", selected: "" } }, [
-            _vm._v(" -- select an option -- ")
-          ]),
-          _vm._v(" "),
-          _vm._l(_vm.paymentTypes, function(paymentType) {
-            return _c(
-              "option",
-              { key: paymentType.id, domProps: { value: paymentType.id } },
-              [_vm._v(_vm._s(paymentType.name))]
-            )
-          })
-        ],
-        2
-      )
-    ]),
-    _vm._v(" "),
-    this.movement.type_payment == "bt"
-      ? _c("div", [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "inputIBAN" } }, [_vm._v("IBAN:")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.movement.iban,
-                  expression: "movement.iban"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                name: "iban",
-                id: "inputIBAN",
-                placeholder: "Insert IBAN",
-                required: "",
-                title: "INAN must be 2 upper letters followed by 23 numbers"
-              },
-              domProps: { value: _vm.movement.iban },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+      this.movement.type_payment == "bt"
+        ? _c("div", [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputIBAN" } }, [_vm._v("IBAN:")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.movement.iban,
+                    expression: "movement.iban"
                   }
-                  _vm.$set(_vm.movement, "iban", $event.target.value)
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  name: "iban",
+                  id: "inputIBAN",
+                  placeholder: "Insert IBAN",
+                  required: "",
+                  title: "INAN must be 2 upper letters followed by 23 numbers"
+                },
+                domProps: { value: _vm.movement.iban },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.movement, "iban", $event.target.value)
+                  }
                 }
-              }
-            })
+              })
+            ])
           ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    this.movement.type_payment == "mb"
-      ? _c("div", [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "inputEntity" } }, [_vm._v("Entity:")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.movement.mb_entity_code,
-                  expression: "movement.mb_entity_code"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                name: "entity",
-                id: "inputEntity",
-                placeholder: "Insert Entity",
-                required: ""
-              },
-              domProps: { value: _vm.movement.mb_entity_code },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.movement, "mb_entity_code", $event.target.value)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "inputReference" } }, [
-              _vm._v("Reference:")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.movement.mb_payment_reference,
-                  expression: "movement.mb_payment_reference"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                name: "reference",
-                id: "inputReference",
-                placeholder: "Insert Reference",
-                required: ""
-              },
-              domProps: { value: _vm.movement.mb_payment_reference },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(
-                    _vm.movement,
-                    "mb_payment_reference",
-                    $event.target.value
-                  )
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "inputDescription" } }, [
-              _vm._v("Description:")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.movement.description,
-                  expression: "movement.description"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                name: "description",
-                id: "inputDescription",
-                placeholder: "Insert a description",
-                required: ""
-              },
-              domProps: { value: _vm.movement.description },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.movement, "description", $event.target.value)
-                }
-              }
-            })
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "inputTransfer" } }, [_vm._v("Transfer:")]),
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.movement.transfer,
-              expression: "movement.transfer"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { name: "transfer", id: "transfer", required: "" },
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.$set(
-                _vm.movement,
-                "transfer",
-                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-              )
-            }
-          }
-        },
-        [
-          _c("option", { attrs: { value: "0" } }, [_vm._v("No")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "1" } }, [_vm._v("Yes")])
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    this.movement.transfer == "1"
-      ? _c("div", [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "inputSourceEmail" } }, [
-              _vm._v("Destination wallet email")
+      this.movement.type_payment == "mb"
+        ? _c("div", [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputEntity" } }, [
+                _vm._v("Entity:")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.movement.mb_entity_code,
+                    expression: "movement.mb_entity_code"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  name: "entity",
+                  id: "inputEntity",
+                  placeholder: "Insert Entity",
+                  required: ""
+                },
+                domProps: { value: _vm.movement.mb_entity_code },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.movement,
+                      "mb_entity_code",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
             ]),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.movement.destination_email,
-                  expression: "movement.destination_email"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "email",
-                name: "destination_email",
-                id: "inputDestinationEmail",
-                placeholder: "Destination wallet email address"
-              },
-              domProps: { value: _vm.movement.destination_email },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputReference" } }, [
+                _vm._v("Reference:")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.movement.mb_payment_reference,
+                    expression: "movement.mb_payment_reference"
                   }
-                  _vm.$set(
-                    _vm.movement,
-                    "destination_email",
-                    $event.target.value
-                  )
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  name: "reference",
+                  id: "inputReference",
+                  placeholder: "Insert Reference",
+                  required: ""
+                },
+                domProps: { value: _vm.movement.mb_payment_reference },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.movement,
+                      "mb_payment_reference",
+                      $event.target.value
+                    )
+                  }
                 }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "inputSourceDescription" } }, [
-              _vm._v("Source Description:")
+              })
             ]),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.movement.source_description,
-                  expression: "movement.source_description"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                name: "source_description",
-                id: "inputSourceDescription",
-                placeholder: "Insert a source description",
-                required: ""
-              },
-              domProps: { value: _vm.movement.source_description },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputDescription" } }, [
+                _vm._v("Description:")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.movement.description,
+                    expression: "movement.description"
                   }
-                  _vm.$set(
-                    _vm.movement,
-                    "source_description",
-                    $event.target.value
-                  )
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  name: "description",
+                  id: "inputDescription",
+                  placeholder: "Insert a description",
+                  required: ""
+                },
+                domProps: { value: _vm.movement.description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.movement, "description", $event.target.value)
+                  }
                 }
-              }
-            })
+              })
+            ])
           ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-success",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.createCredit()
-            }
-          }
-        },
-        [_vm._v("Create Credit")]
-      ),
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-danger",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.cancelDebit()
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "inputTransfer" } }, [_vm._v("Transfer:")]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.movement.transfer,
+                expression: "movement.transfer"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "transfer", id: "transfer", required: "" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.$set(
+                  _vm.movement,
+                  "transfer",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
+              }
             }
-          }
-        },
-        [_vm._v("Cancel")]
-      )
-    ])
-  ])
+          },
+          [
+            _c("option", { attrs: { value: "0" } }, [_vm._v("No")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "1" } }, [_vm._v("Yes")])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      this.movement.transfer == "1"
+        ? _c("div", [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputSourceEmail" } }, [
+                _vm._v("Destination wallet email")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.movement.destination_email,
+                    expression: "movement.destination_email"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "email",
+                  name: "destination_email",
+                  id: "inputDestinationEmail",
+                  placeholder: "Destination wallet email address"
+                },
+                domProps: { value: _vm.movement.destination_email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.movement,
+                      "destination_email",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "inputSourceDescription" } }, [
+                _vm._v("Source Description:")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.movement.source_description,
+                    expression: "movement.source_description"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  name: "source_description",
+                  id: "inputSourceDescription",
+                  placeholder: "Insert a source description",
+                  required: ""
+                },
+                domProps: { value: _vm.movement.source_description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.movement,
+                      "source_description",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-success",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.createCredit()
+              }
+            }
+          },
+          [_vm._v("Create Credit")]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-danger",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.cancelDebit()
+              }
+            }
+          },
+          [_vm._v("Cancel")]
+        )
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -76135,8 +76171,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
