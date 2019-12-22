@@ -15,14 +15,14 @@ class DebitMovementRequest extends FormRequest
             'value' => 'required|numeric|min:0.01|max:5000',
             'email' => 'required|string|email|max:255|exists:wallets,email',
             'type_payment' => 'required|in:c,mb,bt',
-            'iban' => ['required_if:type_payment,==,bt','regex:/^[A-Za-z]{2}[0-9]{23}/'],
+            'iban' => 'nullable|required_if:type_payment,bt|regex:/^[A-Za-z]{2}[0-9]{23}/',
             'category_id' => 'required|exists:categories,id',
-            'mb_entity_code'=> ['required_if:type_payment,==,mb','max:5|min:5'],
-            'mb_payment_reference'=>['required_if:type_payment,==,mb','max:9|min:9'],
-            'source_description' => 'required_if:transfer,==,1|max:255',
+            'mb_entity_code'=> 'nullable|required_if:type_payment,==,mb|max:5|min:5',
+            'mb_payment_reference'=>'nullable|required_if:type_payment,==,mb|max:9|min:9',
+            'source_description' => 'nullable|required_if:transfer,==,1|max:255',
             'transfer' => 'required|in:0,1',
-            'destination_email' => 'required_if:transfer,==,1|string|email|max:255|exists:wallets,email',
-            'description' => ['required_if:type_payment,==,mb','max:255'],
+            'destination_email' => 'nullable|required_if:transfer,==,1|string|email|max:255|exists:wallets,email',
+            'description' => 'nullable|required_if:type_payment,==,mb|max:255',
         ];
     }
 }

@@ -115,6 +115,7 @@ class MovementControllerAPI extends Controller
         return new MovementResource($movement);
     }
 
+
     public function createDebit(DebitMovementRequest $request) {
         $movement = new Movement();
         $movement->fill($request->except(['destination_email',"email"]));
@@ -127,26 +128,28 @@ class MovementControllerAPI extends Controller
         if($wallet == null){
             return response('Email is not valid!');
         }
-        $wallet->balance = $wallet->balance - $request->value;
-        $wallet->save();
+
+        if($wallet->balance - $request->value < 0){
+
+        }
 
         $date = Carbon::now();
         $movement->wallet_id = $wallet->id;
         $movement->type = "e";
-        $movement->start_balance = $wallet->balance + $request->value;
-        $movement->end_balance = $wallet->balance;
+        $movement->start_balance = $wallet->balance;
+        $movement->end_balance = $wallet->balance - $request->value;
         $movement->date = $date->toDateTimeString();
         $movement->save();
+
+        $wallet->balance = $wallet->balance - $request->value;
+        $wallet->save();
 
         if($request->transfer == 1){
             
             $wallet_dest = Wallet::where('email',$request->destination_email)->first();
             if($wallet_dest == null){
                 return response('Destination Email is invalid!');
-            }
-
-            $wallet_dest->balance = $wallet_dest->balance + $request->value;
-            $wallet_dest->save();
+            }       
 
             $date = Carbon::now();
 
@@ -159,16 +162,20 @@ class MovementControllerAPI extends Controller
             $movement_dest->date = $date->toDateTimeString();
             $movement_dest->transfer_movement_id = $movement->id;
             $movement_dest->transfer_wallet_id = $wallet->id;
-            $movement_dest->iban = $request->iban;
             $movement_dest->source_description = $request->source_description;
             
             $movement_dest->save();
+
+            $wallet_dest->balance = $wallet_dest->balance + $request->value;
+            $wallet_dest->save();
 
             $movement->transfer_movement_id = $movement_dest->id;
             $movement->transfer_wallet_id = $wallet_dest->id;
                     
             $movement->save();
+            return response()->json(["id"=> $wallet_dest->id, "email" => $wallet_dest->email], 201);
         }
+        return response()->json(null, 201);
     }
 }
 

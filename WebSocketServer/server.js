@@ -65,6 +65,7 @@ io.on('connection', function (socket) {
     let socket_id = userInfo !== undefined ? userInfo.socketID : null;
     if (socket_id === null) {
         console.log("user is offline");
+        socket.emit("movementClientUnavailable", destUser.email,msg);
     } else {
         io.to(socket_id).emit("movementReceived", msg);
     }
@@ -73,7 +74,7 @@ io.on('connection', function (socket) {
     socket.on("disconnect", function() {
         loggedUsers.removeUserInfoBySocketID(socket.id);
         console.log(
-          "user disconnected (socket ID = " + socket.id + ")"
+          "client disconnected (socket ID = " + socket.id + ")"
         );
       });
 });

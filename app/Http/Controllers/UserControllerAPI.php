@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\User as UserResource;
 use App\Http\Controllers\Requests\RegisterUserRequest;
 use App\Http\Controllers\Requests\RegisterUserAdminOpRequest;
+use Illuminate\Support\Facades\Mail;
+
+define('SOURCE_EMAIL', env('MAIL_USERNAME'));
 
 class UserControllerAPI extends Controller
 {
@@ -159,5 +162,16 @@ class UserControllerAPI extends Controller
     public function getPhotoByEmail($email){
         $photo = User::where('email', '=', $email)->pluck('photo');
         return $photo;
+    }
+    
+    public function sendEmail(){
+        Mail::send([], [], function ($message) {
+            $message->to(request()->email)
+                ->subject('New movement in your account!')
+                ->from(SOURCE_EMAIL, 'Virtual Wallet')
+                ->setBody(request()->msg);
+        });
+
+        return response()->json(['message' => 'Email sent!']);
     }
 }

@@ -10,7 +10,7 @@
         <div class="form-group">
             <label for="inputEmail">Email To Debit:</label>
             <input
-                type="email" class="form-control" v-model="email"
+                type="email" class="form-control" v-model="movement.email"
                 name="email" id="inputEmail"
                 placeholder="Insert email of the account to receive the money" required
                 title="Email must be a valid user email"/>
@@ -19,7 +19,7 @@
         <div class="form-group">
             <label for="inputValue">Value To Debit:</label>
             <input
-                type="text" class="form-control" v-model="value"
+                type="text" class="form-control" v-model="movement.value"
                 name="value" id="inputValue"
                 placeholder="Insert value to credit" required
                 title="Value needs to be between 0.1 and 5000"/>
@@ -27,7 +27,7 @@
 
         <div class="form-group">
             <label for="type_payment">Type Of Payment:</label>
-            <select name="type_payment" id="type_payment" class="form-control" v-model="type_payment" required>
+            <select name="type_payment" id="type_payment" class="form-control" v-model="movement.type_payment" required>
                 <option disabled selected> -- select an option -- </option>
                 <option value="c">Cash</option>
                 <option value="bt">Bank Transfer</option>
@@ -37,28 +37,28 @@
 
         <div class="form-group">
             <label for="category">Category:</label>
-            <select name="category" id="category" class="form-control" v-model="category_id" required>
+            <select name="category" id="category" class="form-control" v-model="movement.category_id" required>
                 <option disabled selected> -- select an option -- </option>
                 <option v-for="paymentType in paymentTypes" :key="paymentType.id" v-bind:value="paymentType.id">{{ paymentType.name }}</option>
             </select>
         </div>
 
-        <div v-if="this.type_payment == 'bt'" >
+        <div v-if="this.movement.type_payment == 'bt'" >
             <div class="form-group">
                 <label for="inputIBAN">IBAN:</label>
                 <input
-                    type="text" class="form-control" v-model="iban"
+                    type="text" class="form-control" v-model="movement.iban"
                     name="iban" id="inputIBAN"
                     placeholder="Insert IBAN" required
                     title="INAN must be 2 upper letters followed by 23 numbers"/>
             </div>
         </div>
 
-        <div v-if="this.type_payment == 'mb'" >
+        <div v-if="this.movement.type_payment == 'mb'" >
             <div class="form-group">
                 <label for="inputEntity">Entity:</label>
                 <input
-                    type="number" class="form-control" v-model="mb_entity_code"
+                    type="number" class="form-control" v-model="movement.mb_entity_code"
                     name="entity" id="inputEntity"
                     placeholder="Insert Entity" required/>
             </div>
@@ -66,7 +66,7 @@
             <div class="form-group">
                 <label for="inputReference">Reference:</label>
                 <input
-                    type="number" class="form-control" v-model="mb_payment_reference"
+                    type="number" class="form-control" v-model="movement.mb_payment_reference"
                     name="reference" id="inputReference"
                     placeholder="Insert Reference" required/>
             </div>
@@ -74,7 +74,7 @@
             <div class="form-group">
                 <label for="inputDescription">Description:</label>
                 <input
-                    type="text" class="form-control" v-model="description"
+                    type="text" class="form-control" v-model="movement.description"
                     name="description" id="inputDescription"
                     placeholder="Insert a description" required/>
             </div>
@@ -82,24 +82,24 @@
 
         <div class="form-group">
             <label for="inputTransfer">Transfer:</label>
-            <select name="transfer" id="transfer" class="form-control" v-model="transfer" required>
+            <select name="transfer" id="transfer" class="form-control" v-model="movement.transfer" required>
                 <option value="0">No</option>
                 <option value="1">Yes</option>
             </select>
         </div>
 
-        <div v-if="this.transfer == '1'">
+        <div v-if="this.movement.transfer == '1'">
             <div class="form-group">
                 <label for="inputSourceEmail">Destination wallet email</label>
                 <input
-                    type="email" class="form-control" v-model="destination_email"
+                    type="email" class="form-control" v-model="movement.destination_email"
                     name="destination_email" id="inputDestinationEmail"
                     placeholder="Destination wallet email address"/>
             </div>
             <div class="form-group">
                 <label for="inputSourceDescription">Source Description:</label>
                 <input
-                    type="text" class="form-control" v-model="source_description"
+                    type="text" class="form-control" v-model="movement.source_description"
                     name="source_description" id="inputSourceDescription"
                     placeholder="Insert a source description" required/>
             </div>
@@ -126,40 +126,36 @@
                 showErrors: false,
                 showMessage: false,
                 errors: [],
-                email: '',
-                type_payment: '',
-                value: '',
-                category_id: '',
-                iban: '',
-                source_description: '',
-                mb_entity_code: '',
-                description: '',
-                mb_payment_reference: '',
-                destination_email: '',
-                transfer: 0,
+                movement:{
+                    email: '',
+                    type_payment: '',
+                    value: '',
+                    category_id: '',
+                    iban: '',
+                    source_description: '',
+                    mb_entity_code: '',
+                    description: '',
+                    mb_payment_reference: '',
+                    destination_email: '',
+                    transfer: 0
+                },
                 paymentTypes: []
             }
       },
     methods: {
         createCredit(){
-            let formdata = new FormData();
-            formdata.append('email', this.email);
-            formdata.append('type_payment', this.type_payment);
-            formdata.append('value', this.value);
-            formdata.append('iban', this.iban);
-            formdata.append('source_description', this.source_description);
-            formdata.append('description', this.description);
-            formdata.append('mb_payment_reference', this.mb_payment_reference);
-            formdata.append('destination_email', this.destination_email);
-            formdata.append('transfer', this.transfer);
-            formdata.append('_method', 'POST');
-            axios.post('/api/movements/debit',formdata)
+            axios.post('/api/movements/debit',this.movement)
             .then(response => {
-                this.paymentTypes = response.data.data;
+                this.$toasted.success("Debit Complete!")
+                let msg = "A new Income of "+ this.movement.value + " is added to your account by " + this.$store.state.user.name;
+                if(response.data != null){
+                    this.$socket.emit("notifyMovement",msg,{ email:response.data.email, id: response.data.id});
+                }
+                this.$router.push('/home');
             });
         },
         cancelDebit(){
-            this.$emit('cancel-debit');
+            this.$router.push('/home');
         },
         close(){
                 this.showErrors=false;

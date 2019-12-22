@@ -162,10 +162,11 @@ const app = new Vue({
         movementReceived(dataFromServer) {
             this.$toasted.show(dataFromServer);
         },
-        privateMessage_unavailable(destUser) {
-            this.$toasted.error(
-                'User "' + destUser.name + '" is not available'
-            );
+        movementClientUnavailable(dataFromServer) {
+            axios.post("api/users/email",{email: dataFromServer[0], msg: dataFromServer[1]})
+            .then(response => {
+                this.$toasted.show("User as offline! Email sent");
+            });
         },
     },created(){
         const token = localStorage.getItem("token")
