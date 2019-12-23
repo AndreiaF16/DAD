@@ -2352,12 +2352,13 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post('/api/login', this.user).then(function (response) {
-        _this.$store.commit('setToken', _this.user.remember_token);
+        axios.defaults.headers.common.Authorization = "Bearer " + response.data.access_token;
+
+        _this.$store.commit('setToken', response.data.access_token);
 
         _this.$store.commit('logIn', true);
 
-        localStorage.setItem("token", _this.user.remember_token);
-        axios.defaults.headers.common.Authorization = "Bearer " + _this.user.remember_token;
+        localStorage.setItem("token", response.data.access_token);
         axios.get('/api/users/me').then(function (response) {
           _this.$store.commit('setUser', response.data.data);
 

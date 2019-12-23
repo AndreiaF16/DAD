@@ -46,10 +46,10 @@
             userLogin(){
                 axios.post('/api/login', this.user)
                     .then(response => {
-                        this.$store.commit('setToken',this.user.remember_token);
+                        axios.defaults.headers.common.Authorization = "Bearer " + response.data.access_token;
+                        this.$store.commit('setToken',response.data.access_token);
                         this.$store.commit('logIn',true);
-                        localStorage.setItem("token", this.user.remember_token);
-                        axios.defaults.headers.common.Authorization = "Bearer " + this.user.remember_token;
+                        localStorage.setItem("token", response.data.access_token);
                         axios.get('/api/users/me')
                             .then(response => {
                                 this.$store.commit('setUser',response.data.data);
