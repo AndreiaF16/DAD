@@ -178,39 +178,37 @@
 </template>
 
 <script type="text/javascript">
-  import errorValidation from '../helpers/showErrors.vue';
+    import errorValidation from '../helpers/showErrors.vue';
     import showMessage from '../helpers/showMessage.vue';
 
-  import MovementDetailsComponent from "./movementDetails.vue";
-   import MovementEditComponent from "./MovementEdit.vue";
+    import MovementDetailsComponent from "./movementDetails.vue";
+    import MovementEditComponent from "./MovementEdit.vue";
 
     export default {
         data:
         function() {
             return{
-                    pagination: [],
-                    tittle: "My Virtual Wallet",
-                    user: {},
-                    wallet: {},
-                    errors: [],
-                    movements: [],
-                    showMessage:false,
-                    showErrors: false,
-                    typeofmsg: "",
-                    message:'',
-                    message:'',
-                    typeofmsg: "",
-                    current_page: 1,
-                    rows: [],
-                    photo:'',
-
-               //user: this.$store.state.user,
+                pagination: [],
+                tittle: "My Virtual Wallet",
+                user: {},
+                wallet: {},
+                errors: [],
+                movements: [],
+                showMessage:false,
+                showErrors: false,
+                typeofmsg: "",
+                message:'',
+                message:'',
+                typeofmsg: "",
+                current_page: 1,
+                rows: [],
+                photo:'',
                 movements: {},
                 selectedMovement: null,
                 selectedMovementEdit: null,
                 balance: "",
                 search:{
-                   user_id: (this.$store.state.user)?this.$store.state.user.id:'',
+                    user_id: '',
                     id: '',
                     type: '',
                     category: '',
@@ -282,7 +280,7 @@
         },
 
         components: {
-           "movement-details": MovementDetailsComponent,
+            "movement-details": MovementDetailsComponent,
             "movement-edit": MovementEditComponent,
             'show-message':showMessage,
             'error-validation':errorValidation,
@@ -292,10 +290,11 @@
         mounted() {
             this.user = JSON.parse(localStorage.getItem('user'));
 
+            this.search.user_id = this.user.id;
+
             this.getFilteredMovements();
 
             this.wallet = this.user.wallet;
-
         }
     }
 </script>

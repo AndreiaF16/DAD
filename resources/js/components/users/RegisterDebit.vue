@@ -178,12 +178,12 @@
         'error-validation':errorValidation,
     },
     mounted(){
-    axios.get('/api/categories/expense')
-    .then(response => {
-        this.paymentTypes = response.data.data;
-    });
-    this.user = JSON.parse(localStorage.getItem('user'));
-    this.movement.email = this.user.email;
+        axios.get('/api/categories/expense')
+        .then(response => {
+            this.paymentTypes = response.data.data;
+        });
+        this.user = JSON.parse(localStorage.getItem('user'));
+        this.movement.email = this.user.email;
     },
    }
 </script>

@@ -55,14 +55,22 @@
                                 this.$store.commit('setUser',response.data.data);
                                 localStorage.setItem("user",JSON.stringify(response.data.data));
                                 this.$socket.emit("user_enter",response.data.data);
+                                this.$toasted.success("Welcome "+ response.data.data.name +" !")
                             });
                         this.$router.push('/home');
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.log(error.response.data)
                         this.showMessage=true;
                         this.message = "Invalid credentials";
                         this.typeofmsg= "alert-danger";
+                        /*if(error.response.status==401){
+					        this.$toasted.error(error.response.data.unauthorized);
+                        }else if(error.response.status == 422){
+                            this.$toasted.error(error.response.data.message)
+                        }else{
+                            this.$toasted.error(error.response.data.msg);
+                        }*/
                         return;
                     });
             },

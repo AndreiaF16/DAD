@@ -2365,14 +2365,24 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.setItem("user", JSON.stringify(response.data.data));
 
           _this.$socket.emit("user_enter", response.data.data);
+
+          _this.$toasted.success("Welcome " + response.data.data.name + " !");
         });
 
         _this.$router.push('/home');
       })["catch"](function (error) {
-        console.log(error);
+        console.log(error.response.data);
         _this.showMessage = true;
         _this.message = "Invalid credentials";
         _this.typeofmsg = "alert-danger";
+        /*if(error.response.status==401){
+        this.$toasted.error(error.response.data.unauthorized);
+        }else if(error.response.status == 422){
+            this.$toasted.error(error.response.data.message)
+        }else{
+            this.$toasted.error(error.response.data.msg);
+        }*/
+
         return;
       });
     },
@@ -3576,7 +3586,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       typeofmsg: "",
       message: ''
     }, _defineProperty(_ref, "message", ''), _defineProperty(_ref, "typeofmsg", ""), _defineProperty(_ref, "current_page", 1), _defineProperty(_ref, "rows", []), _defineProperty(_ref, "photo", ''), _defineProperty(_ref, "movements", {}), _defineProperty(_ref, "selectedMovement", null), _defineProperty(_ref, "selectedMovementEdit", null), _defineProperty(_ref, "balance", ""), _defineProperty(_ref, "search", {
-      user_id: this.$store.state.user ? this.$store.state.user.id : '',
+      user_id: '',
       id: '',
       type: '',
       category: '',
@@ -3648,6 +3658,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     this.user = JSON.parse(localStorage.getItem('user'));
+    this.search.user_id = this.user.id;
     this.getFilteredMovements();
     this.wallet = this.user.wallet;
   }
