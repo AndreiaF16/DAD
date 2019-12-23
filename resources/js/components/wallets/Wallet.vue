@@ -45,35 +45,7 @@
                 <div class="form-group">
                     <select name="type" class="form-control" v-model="search.category">
                         <option value='' selected> -- Type Of Category -- </option>
-                        <option value="1" >Groceries</option>
-                        <option value="2" >Restaurant</option>
-                        <option value="3" >Clothes</option>
-                        <option value="4" >Shoes</option>
-                        <option value="5" >School</option>
-                        <option value="6" >Services</option>
-                        <option value="7" >Electricity</option>
-                        <option value="8" >Phone</option>
-                        <option value="9"> Fuel</option>
-                        <option value="10" >Mortgage Payment</option>
-                        <option value="11" >Car Payment</option>
-                        <option value="12" >Entertainment</option>
-                        <option value="13" >Gadget</option>
-                        <option value="14" >Computer</option>
-                        <option value="15" >Vacation</option>
-                        <option value="16" >Hobby</option>
-                        <option value="17" >Loan Repayment</option>
-                        <option value="18" >Loan</option>
-                        <option value="19" >Other Expense</option>
-                        <option value="20" >Salary</option>
-                        <option value="21" >Bonus</option>
-                        <option value="22" >Royalties</option>
-                        <option value="23" >Interests</option>
-                        <option value="24" >Gifts</option>
-                        <option value="25" >Dividends</option>
-                        <option value="26" >Sales</option>
-                        <option value="27" >Loan Repayment</option>
-                        <option value="28" >Loan </option>
-                        <option value="29" >Other Income</option>
+                        <option v-for="categoryType in categoryTypes" :key="categoryType.id" v-bind:value="categoryType.id">{{ categoryType.name }}</option>
                     </select>
 
 
@@ -221,7 +193,8 @@
                 showSuccess: false,
                 successMessage: '',
                 errorMessageEdit: '',
-                showErrorEdit: false
+                showErrorEdit: false,
+                categoryTypes: []
 
             }
         },
@@ -294,7 +267,15 @@
 
             this.getFilteredMovements();
 
-            this.wallet = this.user.wallet;
+            axios.get('/api/users/me')
+            .then(response => {
+                this.wallet = response.data.data.wallet;
+            });
+
+            axios.get('/api/categories/expense')
+            .then(response => {
+                this.categoryTypes = response.data.data;
+            });
         }
     }
 </script>

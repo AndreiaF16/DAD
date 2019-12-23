@@ -92,7 +92,7 @@
         });
     },
             cancelCreate: function(){
-                this.$emit('create-canceled');
+                this.$router.push('/home');
             },
             onFileChanged(fileSelected) {
                 this.user.photo = fileSelected
