@@ -1982,7 +1982,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     cancelCreate: function cancelCreate() {
-      this.$emit('create-canceled');
+      this.$router.push('/home');
     },
     onFileChanged: function onFileChanged(fileSelected) {
       this.user.photo = fileSelected;
@@ -2365,14 +2365,24 @@ __webpack_require__.r(__webpack_exports__);
           localStorage.setItem("user", JSON.stringify(response.data.data));
 
           _this.$socket.emit("user_enter", response.data.data);
+
+          _this.$toasted.success("Welcome " + response.data.data.name + " !");
         });
 
         _this.$router.push('/home');
       })["catch"](function (error) {
-        console.log(error);
+        console.log(error.response.data);
         _this.showMessage = true;
         _this.message = "Invalid credentials";
         _this.typeofmsg = "alert-danger";
+        /*if(error.response.status==401){
+        this.$toasted.error(error.response.data.unauthorized);
+        }else if(error.response.status == 422){
+            this.$toasted.error(error.response.data.message)
+        }else{
+            this.$toasted.error(error.response.data.msg);
+        }*/
+
         return;
       });
     },
@@ -3186,6 +3196,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     close: function close() {
       this.showErrors = false;
+    },
+    cancelCreate: function cancelCreate() {
+      this.$router.push('/home');
     }
   },
   components: {
@@ -3528,34 +3541,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3576,7 +3561,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       typeofmsg: "",
       message: ''
     }, _defineProperty(_ref, "message", ''), _defineProperty(_ref, "typeofmsg", ""), _defineProperty(_ref, "current_page", 1), _defineProperty(_ref, "rows", []), _defineProperty(_ref, "photo", ''), _defineProperty(_ref, "movements", {}), _defineProperty(_ref, "selectedMovement", null), _defineProperty(_ref, "selectedMovementEdit", null), _defineProperty(_ref, "balance", ""), _defineProperty(_ref, "search", {
-      user_id: this.$store.state.user ? this.$store.state.user.id : '',
+      user_id: '',
       id: '',
       type: '',
       category: '',
@@ -3584,7 +3569,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       transfer_email: '',
       data_inf: '',
       data_sup: ''
-    }), _defineProperty(_ref, "showError", false), _defineProperty(_ref, "showSuccess", false), _defineProperty(_ref, "successMessage", ''), _defineProperty(_ref, "errorMessageEdit", ''), _defineProperty(_ref, "showErrorEdit", false), _ref;
+    }), _defineProperty(_ref, "showError", false), _defineProperty(_ref, "showSuccess", false), _defineProperty(_ref, "successMessage", ''), _defineProperty(_ref, "errorMessageEdit", ''), _defineProperty(_ref, "showErrorEdit", false), _defineProperty(_ref, "categoryTypes", []), _ref;
   },
   methods: {
     getFilteredMovements: function getFilteredMovements() {
@@ -3647,9 +3632,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     'error-validation': _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   mounted: function mounted() {
+    var _this3 = this;
+
     this.user = JSON.parse(localStorage.getItem('user'));
+    this.search.user_id = this.user.id;
     this.getFilteredMovements();
-    this.wallet = this.user.wallet;
+    axios.get('/api/users/me').then(function (response) {
+      _this3.wallet = response.data.data.wallet;
+    });
+    axios.get('/api/categories/expense').then(function (response) {
+      _this3.categoryTypes = response.data.data;
+    });
   }
 });
 
@@ -57533,7 +57526,7 @@ var render = function() {
               on: {
                 click: function($event) {
                   $event.preventDefault()
-                  return _vm.cancelEdit($event)
+                  return _vm.cancelCreate($event)
                 }
               }
             },
@@ -57941,80 +57934,18 @@ var render = function() {
                   _vm._v(" -- Type Of Category -- ")
                 ]),
                 _vm._v(" "),
-                _c("option", { attrs: { value: "1" } }, [_vm._v("Groceries")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "2" } }, [_vm._v("Restaurant")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "3" } }, [_vm._v("Clothes")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "4" } }, [_vm._v("Shoes")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "5" } }, [_vm._v("School")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "6" } }, [_vm._v("Services")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "7" } }, [
-                  _vm._v("Electricity")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "8" } }, [_vm._v("Phone")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "9" } }, [_vm._v(" Fuel")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "10" } }, [
-                  _vm._v("Mortgage Payment")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "11" } }, [
-                  _vm._v("Car Payment")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "12" } }, [
-                  _vm._v("Entertainment")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "13" } }, [_vm._v("Gadget")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "14" } }, [_vm._v("Computer")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "15" } }, [_vm._v("Vacation")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "16" } }, [_vm._v("Hobby")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "17" } }, [
-                  _vm._v("Loan Repayment")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "18" } }, [_vm._v("Loan")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "19" } }, [
-                  _vm._v("Other Expense")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "20" } }, [_vm._v("Salary")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "21" } }, [_vm._v("Bonus")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "22" } }, [_vm._v("Royalties")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "23" } }, [_vm._v("Interests")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "24" } }, [_vm._v("Gifts")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "25" } }, [_vm._v("Dividends")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "26" } }, [_vm._v("Sales")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "27" } }, [
-                  _vm._v("Loan Repayment")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "28" } }, [_vm._v("Loan ")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "29" } }, [
-                  _vm._v("Other Income")
-                ])
-              ]
+                _vm._l(_vm.categoryTypes, function(categoryType) {
+                  return _c(
+                    "option",
+                    {
+                      key: categoryType.id,
+                      domProps: { value: categoryType.id }
+                    },
+                    [_vm._v(_vm._s(categoryType.name))]
+                  )
+                })
+              ],
+              2
             )
           ]),
           _vm._v(" "),

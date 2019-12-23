@@ -14,10 +14,11 @@ class CategoryControllerAPI extends Controller
 {
     public function CategoriesExpense()
     {
-        $categories = Category::where("type","=","e")->get();
-        /*foreach ($categories as $key => $val) {
-            $categories[$key]["name"] = ucfirst($val->name);
-        }*/
         return CategoryResource::collection(Category::where("type","=","e")->get());
+    }
+
+    public function Categories()
+    {
+        return CategoryResource::collection(Category::all());
     }
 }

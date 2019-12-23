@@ -66,3 +66,4 @@ Route::post('users/email','UserControllerAPI@sendEmail');
 //Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');
 
 Route::middleware('auth:api')->get('categories/expense', 'CategoryControllerAPI@CategoriesExpense');
+Route::middleware('auth:api')->get('categories', 'CategoryControllerAPI@Categories');

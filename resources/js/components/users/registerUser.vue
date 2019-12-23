@@ -34,7 +34,7 @@
 
       <div class="form-group">
         <a class="btn btn-primary" v-on:click.prevent="register">Register</a>
-        <a class="btn btn-danger" v-on:click.prevent="cancelEdit">Cancel</a>
+        <a class="btn btn-danger" v-on:click.prevent="cancelCreate">Cancel</a>
       </div>
     </div>
   </div>
@@ -84,6 +84,9 @@ export default {
     close(){
         this.showErrors=false;
     },
+    cancelCreate(){
+      this.$router.push('/home');
+    }
   },
   components: {
       'error-validation':errorValidation,
