@@ -81,6 +81,7 @@
           this.$toasted.success("Income registered with success!")
           let msg = "A new income of "+ this.movement.value + " is added to your account";
           this.$socket.emit("notifyMovement",msg,{ email:response.data.email, id: response.data.id})
+          this.$socket.emit("serverUpdateVirtualWallet",{ email:response.data.email, id: response.data.id})
 					this.$router.push('/home');
 				}).catch(error=>{
           this.showErrors = true;

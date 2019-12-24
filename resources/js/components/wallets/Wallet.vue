@@ -272,10 +272,29 @@
                 this.wallet = response.data.data.wallet;
             });
 
-            axios.get('/api/categories/expense')
+            axios.get('/api/categories')
             .then(response => {
                 this.categoryTypes = response.data.data;
             });
+        },
+        sockets:{
+            updateVirtualWallet: function(){
+                this.user = JSON.parse(localStorage.getItem('user'));
+
+                this.search.user_id = this.user.id;
+
+                this.getFilteredMovements();
+
+                axios.get('/api/users/me')
+                .then(response => {
+                    this.wallet = response.data.data.wallet;
+                });
+
+                axios.get('/api/categories')
+                .then(response => {
+                    this.categoryTypes = response.data.data;
+                });
+            }
         }
     }
 </script>

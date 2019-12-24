@@ -151,6 +151,7 @@
                 let msg = "A new Income of "+ this.movement.value + " is added to your account by " + this.$store.state.user.name;
                 if(response.data.email != undefined){
                     this.$socket.emit("notifyMovement",msg,{ email:response.data.email, id: response.data.id});
+                    this.$socket.emit("serverUpdateVirtualWallet",{email:response.data.email, id: response.data.id})
                 }
                 this.$router.push('/home');
             }).catch(error => {

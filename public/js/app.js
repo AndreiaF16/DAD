@@ -2627,6 +2627,11 @@ __webpack_require__.r(__webpack_exports__);
           id: response.data.id
         });
 
+        _this.$socket.emit("serverUpdateVirtualWallet", {
+          email: response.data.email,
+          id: response.data.id
+        });
+
         _this.$router.push('/home');
       })["catch"](function (error) {
         _this.showErrors = true;
@@ -2824,6 +2829,11 @@ __webpack_require__.r(__webpack_exports__);
 
         if (response.data.email != undefined) {
           _this.$socket.emit("notifyMovement", msg, {
+            email: response.data.email,
+            id: response.data.id
+          });
+
+          _this.$socket.emit("serverUpdateVirtualWallet", {
             email: response.data.email,
             id: response.data.id
           });
@@ -3640,9 +3650,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     axios.get('/api/users/me').then(function (response) {
       _this3.wallet = response.data.data.wallet;
     });
-    axios.get('/api/categories/expense').then(function (response) {
+    axios.get('/api/categories').then(function (response) {
       _this3.categoryTypes = response.data.data;
     });
+  },
+  sockets: {
+    updateVirtualWallet: function updateVirtualWallet() {
+      var _this4 = this;
+
+      this.user = JSON.parse(localStorage.getItem('user'));
+      this.search.user_id = this.user.id;
+      this.getFilteredMovements();
+      axios.get('/api/users/me').then(function (response) {
+        _this4.wallet = response.data.data.wallet;
+      });
+      axios.get('/api/categories').then(function (response) {
+        _this4.categoryTypes = response.data.data;
+      });
+    }
   }
 });
 
@@ -76116,8 +76141,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

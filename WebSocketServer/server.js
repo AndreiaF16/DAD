@@ -61,16 +61,26 @@ io.on('connection', function (socket) {
     });
 
     socket.on("notifyMovement", function(msg, destUser) {
-    let userInfo = loggedUsers.userInfoByID(destUser.id);
-    let socket_id = userInfo !== undefined ? userInfo.socketID : null;
-    if (socket_id === null) {
-        console.log("user is offline");
-        socket.emit("movementClientUnavailable", destUser.email,msg);
-    } else {
-        io.to(socket_id).emit("movementReceived", msg);
-    }
+        let userInfo = loggedUsers.userInfoByID(destUser.id);
+        let socket_id = userInfo !== undefined ? userInfo.socketID : null;
+        if (socket_id === null) {
+            console.log("user is offline");
+            socket.emit("movementClientUnavailable", destUser.email,msg);
+        } else {
+            io.to(socket_id).emit("movementReceived", msg);
+        }
     });
 
+    socket.on("serverUpdateVirtualWallet", function(destUser) {
+        let userInfo = loggedUsers.userInfoByID(destUser.id);
+        let socket_id = userInfo !== undefined ? userInfo.socketID : null;
+        if (socket_id === null) {
+            console.log("user is offline");
+        } else {
+            io.to(socket_id).emit("updateVirtualWallet");
+        }
+    });
+    
     socket.on("disconnect", function() {
         loggedUsers.removeUserInfoBySocketID(socket.id);
         console.log(
