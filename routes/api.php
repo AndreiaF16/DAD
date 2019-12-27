@@ -44,19 +44,23 @@ Route::middleware('auth:api')->get('getAuthUser','UserControllerAPI@getAuthUser'
 //us2
 Route::post('registerUser', 'RegisterControllerAPI@create');
 //7
-Route::middleware('auth:api')->get('movements/{id}', 'MovementControllerAPI@getUserMovements');
+Route::middleware('auth:api')->get('movements/{id}', 'MovementControllerAPI@getAllUserMovements');
 
 Route::middleware('auth:api')->post('movements/credit', 'MovementControllerAPI@createCredit');
 Route::middleware('auth:api')->post('movements/debit', 'MovementControllerAPI@createDebit');
 Route::middleware('auth:api')->post('movements/filter', 'MovementControllerAPI@getFilteredMovements');
 Route::middleware('auth:api')->put('movements/{id}', 'MovementControllerAPI@update');
 
+//us 14
+Route::middleware('auth:api')->get('movements/movementStatistics','MovementControllerAPI@getMovementStatistics');
 //us 15 e 16
 Route::middleware('auth:api')->post('createUser', 'UserControllerAPI@store');
 Route::middleware('auth:api')->post('users/filter', 'UserControllerAPI@getFilteredUsers');
 Route::middleware('auth:api')->put('users/deactivate/{id}', 'UserControllerAPI@deactivateUser');
 Route::middleware('auth:api')->put('users/activate/{id}', 'UserControllerAPI@activateUser');
 Route::middleware('auth:api')->delete('users/{id}', 'UserControllerAPI@destroy');
+
+
 
 
 Route::get('getphotobyemail/{email}','UserControllerAPI@getPhotoByEmail');
@@ -67,3 +71,7 @@ Route::post('users/email','UserControllerAPI@sendEmail');
 
 Route::middleware('auth:api')->get('categories/expense', 'CategoryControllerAPI@CategoriesExpense');
 Route::middleware('auth:api')->get('categories', 'CategoryControllerAPI@Categories');
+Route::middleware('auth:api')->get('categories/details','CategoryControllerAPI@categoryName');
+Route::middleware('auth:api')->get('movements/getAllUserMovements','MovementControllerAPI@getAllUserMovements');
+Route::get('users/allUsers', 'UserControllerAPI@allUsers');
+

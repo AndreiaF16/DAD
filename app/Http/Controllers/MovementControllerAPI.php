@@ -11,6 +11,7 @@ use App\Http\Controllers\Requests\DebitMovementRequest;
 use App\User;
 use App\Wallet;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
 
 class MovementControllerAPI extends Controller
@@ -42,11 +43,10 @@ class MovementControllerAPI extends Controller
     }
 
 
-    public function getUserMovements($id){
-
+    /*public function getUserMovements($id){
         $movements = Auth::user()->wallet->movement->with('category', 'transfer_wallet', 'transfer_wallet.user')->orderBy('date', 'desc')->paginate(10);
         return $movements;
-    }
+    }*/
 
     public function store(Request $request)
     {
@@ -183,5 +183,52 @@ class MovementControllerAPI extends Controller
         }
         return response()->json(null, 201);
     }
+
+    public function getMovementStatistics(){
+        $authenticatedUser = Auth::guard('api')->user();
+        if ($authenticatedUser == null || $authenticatedUser->type != "a") {
+            return abort(401);
+        }
+        $total = Movement::count();
+        $totalByCategory = [];
+        $categories = Category::all();
+        for ($i = 0; $i < sizeof($categories); $i++) {
+            $cat = $categories[$i]->name;
+            $val = Movement::where('category_id','=',$categories[$i]->id)->count() / $total;
+            $val = round($val,2) * 100;
+            $obj = (object) array(
+                'category' => $cat,
+                'total' => Movement::where('category_id','=',$categories[$i]->id)->count()
+            );
+            array_push($totalByCategory,$obj);
+        }
+        $totalExpenses = round(Movement::where('type','=','e')->count()/$total,2)*100;
+        $totalIncomes =round(Movement::where('type','=','i')->count()/$total,2)*100;
+        $totalTransfers = round(Movement::where('transfer','=',1)->count()/$total,2)*100;
+        $totalNonTransfers = round(Movement::where('transfer','=',0)->count()/$total,2)*100;
+        $largestMovementValue = DB::select('select max(value) as maximum from movements')[0]->maximum;
+        $smallestMovementValue = DB::select('select min(value) as minimum from movements')[0]->minimum;
+        $averageMovementValue = DB::select('select avg(value) as average from movements')[0]->average;
+        $data = (object) array(
+            'total' => $total,
+            'totalExpenses' => $totalExpenses,
+            'totalIncomes' => $totalIncomes,
+            'totalTransfers' => $totalTransfers,
+            'totalNonTransfers' => $totalNonTransfers,
+            'largestMovement' => floatval($largestMovementValue),
+            'smallestMovement' => floatval($smallestMovementValue),
+            'averageMovementValue' => round(floatval($averageMovementValue),2),
+            'totalByCategory' => $totalByCategory,
+        );
+        $response = json_encode($data);
+        return $response;
+    }
+
+    public function getAllUserMovements(){
+        $wallet = Wallet::first();
+        $movements = Movement::where('wallet_id','=',$wallet->id)->get();
+        return $movements;
+    }
+    
 }
 

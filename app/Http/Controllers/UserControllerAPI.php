@@ -14,6 +14,7 @@ use App\Http\Resources\User as UserResource;
 use App\Http\Controllers\Requests\RegisterUserRequest;
 use App\Http\Controllers\Requests\RegisterUserAdminOpRequest;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Contracts\Support\Jsonable;
 
 define('SOURCE_EMAIL', env('MAIL_USERNAME'));
 
@@ -174,4 +175,10 @@ class UserControllerAPI extends Controller
 
         return response()->json(['message' => 'Email sent!']);
     }
+    public function allUsers(){
+        
+        $users = User::all();
+        return $users;
+    }
+    
 }

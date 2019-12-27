@@ -11,6 +11,8 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router';
 import VueGoodTable from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
+import VueGoogleCharts from 'vue-google-charts';
+Vue.use(VueGoogleCharts);
 import Login from './components/login';
 import Profile from './components/users/profile';
 import Home from './components/HomeComponent';
@@ -19,7 +21,8 @@ import Operator from './components/operator/OperatorComponent';
 import Users from './components/users/users';
 //import listVirtualWallets from './components/wallets/wallets';
 import Movements from './components/movements/movements';
-
+import MovementStatistics from './components/admin/MovementStatistics';
+import Statistics from './components/admin/statistics';
 import CreateUser from './components/admin/createUser';
 import User from './components/admin/users';
 
@@ -103,6 +106,8 @@ const routes = [
    {path:'/createUser', component:CreateUser},
    {path:'/users', component:User},
    {path:'/debit', component:RegisterDebit},
+   { path: '/movementStatistics', component: MovementStatistics, name: "movementStatistics" },
+   { path: '/Statistics', component: Statistics, name: "Statistics" },
 
 ]
 
@@ -119,7 +124,8 @@ Vue.component('operator', Operator)
 Vue.component('movements', Movements)
 Vue.component('myVirtualWallet', WalletComponent)
 Vue.component('createUser', CreateUser)
-
+Vue.component('movementStatistics',MovementStatistics)
+Vue.component('Statistics',Statistics)
 Vue.component('users', User)
 
 

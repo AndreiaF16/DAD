@@ -21,4 +21,9 @@ class CategoryControllerAPI extends Controller
     {
         return CategoryResource::collection(Category::all());
     }
+
+    public function categoryName(){
+        $categories= Category::distinct('name')->get();
+        return $categories;
+    }
 }
