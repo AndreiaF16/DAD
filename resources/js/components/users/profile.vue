@@ -16,7 +16,7 @@
 
     <div>
         <div class="row justify-content-right">
-            <h5>{{tittle2}}</h5>
+            <h5><b>{{tittle2}}</b></h5>
         </div>
 
         <div class="form-group">
@@ -53,7 +53,10 @@
     <div>
         <br>
         <div class="row justify-content-right">
-            <h5>{{tittle3}}</h5>
+            <h5>
+            <b>{{tittle3}}</b>
+            </h5>
+
         </div>
 
         <div class="form-group">
@@ -105,7 +108,6 @@ export default {
             user: {},
             file:'',
             password_old:'',
-             message:'',
 			password:'',
             password_confirmation:'',
       }
@@ -163,7 +165,6 @@ export default {
             formdata.append('nif', this.user.nif);
             formdata.append('file', this.file);
             formdata.append('_method', 'PUT');
-            console.log(this.file);
             //https://laracasts.com/discuss/channels/laravel/ajax-formdata-and-put-fails
             axios.post('/api/users/updateProfile', formdata)
                 .then(response => {

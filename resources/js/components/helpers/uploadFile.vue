@@ -1,7 +1,7 @@
 <template>
 
 	<div>
-		<label for="chooseFile">Select a picture </label>
+		<label for="chooseFile">Select a picture: </label>
 		<div class="custom-file" id="chooseFile">
 			<input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" v-on:change="onFileChanged" accept=".jpg,.jpeg,.png">
 			<label class="custom-file-label" for="inputGroupFile01"> {{ filename }} </label>
@@ -16,7 +16,7 @@
     export default {
 		data() {
 			return {
-				filename: 'Choose a file',
+				filename: 'Choose a photo',
 				file: '',
 			};
 		},

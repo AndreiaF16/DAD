@@ -1,10 +1,5 @@
 <template>
 <div>
-   <!-- <vue-good-table ref="table"  :columns="columns" :rows="movements" :pagination-options="{ enabled: true, perPage: 10}">
-        <template slot="table-row" slot-scope="props">
-
-
-        </template>-->
 
      <table class="table table-striped">
         <thead>
@@ -37,8 +32,6 @@
                 <td>{{ movement.iban }}</td>
                 <td>{{ movement.mb_entity_code }}</td>
                 <td>{{ movement.mb_payment_reference }}</td>
-                <!-- <td>{{ movement.description }}</td>
-                <td>{{ movement.source_description }}</td> -->
                <td>{{ movement.date }}</td>
                 <td>{{ movement.start_balance }}</td>
                 <td>{{ movement.end_balance }}</td>
@@ -120,9 +113,6 @@
         },
         mounted(){
             this.getMovements();
-        //    console.log(this.movements);
-           // this.rows = Array.from(this.movements);
-         //   console.log(this.rows);
         },
         components: {
             //            'movement-list':moventsListReference,

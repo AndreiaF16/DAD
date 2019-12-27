@@ -3,11 +3,22 @@
             <div class="jumbotron row justify-content-center">
                 <h1>{{tittle}}</h1>
         </div>
+
+            <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
+    <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
+
          <div class="form-group">
                 <label for="inputBalance">Balance of My Virtual Wallet</label>
                 <input type="text" class="form-control"
                         name="balance" id="inputBalance"
                         placeholder="Balance" v-model="wallet.balance" readonly/>
+            </div>
+
+              <div class="form-group">
+                <label for="inputEmail">My Email</label>
+                <input type="text" class="form-control"
+                        name="email" id="inputEmail"
+                        placeholder="Email" v-model="wallet.email" readonly/>
             </div>
 
 
@@ -32,7 +43,12 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <input type="text" name="category" class="form-control" placeholder="Search By Category" v-model="search.category">
+                    <select name="type" class="form-control" v-model="search.category">
+                        <option value='' selected> -- Type Of Category -- </option>
+                        <option v-for="categoryType in categoryTypes" :key="categoryType.id" v-bind:value="categoryType.id">{{ categoryType.name }}</option>
+                    </select>
+
+
                 </div>
                 <div class="form-group">
                     <select name="type_payment" class="form-control" v-model="search.type_payment">
@@ -86,12 +102,23 @@
                 <tbody>
                     <tr v-for="movement in movements.data"  :key="movement.id" :class="{activerow: selectedMovement === movement || selectedMovementEdit === movement}">
                         <td>{{ movement.id }}</td>
-                        <td>{{ movement.type }}</td>
-                            <td v-if="movement.transfer_wallet_id != undefined">{{ movement.transfer_wallet.email }}</td>
-                            <td v-if="movement.transfer_wallet_id == null"> </td>
-                        <td>{{ movement.type_payment }}</td>
-                            <td v-if="movement.category">{{ movement.category.name }}</td>
-                            <td v-if="!movement.category"> </td>
+                        <td v-if="movement.type == 'e'">Expense</td>
+                        <td v-if="movement.type == 'i'">Income</td>
+
+
+                        <td v-if="movement.transfer_wallet_id != undefined">{{ movement.transfer_wallet.email }}</td>
+                        <td v-if="movement.transfer_wallet_id == null">---</td>
+
+                        <td v-if="movement.type_payment == 'c'">Cash</td>
+                        <td v-if="movement.type_payment == 'bt'">Bank Transfer</td>
+                        <td v-if="movement.type_payment == 'mb'">MB Payment</td>
+                        <td v-if="movement.type_payment == null">---</td>
+
+
+                        <td v-if="movement.category">{{ movement.category.name }}</td>
+                        <td v-if="movement.category == null">---</td>
+
+
                         <td>{{ movement.date }}</td>
                         <td>{{ movement.start_balance }}</td>
                         <td>{{ movement.end_balance }}</td>
@@ -105,6 +132,9 @@
             </table>
         </div>
 
+        <div class="card-footer">
+            <pagination :data="movements" :limit=4 @pagination-change-page="getResults"></pagination>
+        </div>
 
         <div class="alert alert-danger" v-if="showErrorEdit">
 			<button type="button" class="close-btn" v-on:click="showErrorEdit=false">&times;</button>
@@ -120,30 +150,37 @@
 </template>
 
 <script type="text/javascript">
-  import MovementDetailsComponent from "./MovementDetails.vue";
-   import MovementEditComponent from "./MovementEdit.vue";
+    import errorValidation from '../helpers/showErrors.vue';
+    import showMessage from '../helpers/showMessage.vue';
+
+    import MovementDetailsComponent from "./movementDetails.vue";
+    import MovementEditComponent from "./MovementEdit.vue";
 
     export default {
         data:
         function() {
             return{
-                  tittle: "My Virtual Wallet",
-                    user: {},
-                    wallet: {},
-                    movements: [],
-                    showMessage:false,
-                    message:'',
-                    typeofmsg: "",
-                    current_page: 1,
-                    rows: [],
-
-               user: this.$store.state.user,
+                pagination: [],
+                tittle: "My Virtual Wallet",
+                user: {},
+                wallet: {},
+                errors: [],
+                movements: [],
+                showMessage:false,
+                showErrors: false,
+                typeofmsg: "",
+                message:'',
+                message:'',
+                typeofmsg: "",
+                current_page: 1,
+                rows: [],
+                photo:'',
                 movements: {},
                 selectedMovement: null,
                 selectedMovementEdit: null,
                 balance: "",
                 search:{
-                   user_id: (this.$store.state.user)?this.$store.state.user.id:'',
+                    user_id: '',
                     id: '',
                     type: '',
                     category: '',
@@ -156,7 +193,8 @@
                 showSuccess: false,
                 successMessage: '',
                 errorMessageEdit: '',
-                showErrorEdit: false
+                showErrorEdit: false,
+                categoryTypes: []
 
             }
         },
@@ -207,18 +245,37 @@
             showCategoryError: function(){
                 this.showErrorEdit = true;
                 this.errorMessageEdit = 'Category does not exist for this type of movement';
-            }
+            },
+            close(){
+                this.showErrors=false;
+                this.showMessage=false;
+            },
         },
 
         components: {
-           "movement-details": MovementDetailsComponent,
+            "movement-details": MovementDetailsComponent,
             "movement-edit": MovementEditComponent,
+            'show-message':showMessage,
+            'error-validation':errorValidation,
+
         },
 
         mounted() {
-            this.getFilteredMovements();
-            this.wallet = this.user.wallet;
+            this.user = JSON.parse(localStorage.getItem('user'));
 
+            this.search.user_id = this.user.id;
+
+            this.getFilteredMovements();
+
+            axios.get('/api/users/me')
+            .then(response => {
+                this.wallet = response.data.data.wallet;
+            });
+
+            axios.get('/api/categories/expense')
+            .then(response => {
+                this.categoryTypes = response.data.data;
+            });
         }
     }
 </script>

@@ -1,11 +1,9 @@
 <template>
 <div>
-            <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
-
     <div class="jumbotron">
             <h1>User Login</h1>
         </div>
-
+        <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
         <form>
             <div class="form-group">
                 <label for="inputEmail">Email</label>
@@ -48,46 +46,44 @@
             userLogin(){
                 axios.post('/api/login', this.user)
                     .then(response => {
-                        this.message = "User authenticated correctly";
-                        this.showMessage = true;
-                        this.user.remember_token = response.data.access_token;
-                        this.$store.commit('setToken',this.user.remember_token);
+                        axios.defaults.headers.common.Authorization = "Bearer " + response.data.access_token;
+                        this.$store.commit('setToken',response.data.access_token);
                         this.$store.commit('logIn',true);
-                        localStorage.setItem("token", this.user.remember_token);
-                        axios.defaults.headers.common.Authorization = "Bearer " + this.user.remember_token;
+                        localStorage.setItem("token", response.data.access_token);
                         axios.get('/api/users/me')
                             .then(response => {
-                                console.log(response.data);
                                 this.$store.commit('setUser',response.data.data);
                                 localStorage.setItem("user",JSON.stringify(response.data.data));
-                                this.message = "User authenticated correctly";
-                                this.typeofmsg = "alert-success";
-                                this.showMessage = true;
+                                this.$socket.emit("user_enter",response.data.data);
+                                this.$toasted.success("Welcome "+ response.data.data.name +" !")
                             });
-                            
                         this.$router.push('/home');
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.log(error.response.data)
                         this.showMessage=true;
                         this.message = "Invalid credentials";
-                       //this.message=error.response.data.unauthorized;
                         this.typeofmsg= "alert-danger";
+                        /*if(error.response.status==401){
+					        this.$toasted.error(error.response.data.unauthorized);
+                        }else if(error.response.status == 422){
+                            this.$toasted.error(error.response.data.message)
+                        }else{
+                            this.$toasted.error(error.response.data.msg);
+                        }*/
                         return;
-
-
                     });
             },
              close(){
                 this.showMessage = false;
-            }
-        },
+            },
             cancelLogin() {
                 this.$router.push('/home');
-            },
-             components: {
-            'show-message':showMessage,
+            }
         },
+        components: {
+        'show-message':showMessage,
+    },
 
     };
 </script>

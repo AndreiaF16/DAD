@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Requests;
 use Illuminate\Foundation\Http\FormRequest;
-class RegisterUserRequest extends FormRequest
+class RegisterUserAdminOpRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,7 +14,7 @@ class RegisterUserRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|min:3',
             'photo' => 'nullable|image|max:2048',
-            'nif' => 'required|max:9|min:9'
+            'type' => 'required|in:a,o'
         ];
     }
-} 
+}

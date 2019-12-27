@@ -7,9 +7,12 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Facades\DB;
 use App\Movement;
 use App\Http\Resources\Movement as MovementResource;
-
+use App\Http\Controllers\Requests\DebitMovementRequest;
 use App\User;
+use App\Wallet;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Carbon\Carbon;
 
 class MovementControllerAPI extends Controller
 {
@@ -36,50 +39,19 @@ class MovementControllerAPI extends Controller
     public function show($id)
     {
         $movements = Auth::user()->wallet->movement;
-        //return $movements;
-        //$movements = Movement::where("wallet_id",$id)->get();
-        //return $movements;
         return MovementResource::collection($movements);
     }
 
 
-    public function getUserMovements($id){
-        //$movements = DB::table('movements')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(20);//tirar paginate paginate(20)
-        //$wallet = Wallet::findOrFail($id);
-        //return $wallet->movements()->orderBy('date', 'desc');
+    /*public function getUserMovements($id){
         $movements = Auth::user()->wallet->movement->with('category', 'transfer_wallet', 'transfer_wallet.user')->orderBy('date', 'desc')->paginate(10);
-
-
-       // $movements = Movement::with('category', 'transfer_wallet', 'transfer_wallet.user')->select('*')->where('wallet_id', $id)->orderBy('date', 'desc')->paginate(10);
         return $movements;
-    }
+    }*/
 
     public function store(Request $request)
     {
-      /*   $request->validate([
-                'email' => 'required|email|unique:users,email',
-                ''
 
-            ]);
-        $user = new User();
-        $user->fill($request->all());
-        $user->password = Hash::make($user->password);
-        $user->save();
-        return response()->json(new UserResource($user), 201);*/
     }
-
-    /* public function update(Request $request, $id)
-    {
-        $request->validate([
-                'name' => 'required|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
-                'email' => 'required|email|unique:users,email,'.$id,
-                //'type' => 'enum('u','o','a')'
-            ]);
-        $user = User::findOrFail($id);
-        $user->update($request->all());
-        return new UserResource($user);
-    } */
-
 
 
     public function getFilteredMovements(Request $request){
@@ -95,7 +67,7 @@ class MovementControllerAPI extends Controller
                 $movements = $movements->where('type', $request->type);
             }
             if (!is_null($request->category)){
-                $category = DB::table('categories')->select('id')->where('name', $request->category)->get();
+                $category = DB::table('categories')->select('id')->where('id', $request->category)->get();
                 if($category->isEmpty()){
                     return 'Category does not exist!';
                 }
@@ -142,5 +114,121 @@ class MovementControllerAPI extends Controller
         $movement->save();
         return new MovementResource($movement);
     }
+
+
+    public function createDebit(DebitMovementRequest $request) {
+        $movement = new Movement();
+        if($request->type_payment == "bt"){
+            $movement->fill($request->except(['destination_email',"email",'mb_entity_code','mb_payment_reference','description',"source_description"]));
+        }
+        if($request->type_payment == "mb"){
+            $movement->fill($request->except(['destination_email',"email",'iban','source_description']));
+        }
+
+        if($request->email == $request->destination_email){
+            return response()->json(["error"=> "Email and Destination Email are the same!"], 400);
+        }
+
+        $wallet = Wallet::where('email',$request->email)->first();
+        if($wallet == null){
+            return response()->json(["error"=> "Email is not valid!"], 400);
+        }
+
+        if($wallet->balance - $request->value < 0){
+            return response()->json(["error"=> "The balance would be negative with this debit! Debit not allowed"], 400);
+        }
+
+        $date = Carbon::now();
+        $movement->wallet_id = $wallet->id;
+        $movement->type = "e";
+        $movement->start_balance = $wallet->balance;
+        $movement->end_balance = $wallet->balance - $request->value;
+        $movement->date = $date->toDateTimeString();
+        $movement->save();
+
+        $wallet->balance = $wallet->balance - $request->value;
+        $wallet->save();
+
+        if($request->transfer == 1){
+
+            $wallet_dest = Wallet::where('email',$request->destination_email)->first();
+            if($wallet_dest == null){
+                return response()->json(["error"=> "Destination Email is invalid!"], 400);
+            }
+
+            $date = Carbon::now();
+
+            $movement_dest = new Movement();
+            $movement_dest->fill($request->except(['destination_email',"email"]));
+            $movement_dest->wallet_id = $wallet_dest->id;
+            $movement_dest->type = "i";
+            $movement_dest->start_balance = $wallet_dest->balance;
+            $movement_dest->end_balance = $wallet_dest->balance + $request->value;
+            $movement_dest->date = $date->toDateTimeString();
+            $movement_dest->transfer_movement_id = $movement->id;
+            $movement_dest->transfer_wallet_id = $wallet->id;
+            $movement_dest->source_description = $request->source_description;
+
+            $movement_dest->save();
+
+            $wallet_dest->balance = $wallet_dest->balance + $request->value;
+            $wallet_dest->save();
+
+            $movement->source_description = $request->source_description;
+            $movement->transfer_movement_id = $movement_dest->id;
+            $movement->transfer_wallet_id = $wallet_dest->id;
+
+            $movement->save();
+            return response()->json(["id"=> $wallet_dest->id, "email" => $wallet_dest->email], 201);
+        }
+        return response()->json(null, 201);
+    }
+
+    public function getMovementStatistics(){
+        $authenticatedUser = Auth::guard('api')->user();
+        if ($authenticatedUser == null || $authenticatedUser->type != "a") {
+            return abort(401);
+        }
+        $total = Movement::count();
+        $totalByCategory = [];
+        $categories = Category::all();
+        for ($i = 0; $i < sizeof($categories); $i++) {
+            $cat = $categories[$i]->name;
+            $val = Movement::where('category_id','=',$categories[$i]->id)->count() / $total;
+            $val = round($val,2) * 100;
+            $obj = (object) array(
+                'category' => $cat,
+                'total' => Movement::where('category_id','=',$categories[$i]->id)->count()
+            );
+            array_push($totalByCategory,$obj);
+        }
+        $totalExpenses = round(Movement::where('type','=','e')->count()/$total,2)*100;
+        $totalIncomes =round(Movement::where('type','=','i')->count()/$total,2)*100;
+        $totalTransfers = round(Movement::where('transfer','=',1)->count()/$total,2)*100;
+        $totalNonTransfers = round(Movement::where('transfer','=',0)->count()/$total,2)*100;
+        $largestMovementValue = DB::select('select max(value) as maximum from movements')[0]->maximum;
+        $smallestMovementValue = DB::select('select min(value) as minimum from movements')[0]->minimum;
+        $averageMovementValue = DB::select('select avg(value) as average from movements')[0]->average;
+        $data = (object) array(
+            'total' => $total,
+            'totalExpenses' => $totalExpenses,
+            'totalIncomes' => $totalIncomes,
+            'totalTransfers' => $totalTransfers,
+            'totalNonTransfers' => $totalNonTransfers,
+            'largestMovement' => floatval($largestMovementValue),
+            'smallestMovement' => floatval($smallestMovementValue),
+            'averageMovementValue' => round(floatval($averageMovementValue),2),
+            'totalByCategory' => $totalByCategory,
+        );
+        $response = json_encode($data);
+        return $response;
+    }
+
+    public function getAllUserMovements(){
+        $wallet = Wallet::first();
+        $movements = Movement::where('wallet_id','=',$wallet->id)->get();
+        return $movements;
+    }
+    
 }
 

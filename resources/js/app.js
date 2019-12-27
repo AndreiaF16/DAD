@@ -11,6 +11,8 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router';
 import VueGoodTable from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
+import VueGoogleCharts from 'vue-google-charts';
+Vue.use(VueGoogleCharts);
 import Login from './components/login';
 import Profile from './components/users/profile';
 import Home from './components/HomeComponent';
@@ -19,19 +21,53 @@ import Operator from './components/operator/OperatorComponent';
 import Users from './components/users/users';
 //import listVirtualWallets from './components/wallets/wallets';
 import Movements from './components/movements/movements';
+import MovementStatistics from './components/admin/MovementStatistics';
+import Statistics from './components/admin/statistics';
+import CreateUser from './components/admin/createUser';
+import User from './components/admin/users';
 
 import WalletComponent from './components/wallets/Wallet';
 import Vuex from 'vuex';
 
+import RegisterDebit from './components/users/RegisterDebit';
+
+
+import Vue from 'vue'
+import VueSidebarMenu from 'vue-sidebar-menu'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+
+import PaginationComponent from 'laravel-vue-pagination';
+Vue.component('pagination', PaginationComponent);
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(VueGoodTable);
+Vue.use(VueSidebarMenu);
+
+import VueSocketIO from "vue-socket.io";
+Vue.use(new VueSocketIO({
+    debug: true,
+    connection: 'http://127.0.0.1:8080'
+   })
+); 
+
+import Toasted from "vue-toasted";
+
+Vue.use(Toasted, {
+    position: "bottom-center",
+    duration: 5000,
+    type: "info"
+});
 
 const routes = [
     {path:'/', redirect:'/home'},
     {path:'/home', component:Home},
-    {path:'/login', component:Login},
+    {path:'/login', component:Login, beforeEnter: (to, from, next) => {
+        if(localStorage.getItem("token")!=null){
+            next("/home");
+        }else{
+            next();
+        }}},
     {path:'/register', component:RegisterUser},
     {path: '/profile', component:Profile, beforeEnter: (to, from, next) => {
         if(localStorage.getItem("token")==null){
@@ -40,7 +76,7 @@ const routes = [
             next();
         }
     }},
-    {path: '/myWallets', component:WalletComponent, beforeEnter: (to, from, next) => {
+    {path: '/myVirtualWallet', component:WalletComponent, beforeEnter: (to, from, next) => {
         var $userGet = JSON.parse(localStorage.getItem('user'));
         if(localStorage.getItem("token")==null){
             next("/");
@@ -67,9 +103,11 @@ const routes = [
             next();
         }
     }},
-
-   // {path:'/wallet', component:WalletComponent},
-
+   {path:'/createUser', component:CreateUser},
+   {path:'/users', component:User},
+   {path:'/debit', component:RegisterDebit},
+   { path: '/movementStatistics', component: MovementStatistics, name: "movementStatistics" },
+   { path: '/Statistics', component: Statistics, name: "Statistics" },
 
 ]
 
@@ -84,7 +122,11 @@ Vue.component('profile', Profile)
 //Vue.component('myWallets', listVirtualWallets)
 Vue.component('operator', Operator)
 Vue.component('movements', Movements)
-Vue.component('myWallets', WalletComponent)
+Vue.component('myVirtualWallet', WalletComponent)
+Vue.component('createUser', CreateUser)
+Vue.component('movementStatistics',MovementStatistics)
+Vue.component('Statistics',Statistics)
+Vue.component('users', User)
 
 
 const store = new Vuex.Store({
@@ -121,6 +163,17 @@ const app = new Vue({
     router,
     store,
     data: {
+    },
+    sockets: {
+        movementReceived(dataFromServer) {
+            this.$toasted.show(dataFromServer);
+        },
+        movementClientUnavailable(dataFromServer) {
+            axios.post("api/users/email",{email: dataFromServer[0], msg: dataFromServer[1]})
+            .then(response => {
+                this.$toasted.show("User as offline! Email sent");
+            });
+        },
     },created(){
         const token = localStorage.getItem("token")
         if(token != null){
@@ -133,6 +186,7 @@ const app = new Vue({
                 .then(response => {
                     this.$store.commit('setUser',response.data);
                     localStorage.setItem("user",JSON.stringify(response.data));
+                    this.$socket.emit("user_enter",response.data);
                 });
             }
         }
@@ -141,6 +195,7 @@ const app = new Vue({
             this.$store.commit('setUser',null);
             this.$store.commit('setToken',"");
             this.$store.commit('logIn', false);
+            this.$socket.disconnect();
             axios.defaults.headers.common.Authorization = null;
             localStorage.clear();
         },

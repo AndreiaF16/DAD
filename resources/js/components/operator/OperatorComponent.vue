@@ -2,8 +2,12 @@
 
 
 <div>
-    <div class="container">
-      <h2>Create an Income</h2>
+   <div class="container">
+      <div class="jumbotron row justify-content-center">
+        <h1>{{tittle}}</h1>
+      </div>
+
+      <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
 
       </div>
       <div class="form-group">
@@ -20,11 +24,13 @@
     <div class="form-group">
         <label for="inputPaymentType">Payment Type</label>
         <select class="btn btn-xs btn-primary dropdown-toggle btn-block" name="PaymentType" id="PaymentType" v-model="movement.type_payment" required>
-            <option disabled selected> -- select an option -- </option>
+            <option value='' selected> -- Select the Type Of Payment -- </option>
             <option value="c">Cash</option>
             <option value="bt">Bank Transfer</option>
-            <option value="mb">MB payment</option>
         </select>
+        <br>
+        <br>
+        <br>
     </div>
     <div v-if="this.movement.type_payment == 'bt'" >
 
@@ -49,13 +55,11 @@
 </template>
 
 <script>
-
   import errorValidation from '../helpers/showErrors.vue';
-  import showMessage from '../helpers/showMessage.vue';
-
   export default{
   data: function() {
     return {
+        tittle: 'Create an Income',
       errors: [],
       showMessage: false,
       showErrors: false,
@@ -66,44 +70,43 @@
         type_payment: "",
         iban: "",
         source_description: "",
-      }
+      },
+      notificationMsg: ""
     };
   },
   methods: {
     registerIncome() {
       axios.post("api/operator/registerIncome",this.movement)
       .then(response=>{
-					this.showErrors=false;
-					this.showMessage=true;
-					this.message='Income registered with success';
-					this.typeofmsg= "alert-success";
+          this.$toasted.success("Income registered with success!")
+          let msg = "A new income of "+ this.movement.value + " is added to your account";
+          this.$socket.emit("notifyMovement",msg,{ email:response.data.email, id: response.data.id})
 					this.$router.push('/home');
 				}).catch(error=>{
-					if(error.response.status==401){
-						this.showMessage=true;
-						this.message=error.response.data.unauthorized;
-						this.typeofmsg= "alert-danger";
-						return;
-					}
-					if(error.response.status==422){
-						if(error.response.data.errors==undefined){
-							this.showErrors=false;
-							this.showMessage=true;
-							this.message=error.response.data.email;
-							this.typeofmsg= "alert-danger";
-						}else{
-							this.showMessage=false;
-							this.showErrors=true;
-							this.errors=error.response.data.errors;
-						}
-					}
+          this.showErrors = true;
+          this.errors = error.response.data.errors;
+					if(error.response.status == 401){
+					  this.$toasted.error(error.response.data.unauthorized);
+				  }else if(error.response.status == 422){
+            this.$toasted.error(error.response.data.message)
+          }else{
+            this.$toasted.error(error.response.data.error);
+          }
 				});
-    }
+    },
+    close(){
+        this.showErrors=false;
+        this.showMessage=false;
+    },
   },
   components: {
-            'error-validation':errorValidation,
-            'show-message':showMessage,
-        },
+      'error-validation':errorValidation,
+  },
+  sockets:{
+    notifyMovement: function(msg){
+      this.notificationMsg = msg;
+    }
+  },
 };
 </script>
 
