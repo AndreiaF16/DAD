@@ -4,10 +4,7 @@
             <h1>{{title}}</h1>
         </div>
 
-        <div class="alert alert-danger" v-if="showError">
-			<button type="button" class="close-btn" v-on:click="showError=false">&times;</button>
-			<strong>{{ successMessage }}</strong>
-		</div>
+        <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
 
         <div class="accountCreate-form">
             <div class="form-group">
@@ -47,7 +44,7 @@
 
 <script>
  import fileUpload from '../helpers/uploadFile.vue';
-
+    import errorValidation from '../helpers/showErrors.vue'
     export default {
         data: function () {
             return {
@@ -58,8 +55,9 @@
                     email: '',
                     photo: '',
                 },
-                showError: false,
-                successMessage: '',
+                errors:[],
+                showMessage: false,
+                showErrors: false,
             }
         },
         methods: {
@@ -80,30 +78,26 @@
 
         })
         .catch(error => {
-          console.log(error);
-          let data = error.response.data.errors;
-          for (let key in this.errors) {
-            this.errors[key] = [];
-            let errorMessage = data[key];
-            if (errorMessage) {
-              this.errors[key] = errorMessage;
-            }
-          }
+          this.showErrors = true;
+          this.errors = error.response.data.errors;
         });
     },
-            cancelCreate: function(){
-                this.$router.push('/home');
-            },
-            onFileChanged(fileSelected) {
-                this.user.photo = fileSelected
-            },
-        },
-         components: {
-            //'error-validation':errorValidation,
-            //'show-message':showMessage,
-            'file-upload': fileUpload,
-        },
+    cancelCreate: function(){
+        this.$router.push('/home');
+    },
+    onFileChanged(fileSelected) {
+        this.user.photo = fileSelected
+    },
+    close(){
+        this.showErrors=false;
+        this.showMessage=false;
     }
+    },
+    components: {
+        'error-validation':errorValidation,
+        'file-upload': fileUpload,
+    }
+}
 </script>
 
 <style scoped>

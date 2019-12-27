@@ -73,5 +73,5 @@ Route::middleware('auth:api')->get('categories/expense', 'CategoryControllerAPI@
 Route::middleware('auth:api')->get('categories', 'CategoryControllerAPI@Categories');
 Route::middleware('auth:api')->get('categories/details','CategoryControllerAPI@categoryName');
 Route::middleware('auth:api')->get('movements/getAllUserMovements','MovementControllerAPI@getAllUserMovements');
-Route::get('users/allUsers', 'UserControllerAPI@allUsers');
+Route::middleware('auth:api')->get('users', 'UserControllerAPI@allUsers');
 

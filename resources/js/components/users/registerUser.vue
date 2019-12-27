@@ -72,7 +72,8 @@ export default {
       axios
         .post("api/registerUser", formdata)
         .then(response => {
-          console.log("response", response);
+          this.$toasted.success("Register Complete!")
+          this.$router.push('/login');
         })
         .catch(error => {
           this.showErrors = true;

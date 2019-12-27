@@ -55,7 +55,7 @@
                                 this.$store.commit('setUser',response.data.data);
                                 localStorage.setItem("user",JSON.stringify(response.data.data));
                                 this.$socket.emit("user_enter",response.data.data);
-                                this.$toasted.success("Welcome "+ response.data.data.name +" !")
+                                this.$toasted.success("Welcome "+ response.data.data.name +"!")
                             });
                         this.$router.push('/home');
                     })

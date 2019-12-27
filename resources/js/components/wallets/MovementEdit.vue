@@ -1,7 +1,7 @@
 <template>
 	<div class="jumbotron">
 	    <h2>Edit Movement: {{ movement.id }}</h2>
-	    <div class="form-group">
+	    <div class="form-group"  v-if="movement.category != undefined">
 	        <label for="inputCategory">Category:</label>
 	        <input
 	            type="text" class="form-control" v-model="movement.category.name"
