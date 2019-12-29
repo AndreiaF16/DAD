@@ -3849,8 +3849,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 module.exports = {
   props: ['movement'],
+  data: function data() {
+    return {
+      categories: []
+    };
+  },
   methods: {
     saveMovement: function saveMovement() {
       var _this = this;
@@ -3868,6 +3874,19 @@ module.exports = {
     },
     cancelEdit: function cancelEdit() {
       this.$emit('edit-canceled');
+    }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    if (this.movement.type == "i") {
+      axios.get('/api/categories/income').then(function (response) {
+        _this2.categories = response.data.data;
+      });
+    } else if (this.movement.type == "e") {
+      axios.get('/api/categories/expense').then(function (response) {
+        _this2.categories = response.data.data;
+      });
     }
   }
 };
@@ -3889,7 +3908,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MovementEdit_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MovementEdit.vue */ "./resources/js/components/wallets/MovementEdit.vue");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
 //
 //
 //
@@ -91247,7 +91265,7 @@ var render = function() {
               expression: "movement.type_payment"
             }
           ],
-          staticClass: "btn btn-xs btn-primary dropdown-toggle btn-block",
+          staticClass: "form-control",
           attrs: { name: "PaymentType", id: "PaymentType", required: "" },
           on: {
             change: function($event) {
@@ -92542,35 +92560,56 @@ var render = function() {
   return _c("div", { staticClass: "jumbotron" }, [
     _c("h2", [_vm._v("Edit Movement: " + _vm._s(_vm.movement.id))]),
     _vm._v(" "),
-    _vm.movement.category != undefined
-      ? _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "inputCategory" } }, [
-            _vm._v("Category:")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.movement.category.name,
-                expression: "movement.category.name"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text", name: "category", id: "inputCategory" },
-            domProps: { value: _vm.movement.category.name },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.movement.category, "name", $event.target.value)
-              }
+    _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "selectCategory" } }, [_vm._v("Category:")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.movement.category,
+              expression: "movement.category"
             }
-          })
-        ])
-      : _vm._e(),
+          ],
+          staticClass: "form-control",
+          attrs: { name: "selectCategory" },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.$set(
+                _vm.movement,
+                "category",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
+            }
+          }
+        },
+        _vm._l(_vm.categories, function(categoryType) {
+          return _c(
+            "option",
+            {
+              key: categoryType.id,
+              domProps: {
+                value: categoryType,
+                selected: _vm.movement.category == categoryType
+              }
+            },
+            [_vm._v(_vm._s(categoryType.name))]
+          )
+        }),
+        0
+      )
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
       _c("label", { attrs: { for: "inputDescription" } }, [

@@ -23,7 +23,7 @@
       </div>
     <div class="form-group">
         <label for="inputPaymentType">Payment Type</label>
-        <select class="btn btn-xs btn-primary dropdown-toggle btn-block" name="PaymentType" id="PaymentType" v-model="movement.type_payment" required>
+        <select class="form-control" name="PaymentType" id="PaymentType" v-model="movement.type_payment" required>
             <option value='' selected> -- Select the Type Of Payment -- </option>
             <option value="c">Cash</option>
             <option value="bt">Bank Transfer</option>

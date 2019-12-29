@@ -13,7 +13,7 @@ class Category extends Resource
     {
         return [
             'id' => $this->id,
-            'name' => ucfirst($this->name),
+            'name' => $this->name,
             'type' => $this->type,
         ];
     }

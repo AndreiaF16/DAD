@@ -14,7 +14,12 @@ class CategoryControllerAPI extends Controller
 {
     public function CategoriesExpense()
     {
-        return CategoryResource::collection(Category::where("type","=","e")->get());
+        return CategoryResource::collection(Category::where("type","e")->get());
+    }
+
+    public function CategoriesIncome()
+    {
+        return CategoryResource::collection(Category::where("type","i")->get());
     }
 
     public function Categories()

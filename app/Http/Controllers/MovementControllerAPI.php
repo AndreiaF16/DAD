@@ -104,7 +104,7 @@ class MovementControllerAPI extends Controller
 
         $category_name = $request->category['name'];
         $category =  DB::table('categories')->select('id')->where('name', $category_name)->where('type', $movement->type)->get();
-        if($category->isEmpty()){
+        if($category->isEmpty() || $movement->category_id!=null){
             return 'Category does not exist for this type of movement';
         }
 

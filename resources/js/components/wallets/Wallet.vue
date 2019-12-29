@@ -1,25 +1,24 @@
 <template>
     <div>
-            <div class="jumbotron row justify-content-center">
-                <h1>{{tittle}}</h1>
+        <div class="jumbotron row justify-content-center">
+            <h1>{{tittle}}</h1>
         </div>
 
-            <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
-    <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
+        <show-message :class="typeofmsg" :showSuccess="showMessage" :successMessage="message" @close="close"></show-message>
+        <error-validation :showErrors="showErrors" :errors="errors" @close="close"></error-validation>
 
-         <div class="form-group">
-                <label for="inputBalance">Balance of My Virtual Wallet</label>
-                <input type="text" class="form-control"
-                        name="balance" id="inputBalance"
-                        placeholder="Balance" v-model="wallet.balance" readonly/>
-            </div>
-
-              <div class="form-group">
-                <label for="inputEmail">My Email</label>
-                <input type="text" class="form-control"
-                        name="email" id="inputEmail"
-                        placeholder="Email" v-model="wallet.email" readonly/>
-            </div>
+        <div class="form-group">
+            <label for="inputBalance">Balance of My Virtual Wallet</label>
+            <input type="text" class="form-control"
+                    name="balance" id="inputBalance"
+                    placeholder="Balance" v-model="wallet.balance" readonly/>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">My Email</label>
+            <input type="text" class="form-control"
+                    name="email" id="inputEmail"
+                    placeholder="Email" v-model="wallet.email" readonly/>
+        </div>
 
 
  <div class="row justify-content-right">

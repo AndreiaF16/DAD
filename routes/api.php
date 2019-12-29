@@ -71,6 +71,7 @@ Route::post('users/email','UserControllerAPI@sendEmail');
 
 Route::middleware('auth:api')->get('categories/expense', 'CategoryControllerAPI@CategoriesExpense');
 Route::middleware('auth:api')->get('categories', 'CategoryControllerAPI@Categories');
+Route::middleware('auth:api')->get('categories/income', 'CategoryControllerAPI@CategoriesIncome');
 Route::middleware('auth:api')->get('categories/details','CategoryControllerAPI@categoryName');
 Route::middleware('auth:api')->get('movements/getAllUserMovements','MovementControllerAPI@getAllUserMovements');
 Route::middleware('auth:api')->get('users', 'UserControllerAPI@allUsers');
