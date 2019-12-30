@@ -36,7 +36,7 @@ class UserControllerAPI extends Controller
             'email' => 'string|email|max:255|unique:users,email,'.$request->id,
             'password' => 'min:3','password',
             'photo' => 'nullable|image|max:2048',
-            'nif' => 'min:9|max:9',
+            'nif' => 'nullable|integer|size:9',
             'file' => 'nullable|image|max:2048',
         ]);
         $user = Auth::user();

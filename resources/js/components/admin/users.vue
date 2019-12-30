@@ -60,7 +60,7 @@
                 <tbody>
                     <tr v-for="user in users.data"  :key="user.id">
                         <td v-if="user.photo"><img v-bind:src="'storage/fotos/' + user.photo" style="width:75px; height:75px; border-radius:50%;"></td>
-                        <td v-if="!user.photo"><img v-bind:src="'storage/fotos/unknown.jpg'" style="width:75px; height:75px; border-radius:50%;"></td>
+                        <td v-if="!user.photo"><img v-bind:src="'http://neoleader.com.br/wp-content/uploads/2015/05/geral_adulto-300x300.png'" style="width:75px; height:75px; border-radius:50%;"></td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.email }}</td>
                         <td v-if="user.type == 'a'">Administrator</td>

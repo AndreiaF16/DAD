@@ -103,11 +103,56 @@ const routes = [
             next();
         }
     }},
-   {path:'/createUser', component:CreateUser},
-   {path:'/users', component:User},
-   {path:'/debit', component:RegisterDebit},
-   { path: '/movementStatistics', component: MovementStatistics, name: "movementStatistics" },
-   { path: '/Statistics', component: Statistics, name: "Statistics" },
+   {path:'/createUser', component:CreateUser, beforeEnter: (to, from, next) => {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else if($userGet.type=="a"){
+            next();
+        }else{
+            next("/");
+        }
+    }},
+   {path:'/users', component:User, beforeEnter: (to, from, next) => {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else if($userGet.type=="a"){
+            next();
+        }else{
+            next("/");
+        }
+    }},
+   {path:'/debit', component:RegisterDebit, beforeEnter: (to, from, next) => {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else if($userGet.type=="u"){
+            next();
+        }else{
+            next("/");
+        }
+    }},
+   { path: '/movementStatistics', component: MovementStatistics, name: "movementStatistics", beforeEnter: (to, from, next) => {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else if($userGet.type=="u"){
+            next();
+        }else{
+            next("/");
+        }
+    } },
+   { path: '/Statistics', component: Statistics, name: "Statistics" , beforeEnter: (to, from, next) => {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+        if(localStorage.getItem("token")==null){
+            next("/");
+        }else if($userGet.type=="a"){
+            next();
+        }else{
+            next("/");
+        }
+    }},
 
 ]
 
@@ -197,7 +242,8 @@ const app = new Vue({
             this.$store.commit('logIn', false);
             this.$socket.disconnect();
             axios.defaults.headers.common.Authorization = null;
-            localStorage.clear();
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
         },
         isLoggedIn(){
             if(this.$store.getters.loggedin){

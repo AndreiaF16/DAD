@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="jumbotron">
+    <div class="jumbotron row justify-content-center">
       <h1>{{ title }}</h1>
-      <h2 v-if="movements"> Movements: {{movements.length}}  </h2>
     </div>
+    <div v-if="movements">
+      <h2 v-if="movements"> Movements: {{movements.length}}  </h2>
+      </div>
    <div v-if="movements">
       <h2>Balance</h2>
       <GChart

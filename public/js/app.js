@@ -1939,6 +1939,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Line"],
@@ -3123,14 +3125,6 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this.showErrors = true;
         _this.errors = error.response.data.errors;
-
-        if (error.response.status == 401) {
-          _this.$toasted.error(error.response.data.unauthorized);
-        } else if (error.response.status == 422) {
-          _this.$toasted.error(error.response.data.message);
-        } else {
-          _this.$toasted.error(error.response.data.error);
-        }
       });
     },
     close: function close() {
@@ -3330,14 +3324,6 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this.showErrors = true;
         _this.errors = error.response.data.errors;
-
-        if (error.response.status == 401) {
-          _this.$toasted.error(error.response.data.unauthorized);
-        } else if (error.response.status == 422) {
-          _this.$toasted.error(error.response.data.message);
-        } else {
-          _this.$toasted.error(error.response.data.error);
-        }
       });
     },
     cancelDebit: function cancelDebit() {
@@ -89954,15 +89940,19 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "jumbotron" }, [
-      _c("h1", [_vm._v(_vm._s(_vm.title))]),
-      _vm._v(" "),
-      _vm.movements
-        ? _c("h2", [
-            _vm._v(" Movements: " + _vm._s(_vm.movements.length) + "  ")
-          ])
-        : _vm._e()
+    _c("div", { staticClass: "jumbotron row justify-content-center" }, [
+      _c("h1", [_vm._v(_vm._s(_vm.title))])
     ]),
+    _vm._v(" "),
+    _vm.movements
+      ? _c("div", [
+          _vm.movements
+            ? _c("h2", [
+                _vm._v(" Movements: " + _vm._s(_vm.movements.length) + "  ")
+              ])
+            : _vm._e()
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _vm.movements
       ? _c(
@@ -90275,7 +90265,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "jumbotron" }, [
+    _c("div", { staticClass: "jumbotron row justify-content-center" }, [
       _c("h1", [_vm._v(_vm._s(_vm.title))]),
       _vm._v(" "),
       _c("h2", [_vm._v(_vm._s(_vm.counterText))])
@@ -90645,7 +90635,10 @@ var render = function() {
                         height: "75px",
                         "border-radius": "50%"
                       },
-                      attrs: { src: "storage/fotos/unknown.jpg" }
+                      attrs: {
+                        src:
+                          "http://neoleader.com.br/wp-content/uploads/2015/05/geral_adulto-300x300.png"
+                      }
                     })
                   ])
                 : _vm._e(),
@@ -109772,21 +109765,76 @@ var routes = [{
   }
 }, {
   path: '/createUser',
-  component: _components_admin_createUser__WEBPACK_IMPORTED_MODULE_13__["default"]
+  component: _components_admin_createUser__WEBPACK_IMPORTED_MODULE_13__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+
+    if (localStorage.getItem("token") == null) {
+      next("/");
+    } else if ($userGet.type == "a") {
+      next();
+    } else {
+      next("/");
+    }
+  }
 }, {
   path: '/users',
-  component: _components_admin_users__WEBPACK_IMPORTED_MODULE_14__["default"]
+  component: _components_admin_users__WEBPACK_IMPORTED_MODULE_14__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+
+    if (localStorage.getItem("token") == null) {
+      next("/");
+    } else if ($userGet.type == "a") {
+      next();
+    } else {
+      next("/");
+    }
+  }
 }, {
   path: '/debit',
-  component: _components_users_RegisterDebit__WEBPACK_IMPORTED_MODULE_17__["default"]
+  component: _components_users_RegisterDebit__WEBPACK_IMPORTED_MODULE_17__["default"],
+  beforeEnter: function beforeEnter(to, from, next) {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+
+    if (localStorage.getItem("token") == null) {
+      next("/");
+    } else if ($userGet.type == "u") {
+      next();
+    } else {
+      next("/");
+    }
+  }
 }, {
   path: '/movementStatistics',
   component: _components_admin_MovementStatistics__WEBPACK_IMPORTED_MODULE_11__["default"],
-  name: "movementStatistics"
+  name: "movementStatistics",
+  beforeEnter: function beforeEnter(to, from, next) {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+
+    if (localStorage.getItem("token") == null) {
+      next("/");
+    } else if ($userGet.type == "u") {
+      next();
+    } else {
+      next("/");
+    }
+  }
 }, {
   path: '/Statistics',
   component: _components_admin_statistics__WEBPACK_IMPORTED_MODULE_12__["default"],
-  name: "Statistics"
+  name: "Statistics",
+  beforeEnter: function beforeEnter(to, from, next) {
+    var $userGet = JSON.parse(localStorage.getItem('user'));
+
+    if (localStorage.getItem("token") == null) {
+      next("/");
+    } else if ($userGet.type == "a") {
+      next();
+    } else {
+      next("/");
+    }
+  }
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: routes
@@ -109888,7 +109936,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_18___default.a({
       this.$store.commit('logIn', false);
       this.$socket.disconnect();
       axios.defaults.headers.common.Authorization = null;
-      localStorage.clear();
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
     },
     isLoggedIn: function isLoggedIn() {
       if (this.$store.getters.loggedin) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="jumbotron">
+    <div class="jumbotron row justify-content-center">
       <h1>{{ title }}</h1>
       <h2>{{counterText}}</h2>
     </div>
