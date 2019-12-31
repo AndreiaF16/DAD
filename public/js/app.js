@@ -3467,7 +3467,10 @@ __webpack_require__.r(__webpack_exports__);
       showErrors: false,
       typeofmsg: "",
       message: '',
-      user: {},
+      email: "",
+      name: "",
+      nif: '',
+      photo: "",
       file: '',
       password_old: '',
       password: '',
@@ -3526,8 +3529,9 @@ __webpack_require__.r(__webpack_exports__);
       this.showMessage = false;
       this.showErrors = false;
       var formdata = new FormData();
-      formdata.append('name', this.user.name);
-      formdata.append('nif', this.user.nif);
+      formdata.append('name', this.name);
+      formdata.append('nif', this.nif || "");
+      formdata.append('email', this.email);
       formdata.append('file', this.file);
       formdata.append('_method', 'PUT'); //https://laracasts.com/discuss/channels/laravel/ajax-formdata-and-put-fails
 
@@ -3544,29 +3548,31 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.getActualPhoto();
       })["catch"](function (error) {
-        if (error.response.status == 401) {
-          _this2.showMessage = true;
-          _this2.message = error.response.data.unauthorized;
-          _this2.typeofmsg = "alert-danger";
-          return;
-        }
-
-        if (error.response.status == 422) {
-          if (error.response.data.errors == undefined) {
-            _this2.showErrors = false;
+        if (error.response != undefined) {
+          if (error.response.status == 401) {
             _this2.showMessage = true;
-            _this2.message = error.response.data.user_already_exists;
+            _this2.message = error.response.data.unauthorized;
             _this2.typeofmsg = "alert-danger";
-          } else {
-            _this2.showMessage = false;
-            _this2.showErrors = true;
-            _this2.errors = error.response.data.errors;
+            return;
+          }
+
+          if (error.response.status == 422) {
+            if (error.response.data.errors == undefined) {
+              _this2.showErrors = false;
+              _this2.showMessage = true;
+              _this2.message = error.response.data.user_already_exists;
+              _this2.typeofmsg = "alert-danger";
+            } else {
+              _this2.showMessage = false;
+              _this2.showErrors = true;
+              _this2.errors = error.response.data.errors;
+            }
           }
         }
       });
     },
     getActualPhoto: function getActualPhoto() {
-      return 'storage/fotos/' + this.user.photo || false;
+      return 'storage/fotos/' + this.photo || false;
     },
     close: function close() {
       this.showErrors = false;
@@ -3574,7 +3580,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.user = JSON.parse(localStorage.getItem('user'));
+    var user = JSON.parse(localStorage.getItem('user'));
+    this.email = user.email;
+    this.name = user.name;
+    this.photo = user.photo;
+    this.nif = user.nif;
   },
   components: {
     'error-validation': _helpers_showErrors_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -91969,8 +91979,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.user.name,
-                expression: "user.name"
+                value: _vm.name,
+                expression: "name"
               }
             ],
             staticClass: "form-control",
@@ -91981,13 +91991,13 @@ var render = function() {
               placeholder: "Fullname",
               value: ""
             },
-            domProps: { value: _vm.user.name },
+            domProps: { value: _vm.name },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.user, "name", $event.target.value)
+                _vm.name = $event.target.value
               }
             }
           })
@@ -92001,8 +92011,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.user.nif,
-                expression: "user.nif"
+                value: _vm.nif,
+                expression: "nif"
               }
             ],
             staticClass: "form-control",
@@ -92013,13 +92023,13 @@ var render = function() {
               placeholder: "Nif",
               value: ""
             },
-            domProps: { value: _vm.user.nif },
+            domProps: { value: _vm.nif },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.user, "nif", $event.target.value)
+                _vm.nif = $event.target.value
               }
             }
           })
@@ -92033,8 +92043,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.user.email,
-                expression: "user.email"
+                value: _vm.email,
+                expression: "email"
               }
             ],
             staticClass: "form-control",
@@ -92045,13 +92055,13 @@ var render = function() {
               placeholder: "Email address",
               readonly: ""
             },
-            domProps: { value: _vm.user.email },
+            domProps: { value: _vm.email },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.user, "email", $event.target.value)
+                _vm.email = $event.target.value
               }
             }
           })

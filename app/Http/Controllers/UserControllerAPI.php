@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\User as UserResource;
 use App\Http\Controllers\Requests\RegisterUserRequest;
+use App\Http\Controllers\Requests\UpdateUserRequest;
 use App\Http\Controllers\Requests\RegisterUserAdminOpRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Support\Jsonable;
@@ -29,17 +30,9 @@ class UserControllerAPI extends Controller
         return new UserResource($user);
     }
 
-    public function update(Request $request)
+    public function update(UpdateUserRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'string|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
-            'email' => 'string|email|max:255|unique:users,email,'.$request->id,
-            'password' => 'min:3','password',
-            'photo' => 'nullable|image|max:2048',
-            'nif' => 'nullable|integer|size:9',
-            'file' => 'nullable|image|max:2048',
-        ]);
-        $user = Auth::user();
+        $user = Auth::user();    
 
         $user->fill($request->except(['file']));
 

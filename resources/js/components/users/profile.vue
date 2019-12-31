@@ -21,14 +21,14 @@
 
         <div class="form-group">
             <label for="inputName">Name</label>
-            <input type="text" class="form-control" v-model="user.name"
+            <input type="text" class="form-control" v-model="name"
                     name="name" id="inputName"
                     placeholder="Fullname" value="" />
         </div>
 
             <div class="form-group">
             <label for="inputNif">Nif</label>
-            <input type="number" class="form-control" v-model="user.nif"
+            <input type="number" class="form-control" v-model="nif"
                     name="nif" id="inputNif"
                     placeholder="Nif" value="" />
         </div>
@@ -36,7 +36,7 @@
             <div class="form-group">
             <label for="inputEmail">Email</label>
             <input
-                type="email" class="form-control" v-model="user.email"
+                type="email" class="form-control" v-model="email"
                 name="email" id="inputEmail"
                 placeholder="Email address" readonly/>
         </div>
@@ -105,7 +105,12 @@ export default {
             showErrors: false,
             typeofmsg: "",
             message:'',
-            user: {},
+
+                email:"",
+                name:"",
+                nif:'',
+                photo:"",
+            
             file:'',
             password_old:'',
 			password:'',
@@ -161,8 +166,9 @@ export default {
             this.showMessage=false;
             this.showErrors=false;
             let formdata = new FormData();
-            formdata.append('name', this.user.name);
-            formdata.append('nif', this.user.nif);
+            formdata.append('name', this.name);
+            formdata.append('nif', this.nif || "");
+            formdata.append('email', this.email);
             formdata.append('file', this.file);
             formdata.append('_method', 'PUT');
             //https://laracasts.com/discuss/channels/laravel/ajax-formdata-and-put-fails
@@ -179,35 +185,41 @@ export default {
                     this.getActualPhoto();
                 })
             .catch(error=>{
-                if(error.response.status==401){
-                    this.showMessage=true;
-                    this.message=error.response.data.unauthorized;
-                    this.typeofmsg= "alert-danger";
-                    return;
-                }
-
-                if(error.response.status==422){
-                    if(error.response.data.errors==undefined){
-                        this.showErrors=false;
+                if(error.response != undefined){
+                    if(error.response.status==401){
                         this.showMessage=true;
-                        this.message=error.response.data.user_already_exists;
+                        this.message=error.response.data.unauthorized;
                         this.typeofmsg= "alert-danger";
-                    }else{
-                        this.showMessage=false;
-                        this.showErrors=true;
-                        this.errors=error.response.data.errors;
+                        return;
+                    }
+
+                    if(error.response.status==422){
+                        if(error.response.data.errors==undefined){
+                            this.showErrors=false;
+                            this.showMessage=true;
+                            this.message=error.response.data.user_already_exists;
+                            this.typeofmsg= "alert-danger";
+                        }else{
+                            this.showMessage=false;
+                            this.showErrors=true;
+                            this.errors=error.response.data.errors;
+                        }
                     }
                 }
             });
         },getActualPhoto: function(){
-            return 'storage/fotos/'+this.user.photo || "http://neoleader.com.br/wp-content/uploads/2015/05/geral_adulto-300x300.png";
+            return 'storage/fotos/'+this.photo || "http://neoleader.com.br/wp-content/uploads/2015/05/geral_adulto-300x300.png";
             },close(){
                 this.showErrors=false;
                 this.showMessage=false;
             },
     },
     mounted() {
-        this.user = JSON.parse(localStorage.getItem('user'));
+        let user = JSON.parse(localStorage.getItem('user'));
+        this.email = user.email;
+        this.name = user.name;
+        this.photo = user.photo;
+        this.nif = user.nif;
     },
      components: {
         'error-validation':errorValidation,
