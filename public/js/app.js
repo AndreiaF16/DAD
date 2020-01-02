@@ -1881,6 +1881,40 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/LineChart.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/LineChart.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Line"],
+  props: ['data', 'labels', 'color'],
+  mounted: function mounted() {
+    this.renderChart({
+      labels: this.labels,
+      datasets: [{
+        borderColor: this.color,
+        pointBackgroundColor: this.color,
+        data: this.data
+      }]
+    }, {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        display: false
+      }
+    });
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/MovementStatistics.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/MovementStatistics.vue?vue&type=script&lang=js& ***!
@@ -2331,6 +2365,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LineChart_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LineChart.vue */ "./resources/js/components/admin/LineChart.vue");
+/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
 //
 //
 //
@@ -2360,14 +2396,64 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_1__["Line"],
   data: function data() {
     return {
       totalUsers: "",
       totalAdmins: "",
       totalOperators: "",
       totalPlatformUsers: "",
-      totalMovements: ""
+      totalMovements: "",
+      totalActiveUsers: "",
+      totalTransactions: "",
+      totalAmmountMoney: "",
+      label1: null,
+      data1: null,
+      label2: null,
+      data2: null,
+      label3: null,
+      data3: null,
+      label4: null,
+      data4: null,
+      loadedMovementsMonth: false,
+      loadedExternalIncomeMonth: false,
+      loadedInternalTransfersMonth: false,
+      loadedUsersRegisteredMonth: false
     };
   },
   methods: {
@@ -2410,6 +2496,66 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref5.data;
         return _this5.totalMovements = data;
       });
+    },
+    getNumberActiveIUsers: function getNumberActiveIUsers() {
+      var _this6 = this;
+
+      axios.get('api/admin/stats/numberActiveUsers').then(function (_ref6) {
+        var data = _ref6.data;
+        return _this6.totalActiveUsers = data;
+      });
+    },
+    getTotalTransactions: function getTotalTransactions() {
+      var _this7 = this;
+
+      axios.get('api/totalTransactions').then(function (_ref7) {
+        var data = _ref7.data;
+        return _this7.totalTransactions = data;
+      });
+    },
+    getTotalAmmountMoney: function getTotalAmmountMoney() {
+      var _this8 = this;
+
+      axios.get('api/totalAmmountMoney').then(function (_ref8) {
+        var data = _ref8.data;
+        return _this8.totalAmmountMoney = data;
+      });
+    },
+    getMovementsThoughTime: function getMovementsThoughTime() {
+      var _this9 = this;
+
+      axios.get('api/movementsThroughTime').then(function (response) {
+        _this9.label1 = response.data.labels;
+        _this9.data1 = response.data.rows;
+        _this9.loadedMovementsMonth = true;
+      });
+    },
+    getExternalIncomeThoughTime: function getExternalIncomeThoughTime() {
+      var _this10 = this;
+
+      axios.get('api/externalIncomeThroughTime').then(function (response) {
+        _this10.label2 = response.data.labels;
+        _this10.data2 = response.data.rows;
+        _this10.loadedExternalIncomeMonth = true;
+      });
+    },
+    getInternalTransfersThoughTime: function getInternalTransfersThoughTime() {
+      var _this11 = this;
+
+      axios.get('api/internalTransfersThroughTime').then(function (response) {
+        _this11.label3 = response.data.labels;
+        _this11.data3 = response.data.rows;
+        _this11.loadedInternalTransfersMonth = true;
+      });
+    },
+    getUsersRegisteredThroughTime: function getUsersRegisteredThroughTime() {
+      var _this12 = this;
+
+      axios.get('api/usersRegisteredThroughTime').then(function (response) {
+        _this12.label4 = response.data.labels;
+        _this12.data4 = response.data.rows;
+        _this12.loadedUsersRegisteredMonth = true;
+      });
     }
   },
   created: function created() {
@@ -2418,6 +2564,16 @@ __webpack_require__.r(__webpack_exports__);
     this.getTotalOperators();
     this.getTotalPlatformUsers();
     this.getTotalMovements();
+    this.getNumberActiveIUsers();
+    this.getTotalTransactions();
+    this.getTotalAmmountMoney();
+    this.getMovementsThoughTime();
+    this.getExternalIncomeThoughTime();
+    this.getInternalTransfersThoughTime();
+    this.getUsersRegisteredThroughTime();
+  },
+  components: {
+    'line-chart': _LineChart_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -90145,11 +90301,83 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(_vm.totalPlatformUsers))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.totalMovements))])
+            _c("td", [_vm._v(_vm._s(_vm.totalMovements))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.totalActiveUsers))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.totalTransactions))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.totalAmmountMoney) + " €")])
           ])
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _vm.loadedMovementsMonth
+      ? _c(
+          "div",
+          { staticClass: "container" },
+          [
+            _c("h4", [_vm._v("Total Movements Per Month:")]),
+            _vm._v(" "),
+            _c("line-chart", {
+              attrs: { data: _vm.data1, labels: _vm.label1, color: "#36a2eb" }
+            })
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _vm.loadedExternalIncomeMonth
+      ? _c(
+          "div",
+          { staticClass: "container" },
+          [
+            _c("h4", [_vm._v("External Income Per Month:")]),
+            _vm._v(" "),
+            _c("line-chart", {
+              attrs: { data: _vm.data2, labels: _vm.label2, color: "#36a2eb" }
+            })
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _vm.loadedInternalTransfersMonth
+      ? _c(
+          "div",
+          { staticClass: "container" },
+          [
+            _c("h4", [_vm._v("Internal Transfers (Expenses) Per Month:")]),
+            _vm._v(" "),
+            _c("line-chart", {
+              attrs: { data: _vm.data3, labels: _vm.label3, color: "#36a2eb" }
+            })
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _vm.loadedUsersRegisteredMonth
+      ? _c(
+          "div",
+          { staticClass: "container" },
+          [
+            _c("h4", [_vm._v("Users Registered Per Month:")]),
+            _vm._v(" "),
+            _c("line-chart", {
+              attrs: { data: _vm.data4, labels: _vm.label4, color: "#36a2eb" }
+            })
+          ],
+          1
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -90167,7 +90395,13 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Total Platform Users")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Total Movements")])
+        _c("th", [_vm._v("Total Movements")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total Active Users")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total Transactions")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Ammount Of Money In The Platform")])
       ])
     ])
   }
@@ -109780,6 +110014,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeComponent_vue_vue_type_template_id_782dcf83___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/LineChart.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/admin/LineChart.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LineChart.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/LineChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/LineChart.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/LineChart.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/admin/LineChart.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LineChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/LineChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
