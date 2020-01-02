@@ -33,28 +33,28 @@
         
                 <div v-if="loadedMovementsMonth" class="container">
                 <h4>Total Movements Per Month:</h4>
-                <line-chart :data="data1" :labels="label1" :color="'#36a2eb'"/>
+                <line-chart :data="data1" :labels="label1" :color="'#800000'"/>
             </div>      
 
             <br>
 
             <div v-if="loadedExternalIncomeMonth" class="container">
                 <h4>External Income Per Month:</h4>
-                <line-chart :data="data2" :labels="label2" :color="'#36a2eb'"/>
+                <line-chart :data="data2" :labels="label2" :color="'#800000'"/>
             </div>     
 
             <br>
 
             <div v-if="loadedInternalTransfersMonth" class="container">
                 <h4>Internal Transfers (Expenses) Per Month:</h4>
-                <line-chart :data="data3" :labels="label3" :color="'#36a2eb'"/>
+                <line-chart :data="data3" :labels="label3" :color="'#800000'"/>
             </div>      
 
             <br>
 
             <div v-if="loadedUsersRegisteredMonth" class="container">
                 <h4>Users Registered Per Month:</h4>
-                <line-chart :data="data4" :labels="label4" :color="'#36a2eb'"/>
+                <line-chart :data="data4" :labels="label4" :color="'#800000'"/>
             </div>      
         </div>     
     </div>
