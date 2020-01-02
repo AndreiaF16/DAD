@@ -230,5 +230,11 @@ class MovementControllerAPI extends Controller
         return $movements;
     }
     
+
+    public function totalMovements(){
+        $data = DB::table('movements')->count();
+        return $data;
+    }
+    
 }
 

@@ -180,5 +180,31 @@ class UserControllerAPI extends Controller
         $users = User::all();
         return $users;
     }
+    public function totalUsers()
+    {
+        $data = DB::table('users')->count();
+        return $data;
+    }
+    public function totalOperators()
+    {
+        $data = DB::table('users')
+            ->where('type', 'LIKE', 'O')
+            ->count();
+        return $data;
+    }
+    public function totalPlatformUsers()
+    {
+        $data = DB::table('users')
+            ->where('type', 'LIKE', 'u')
+            ->count();
+        return $data;
+    }
+    public function totalAdmins()
+    {
+        $data = DB::table('users')
+            ->where('type', 'LIKE', 'a')
+            ->count();
+        return $data;
+    }
     
 }

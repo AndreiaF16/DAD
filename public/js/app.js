@@ -2331,7 +2331,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
 //
 //
 //
@@ -2361,130 +2360,64 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 /* harmony default export */ __webpack_exports__["default"] = ({
-  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Line"],
   data: function data() {
     return {
-      title: "Statistics",
-      movementStatistics: null,
-      allUsers: null,
-      //Ordered by date of creation (by the controller)
-      adminUsers: [],
-      operatorUsers: [],
-      normalUsers: [],
-      activeUsers: [],
-      inactiveUsers: [],
-      counterText: null,
-      lineChartUsersOverTime: {
-        chartData: [],
-        chartOptions: {
-          title: "Users over time",
-          curveType: "function",
-          legend: {
-            position: "bottom"
-          }
-        }
-      },
-      pieChartMovementCategories: {
-        chartData: [],
-        chartOptions: {
-          title: "Categories of all movements",
-          legend: {
-            position: "bottom"
-          },
-          height: 700,
-          width: 700
-        }
-      }
+      totalUsers: "",
+      totalAdmins: "",
+      totalOperators: "",
+      totalPlatformUsers: "",
+      totalMovements: ""
     };
   },
   methods: {
-    getUsers: function getUsers() {
+    getTotalUsers: function getTotalUsers() {
       var _this = this;
 
-      axios.get('api/users').then(function (response) {
-        _this.users = response.data.data;
+      axios.get("api/totalUsers").then(function (_ref) {
+        var data = _ref.data;
+        return _this.totalUsers = data;
       });
     },
-    updateChart: function updateChart(users) {
-      var arrayDateCount = []; //Set as [dateOfUsers,'count']
-
-      var i;
-
-      for (i = 0; i < users.length; i++) {
-        var date = Date.parse(users[i].created_at);
-        var year = this.getDateYear(date);
-        arrayDateCount.push({
-          year: year,
-          users: i + 1
-        });
-      } //console.log(arrayDateCount);
-
-
-      this.lineChartUsersOverTime.chartData = [["Year", "Users"]];
-
-      for (i = 0; i < arrayDateCount.length; i++) {
-        this.lineChartUsersOverTime.chartData.push([arrayDateCount[i].year, arrayDateCount[i].users]);
-      }
-    },
-    getDateFormatted: function getDateFormatted(date) {
-      var d = new Date(date);
-      var datestring = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes();
-      return datestring;
-    },
-    getDateYear: function getDateYear(date) {
-      var d = new Date(date);
-      var datestring = d.getFullYear();
-      return parseInt(datestring);
-    },
-    getMovementStatistics: function getMovementStatistics() {
+    getTotalAdmins: function getTotalAdmins() {
       var _this2 = this;
 
-      axios.get("api/movements/getAllUserMovements").then(function (response) {
-        _this2.movementStatistics = response.data; //Update statistics info charts
+      axios.get("api/totalAdmins").then(function (_ref2) {
+        var data = _ref2.data;
+        return _this2.totalAdmins = data;
+      });
+    },
+    getTotalOperators: function getTotalOperators() {
+      var _this3 = this;
 
-        _this2.pieChartMovementCategories.chartData = [["Category", "Total"]];
-        var i;
+      axios.get("api/totalOperators").then(function (_ref3) {
+        var data = _ref3.data;
+        return _this3.totalOperators = data;
+      });
+    },
+    getTotalPlatformUsers: function getTotalPlatformUsers() {
+      var _this4 = this;
 
-        for (i = 0; i < _this2.movementStatistics.totalByCategory.length; i++) {
-          _this2.pieChartMovementCategories.chartData.push([_this2.movementStatistics.totalByCategory[i].category.toUpperCase(), _this2.movementStatistics.totalByCategory[i].total]);
-        }
+      axios.get("api/totalPlatformUsers").then(function (_ref4) {
+        var data = _ref4.data;
+        return _this4.totalPlatformUsers = data;
+      });
+    },
+    getTotalMovements: function getTotalMovements() {
+      var _this5 = this;
+
+      axios.get("api/totalMovements").then(function (_ref5) {
+        var data = _ref5.data;
+        return _this5.totalMovements = data;
       });
     }
   },
-  mounted: function mounted() {
-    if (!this.$store.state.user) {
-      this.$router.push({
-        path: "/home"
-      });
-    }
-
-    if (this.$store.state.user && this.$store.state.user.type != "a") {
-      this.$router.push({
-        path: "/home"
-      });
-      return;
-    }
-
-    this.getUsers();
-    this.getMovementStatistics();
-  },
-  watch: {
-    allUsers: function allUsers() {
-      this.updateChart(this.allUsers);
-    }
+  created: function created() {
+    this.getTotalUsers();
+    this.getTotalAdmins();
+    this.getTotalOperators();
+    this.getTotalPlatformUsers();
+    this.getTotalMovements();
   }
 });
 
@@ -24885,25 +24818,6 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\n#btn {\r\n  color: black;\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/statistics.vue?vue&type=style&index=0&lang=css&":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/statistics.vue?vue&type=style&index=0&lang=css& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n#btn {\r\n  color: rgb(177, 57, 57);\n}\r\n", ""]);
 
 // exports
 
@@ -74015,36 +73929,6 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/statistics.vue?vue&type=style&index=0&lang=css&":
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/statistics.vue?vue&type=style&index=0&lang=css& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./statistics.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/statistics.vue?vue&type=style&index=0&lang=css&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wallets/Wallet.vue?vue&type=style&index=0&id=8095078e&scoped=true&lang=css&":
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/wallets/Wallet.vue?vue&type=style&index=0&id=8095078e&scoped=true&lang=css& ***!
@@ -90245,111 +90129,49 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "jumbotron" }, [
-      _c("h1", [_vm._v(_vm._s(_vm.title))]),
-      _vm._v(" "),
-      _c("h2", [_vm._v(_vm._s(_vm.counterText))])
-    ]),
+    _c("h1", [_vm._v("Statistics")]),
     _vm._v(" "),
-    _vm.allUsers && _vm.movementStatistics
-      ? _c(
-          "div",
-          [
-            _c("h2", [_vm._v("Statistics")]),
+    _c("div", [
+      _c("table", { staticClass: "table table-striped" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("tbody", [
+          _c("tr", [
+            _c("td", [_vm._v(_vm._s(_vm.totalUsers))]),
             _vm._v(" "),
-            _c("GChart", {
-              attrs: {
-                type: "LineChart",
-                data: _vm.lineChartUsersOverTime.chartData,
-                options: _vm.lineChartUsersOverTime.chartOptions
-              }
-            }),
+            _c("td", [_vm._v(_vm._s(_vm.totalAdmins))]),
             _vm._v(" "),
-            _c("GChart", {
-              attrs: {
-                type: "PieChart",
-                data: _vm.pieChartMovementCategories.chartData,
-                options: _vm.pieChartMovementCategories.chartOptions
-              }
-            }),
+            _c("td", [_vm._v(_vm._s(_vm.totalOperators))]),
             _vm._v(" "),
-            _c("div", [
-              _c("table", [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", [
-                      _vm._v(
-                        " Total Movements: " +
-                          _vm._s(_vm.movementStatistics.total)
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("th", [
-                      _vm._v(
-                        "Expenses: " +
-                          _vm._s(_vm.movementStatistics.totalExpenses) +
-                          "% "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("th", [
-                      _vm._v(
-                        "Incomes: " +
-                          _vm._s(_vm.movementStatistics.totalTransfers) +
-                          "% "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("th", [
-                      _vm._v(
-                        "Transfers: " +
-                          _vm._s(_vm.movementStatistics.totalTransfers) +
-                          "%"
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("th", [
-                      _vm._v(
-                        "NonTransfers: " +
-                          _vm._s(_vm.movementStatistics.totalNonTransfers) +
-                          "%"
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("th", [
-                      _vm._v(
-                        "Smallest Movement: " +
-                          _vm._s(_vm.movementStatistics.smallestMovement) +
-                          " €"
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("th", [
-                      _vm._v(
-                        "Largest Movement: " +
-                          _vm._s(_vm.movementStatistics.largestMovement) +
-                          " €"
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("th", [
-                      _vm._v(
-                        "Average Movement: " +
-                          _vm._s(_vm.movementStatistics.averageMovementValue) +
-                          " €"
-                      )
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ],
-          1
-        )
-      : _vm._e()
+            _c("td", [_vm._v(_vm._s(_vm.totalPlatformUsers))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.totalMovements))])
+          ])
+        ])
+      ])
+    ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Total Users")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total Administrators")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total Operators")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total Platform Users")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Total Movements")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -110128,9 +109950,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _statistics_vue_vue_type_template_id_9ebf46a4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./statistics.vue?vue&type=template&id=9ebf46a4& */ "./resources/js/components/admin/statistics.vue?vue&type=template&id=9ebf46a4&");
 /* harmony import */ var _statistics_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./statistics.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/statistics.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _statistics_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./statistics.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/admin/statistics.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -110138,7 +109958,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _statistics_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _statistics_vue_vue_type_template_id_9ebf46a4___WEBPACK_IMPORTED_MODULE_0__["render"],
   _statistics_vue_vue_type_template_id_9ebf46a4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -110167,22 +109987,6 @@ component.options.__file = "resources/js/components/admin/statistics.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_statistics_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./statistics.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/statistics.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_statistics_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/admin/statistics.vue?vue&type=style&index=0&lang=css&":
-/*!***************************************************************************************!*\
-  !*** ./resources/js/components/admin/statistics.vue?vue&type=style&index=0&lang=css& ***!
-  \***************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_statistics_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./statistics.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/statistics.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_statistics_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_statistics_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_statistics_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_statistics_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_statistics_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
