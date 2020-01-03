@@ -1,161 +1,174 @@
 <template>
-  <div>
-    <div class="jumbotron row justify-content-center">
-      <h1>{{ title }}</h1>
-      <h2>{{counterText}}</h2>
-    </div>
-    <div v-if="allUsers && movementStatistics">
-      <h2>Statistics</h2>
-      <GChart
-        type="LineChart"
-        :data="lineChartUsersOverTime.chartData"
-        :options="lineChartUsersOverTime.chartOptions"
-      />
-      <GChart
-        type="PieChart"
-        :data="pieChartMovementCategories.chartData"
-        :options="pieChartMovementCategories.chartOptions"
-      />
-      <div>
-          <table>
-              <thead>
-                  <tr>
-       <th> Total Movements: {{ movementStatistics.total }}</th>
+    <div>
+        <h1>Statistics</h1>
+
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Total Users</th>
+                        <th>Total Administrators</th>
+                        <th>Total Operators</th>
+                        <th>Total Platform Users</th>
+                        <th>Total Movements</th>
+                        <th>Total Active Users</th>
+                        <th>Total Transactions</th>
+                        <th>Ammount Of Money In The Platform</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{totalUsers}}</td>
+                        <td>{{totalAdmins}}</td>
+                        <td>{{totalOperators}}</td>
+                        <td>{{totalPlatformUsers}}</td>
+                        <td>{{totalMovements}}</td>
+                        <td>{{totalActiveUsers}}</td>
+                        <td>{{totalTransactions}}</td>
+                        <td>{{totalAmmountMoney}} €</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         
-        <th>Expenses: {{ movementStatistics.totalExpenses }}% </th>
-        <th>Incomes: {{ movementStatistics.totalTransfers }}% </th>
-        <th>Transfers: {{ movementStatistics.totalTransfers }}%</th>
-        <th>NonTransfers: {{ movementStatistics.totalNonTransfers }}%</th>
-        
-        <th>Smallest Movement: {{ movementStatistics.smallestMovement }} €</th>
-        <th>Largest Movement: {{ movementStatistics.largestMovement }} €</th>
-        <th>Average Movement: {{ movementStatistics.averageMovementValue }} €</th>
-                  </tr>
-              </thead>
-          </table>
-      </div>
-    </div>
-  </div>
+                <div v-if="loadedMovementsMonth" class="container">
+                <h4>Total Movements Per Month:</h4>
+                <line-chart :data="data1" :labels="label1" :color="'#800000'"/>
+            </div>      
+
+            <br>
+
+            <div v-if="loadedExternalIncomeMonth" class="container">
+                <h4>External Income Per Month:</h4>
+                <line-chart :data="data2" :labels="label2" :color="'#800000'"/>
+            </div>     
+
+            <br>
+
+            <div v-if="loadedInternalTransfersMonth" class="container">
+                <h4>Internal Transfers (Expenses) Per Month:</h4>
+                <line-chart :data="data3" :labels="label3" :color="'#800000'"/>
+            </div>      
+
+            <br>
+
+            <div v-if="loadedUsersRegisteredMonth" class="container">
+                <h4>Users Registered Per Month:</h4>
+                <line-chart :data="data4" :labels="label4" :color="'#800000'"/>
+            </div>      
+        </div>
 </template>
-
 <script>
-import { Line } from "vue-chartjs";
+ import LineChart from './LineChart.vue';
+ import { Line } from 'vue-chartjs';
 export default {
-  extends: Line,
-  data: () => {
-    return {
-      title: "Statistics",
-      movementStatistics: null,
-      allUsers: null, //Ordered by date of creation (by the controller)
-      adminUsers: [],
-      operatorUsers: [],
-      normalUsers: [],
-      activeUsers: [],
-      inactiveUsers: [],
-      counterText: null,
-      lineChartUsersOverTime: {
-        chartData: [],
-        chartOptions: {
-          title: "Users over time",
-          curveType: "function",
-          legend: { position: "bottom" }
-        }
-      },
-      pieChartMovementCategories: {
-        chartData: [],
-        chartOptions: {
-          title: "Categories of all movements",
-          legend: { position: "bottom" },
-          height: 700,
-          width: 700
-        }
-      }
-    };
-  },
-  methods: {
-   getUsers: function(){
-            axios.get('api/users')
-                .then(response=>{this.users = response.data.data;});
+    extends: Line,
+    data: function () {
+			return {
+                totalUsers: "",
+                totalAdmins: "",
+                totalOperators: "",
+                totalPlatformUsers: "",
+                totalMovements: "",
+                totalActiveUsers: "",
+                totalTransactions: "",
+                totalAmmountMoney: "",
+                label1:null,
+                data1: null,
+                label2:null,
+                data2: null,
+                label3:null,
+                data3: null,
+                label4:null,
+                data4: null,
+                loadedMovementsMonth: false,
+                loadedExternalIncomeMonth: false,
+                loadedInternalTransfersMonth: false,
+                loadedUsersRegisteredMonth: false,
+               
+			}
+		},
+        methods: {
+            getTotalUsers(){
+                axios.get("api/totalUsers").then(({ data }) => (this.totalUsers = data));
+            },
+            getTotalAdmins(){
+                axios.get("api/totalAdmins").then(({ data }) => (this.totalAdmins = data));
+            },
+            getTotalOperators(){
+                axios.get("api/totalOperators").then(({ data }) => (this.totalOperators = data));
+            },
+            getTotalPlatformUsers(){
+                axios.get("api/totalPlatformUsers").then(({ data }) => (this.totalPlatformUsers = data));
+            },
+            getTotalMovements(){
+                axios.get("api/totalMovements").then(({ data }) => (this.totalMovements = data));
+            },
+            getNumberActiveIUsers(){
+            axios.get('api/admin/stats/numberActiveUsers')
+            .then(({ data }) => (this.totalActiveUsers = data));
+            },
+            getTotalTransactions(){
+                axios.get('api/totalTransactions').then(({ data }) => (this.totalTransactions = data));
+            },
+            getTotalAmmountMoney(){
+                axios.get('api/totalAmmountMoney').then(({ data }) => (this.totalAmmountMoney = data));
+            },
+             getMovementsThoughTime(){
+            axios.get('api/movementsThroughTime')
+            .then( response => {
+                this.label1 = response.data.labels;
+                this.data1 = response.data.rows;
+                this.loadedMovementsMonth = true;
+            })
+           
         },
-    
-    updateChart(users) {
-      var arrayDateCount = []; //Set as [dateOfUsers,'count']
-      var i;
-      for (i = 0; i < users.length; i++) {
-        var date = Date.parse(users[i].created_at);
-        var year = this.getDateYear(date);
-        arrayDateCount.push({ year: year, users: i + 1 });
-      }
-      //console.log(arrayDateCount);
-      this.lineChartUsersOverTime.chartData = [["Year", "Users"]];
-      for (i = 0; i < arrayDateCount.length; i++) {
-        this.lineChartUsersOverTime.chartData.push([
-          arrayDateCount[i].year,
-          arrayDateCount[i].users
-        ]);
-      }
-    },
-    getDateFormatted(date) {
-      var d = new Date(date);
-      var datestring =
-        d.getDate() +
-        "-" +
-        (d.getMonth() + 1) +
-        "-" +
-        d.getFullYear() +
-        " " +
-        d.getHours() +
-        ":" +
-        d.getMinutes();
-      return datestring;
-    },
-    getDateYear(date) {
-      var d = new Date(date);
-      var datestring = d.getFullYear();
-      return parseInt(datestring);
-    },
-    getMovementStatistics() {
-      axios.get("api/movements/getAllUserMovements").then(response => {
-        this.movementStatistics = response.data;
-        //Update statistics info charts
-        this.pieChartMovementCategories.chartData = [
-          ["Category", "Total"]
-        ];
-        var i;
-        for (
-          i = 0;
-          i < this.movementStatistics.totalByCategory.length;
-          i++
-        ) {
-          this.pieChartMovementCategories.chartData.push([
-            this.movementStatistics.totalByCategory[i].category.toUpperCase(),
-            this.movementStatistics.totalByCategory[i].total
-          ]);
-        }
-      });
+        getExternalIncomeThoughTime(){
+            axios.get('api/externalIncomeThroughTime')
+            .then( response => {
+                this.label2 = response.data.labels;
+                this.data2 = response.data.rows;
+                this.loadedExternalIncomeMonth = true;
+            })
+          
+        },
+        getInternalTransfersThoughTime(){
+            axios.get('api/internalTransfersThroughTime')
+            .then( response => {
+                this.label3 = response.data.labels;
+                this.data3 = response.data.rows;
+                this.loadedInternalTransfersMonth = true;
+            })
+          
+        },
+        getUsersRegisteredThroughTime(){
+            axios.get('api/usersRegisteredThroughTime')
+            .then( response => {
+                this.label4 = response.data.labels;
+                this.data4 = response.data.rows;
+                this.loadedUsersRegisteredMonth = true;
+            })
+          
+        },
+            
+            
+        },
+        created(){
+            this.getTotalUsers();
+            this.getTotalAdmins();
+            this.getTotalOperators();
+            this.getTotalPlatformUsers();  
+            this.getTotalMovements();
+            this.getNumberActiveIUsers();
+            this.getTotalTransactions();
+            this.getTotalAmmountMoney();
+            this.getMovementsThoughTime();   
+            this.getExternalIncomeThoughTime();
+            this.getInternalTransfersThoughTime();
+            this.getUsersRegisteredThroughTime();
+        },
+        components: {
+        'line-chart': LineChart,
+    },   
     }
-  },
-  mounted() {
-    if (!this.$store.state.user) {
-      this.$router.push({ path: "/home" });
-    }
-    if (this.$store.state.user && this.$store.state.user.type != "a") {
-      this.$router.push({ path: "/home" });
-      return;
-    }
-   this.getUsers();
-    this.getMovementStatistics();
-  },
-  watch: {
-    allUsers() {
-      this.updateChart(this.allUsers);
-    }
-  }
-};
 </script>
-
-<style>
-#btn {
-  color: rgb(177, 57, 57);
-}
-</style>
