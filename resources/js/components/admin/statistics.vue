@@ -1,6 +1,12 @@
 <template>
     <div>
-        <h1>Statistics</h1>
+    <div class="container">
+      <div class="jumbotron row justify-content-center">
+        <h1>{{tittle}}</h1>
+      </div>
+
+
+      </div>
 
         <div>
             <table class="table table-striped">
@@ -30,32 +36,32 @@
                 </tbody>
             </table>
         </div>
-        
+
                 <div v-if="loadedMovementsMonth" class="container">
                 <h4>Total Movements Per Month:</h4>
                 <line-chart :data="data1" :labels="label1" :color="'#800000'"/>
-            </div>      
+            </div>
 
             <br>
 
             <div v-if="loadedExternalIncomeMonth" class="container">
                 <h4>External Income Per Month:</h4>
                 <line-chart :data="data2" :labels="label2" :color="'#800000'"/>
-            </div>     
+            </div>
 
             <br>
 
             <div v-if="loadedInternalTransfersMonth" class="container">
                 <h4>Internal Transfers (Expenses) Per Month:</h4>
                 <line-chart :data="data3" :labels="label3" :color="'#800000'"/>
-            </div>      
+            </div>
 
             <br>
 
             <div v-if="loadedUsersRegisteredMonth" class="container">
                 <h4>Users Registered Per Month:</h4>
                 <line-chart :data="data4" :labels="label4" :color="'#800000'"/>
-            </div>      
+            </div>
         </div>
 </template>
 <script>
@@ -65,6 +71,7 @@ export default {
     extends: Line,
     data: function () {
 			return {
+                tittle: 'Statistics',
                 totalUsers: "",
                 totalAdmins: "",
                 totalOperators: "",
@@ -85,7 +92,7 @@ export default {
                 loadedExternalIncomeMonth: false,
                 loadedInternalTransfersMonth: false,
                 loadedUsersRegisteredMonth: false,
-               
+
 			}
 		},
         methods: {
@@ -121,7 +128,7 @@ export default {
                 this.data1 = response.data.rows;
                 this.loadedMovementsMonth = true;
             })
-           
+
         },
         getExternalIncomeThoughTime(){
             axios.get('api/externalIncomeThroughTime')
@@ -130,7 +137,7 @@ export default {
                 this.data2 = response.data.rows;
                 this.loadedExternalIncomeMonth = true;
             })
-          
+
         },
         getInternalTransfersThoughTime(){
             axios.get('api/internalTransfersThroughTime')
@@ -139,7 +146,7 @@ export default {
                 this.data3 = response.data.rows;
                 this.loadedInternalTransfersMonth = true;
             })
-          
+
         },
         getUsersRegisteredThroughTime(){
             axios.get('api/usersRegisteredThroughTime')
@@ -148,27 +155,27 @@ export default {
                 this.data4 = response.data.rows;
                 this.loadedUsersRegisteredMonth = true;
             })
-          
+
         },
-            
-            
+
+
         },
         created(){
             this.getTotalUsers();
             this.getTotalAdmins();
             this.getTotalOperators();
-            this.getTotalPlatformUsers();  
+            this.getTotalPlatformUsers();
             this.getTotalMovements();
             this.getNumberActiveIUsers();
             this.getTotalTransactions();
             this.getTotalAmmountMoney();
-            this.getMovementsThoughTime();   
+            this.getMovementsThoughTime();
             this.getExternalIncomeThoughTime();
             this.getInternalTransfersThoughTime();
             this.getUsersRegisteredThroughTime();
         },
         components: {
         'line-chart': LineChart,
-    },   
+    },
     }
 </script>

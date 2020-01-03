@@ -2423,12 +2423,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_1__["Line"],
   data: function data() {
     return {
+      tittle: 'Statistics',
       totalUsers: "",
       totalAdmins: "",
       totalOperators: "",
@@ -90314,7 +90321,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h1", [_vm._v("Statistics")]),
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "jumbotron row justify-content-center" }, [
+        _c("h1", [_vm._v(_vm._s(_vm.tittle))])
+      ])
+    ]),
     _vm._v(" "),
     _c("div", [
       _c("table", { staticClass: "table table-striped" }, [
