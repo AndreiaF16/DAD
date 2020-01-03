@@ -90333,7 +90333,7 @@ var render = function() {
             _c("h4", [_vm._v("Total Movements Per Month:")]),
             _vm._v(" "),
             _c("line-chart", {
-              attrs: { data: _vm.data1, labels: _vm.label1, color: "#36a2eb" }
+              attrs: { data: _vm.data1, labels: _vm.label1, color: "#800000" }
             })
           ],
           1
@@ -90350,7 +90350,7 @@ var render = function() {
             _c("h4", [_vm._v("External Income Per Month:")]),
             _vm._v(" "),
             _c("line-chart", {
-              attrs: { data: _vm.data2, labels: _vm.label2, color: "#36a2eb" }
+              attrs: { data: _vm.data2, labels: _vm.label2, color: "#800000" }
             })
           ],
           1
@@ -90367,7 +90367,7 @@ var render = function() {
             _c("h4", [_vm._v("Internal Transfers (Expenses) Per Month:")]),
             _vm._v(" "),
             _c("line-chart", {
-              attrs: { data: _vm.data3, labels: _vm.label3, color: "#36a2eb" }
+              attrs: { data: _vm.data3, labels: _vm.label3, color: "#800000" }
             })
           ],
           1
@@ -90384,7 +90384,7 @@ var render = function() {
             _c("h4", [_vm._v("Users Registered Per Month:")]),
             _vm._v(" "),
             _c("line-chart", {
-              attrs: { data: _vm.data4, labels: _vm.label4, color: "#36a2eb" }
+              attrs: { data: _vm.data4, labels: _vm.label4, color: "#800000" }
             })
           ],
           1
@@ -111313,8 +111313,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
