@@ -20,7 +20,7 @@
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" v-on:click.prevent="userLogin()">Login</button>
-                <button type="submit" class="btn btn-light" v-on:click.prevent="cancelLogin()">Cancel</button>
+                <button type="submit" class="btn btn-danger" v-on:click.prevent="cancelLogin()">Cancel</button>
             </div>
         </form>
     </div>

@@ -91063,7 +91063,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-light",
+              staticClass: "btn btn-danger",
               attrs: { type: "submit" },
               on: {
                 click: function($event) {
