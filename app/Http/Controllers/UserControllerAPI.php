@@ -15,6 +15,7 @@ use App\Http\Controllers\Requests\RegisterUserRequest;
 use App\Http\Controllers\Requests\RegisterUserAdminOpRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Support\Jsonable;
+use \DateTime;
 
 define('SOURCE_EMAIL', env('MAIL_USERNAME'));
 
@@ -180,5 +181,237 @@ class UserControllerAPI extends Controller
         $users = User::all();
         return $users;
     }
+    public function totalUsers()
+    {
+        $data = DB::table('users')->count();
+        return $data;
+    }
+    public function totalOperators()
+    {
+        $data = DB::table('users')
+            ->where('type', 'LIKE', 'O')
+            ->count();
+        return $data;
+    }
+    public function totalPlatformUsers()
+    {
+        $data = DB::table('users')
+            ->where('type', 'LIKE', 'u')
+            ->count();
+        return $data;
+    }
+    public function totalAdmins()
+    {
+        $data = DB::table('users')
+            ->where('type', 'LIKE', 'a')
+            ->count();
+        return $data;
+    }
+
+    public function getNumberActiveUsers(){
+        $data = DB::table('users')->where('type', 'u')->where('active', '1')->count();       
+        
+        return $data;
+    }
+    public function getTotalTransactions(){
+        $data = DB::table('movements')->where('transfer', '1')->count();
+        return $data;
+       
+    }
+    public function getTotalAmmountMoney(){
+        $wallets = DB::table('wallets')->select('balance')->get();
+        $sizeWallets = count($wallets);
+        $totalBalance = 0;
+        for($i = 0; $i < $sizeWallets; $i++){
+            $totalBalance = $totalBalance + $wallets[$i]->balance;
+        }
+        $data = number_format((float)$totalBalance, 2, '.', '');
+        return $data;
+    }
+    public function getMovementsThroughTime(){
+        $movements = DB::table('movements')->select('date')->orderBy('date', 'asc')->get();
+        $firstYear = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[0]->date)->format("Y");
+        $firstMonth = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[0]->date)->format("m");
+        $lastYear = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[count($movements)-1]->date)->format("Y");
+        $lastMonth = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[count($movements)-1]->date)->format("m");
+        $count = 0;
+        for ($i=$firstYear; $i <= $lastYear; $i++){ 
+            if($count == 0){
+                for ($j=$firstMonth; $j < $lastMonth+1; $j++){         
+                    $movementsMonth = DB::table('movements')->where('date', 'like', $i . '-' . $j . '%')->orderBy('date', 'asc')->count();
+                   
+                    $totalMevementsMonth[$count]['value'] = $movementsMonth;
+                    $totalMevementsMonth[$count]['date'] = $i.'-'.$j;
+                    
+                    $count = $count + 1;
+                }
+            }else{
+                $firstMonth = 1;
+                for ($j=$firstMonth; $j < $lastMonth+1; $j++){  
+                    if($j < 10){
+                        $m = "0".$j;
+                    }else{
+                        $m = $j;
+                    }             
+                    $movementsMonth = DB::table('movements')->where('date', 'like', $i . '-' . $m . '%')->orderBy('date', 'asc')->count();
+                    
+                    $totalMevementsMonth[$count]['value'] = $movementsMonth;
+                    $totalMevementsMonth[$count]['date'] = $i.'-'.$j;
+                    
+                    $count = $count + 1;
+                }
+            }
+        }
+        
+        $total = count($totalMevementsMonth);
+        for($i = 0; $i < $total; $i++){
+            $labels[] = $totalMevementsMonth[$i]['date'];
+            $rows[] = $totalMevementsMonth[$i]['value'];
+        }
+        $data = [
+            'labels' => $labels,
+            'rows' => $rows,
+        ];
+        return $data;
+    }
+    public function getExternalIncomeThroughTimeThroughTime(){
+        $movements = DB::table('movements')->select('date')->where('type', 'i')->where('transfer', '0')->orderBy('date', 'asc')->get();
+        $firstYear = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[0]->date)->format("Y");
+        $firstMonth = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[0]->date)->format("m");
+        $lastYear = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[count($movements)-1]->date)->format("Y");
+        $lastMonth = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[count($movements)-1]->date)->format("m");
+        $count = 0;
+        for ($i=$firstYear; $i <= $lastYear; $i++){ 
+            if($count == 0){
+                for ($j=$firstMonth; $j < $lastMonth+1; $j++){     
+                    $externalIncomesMonth = DB::table('movements')->where('type', 'i')->where('transfer', '0')->where('date', 'like', $i . '-' . $j . '%')->orderBy('date', 'asc')->count();
+                   
+                    $totalExternalIncomesMonth[$count]['value'] = $externalIncomesMonth;
+                    $totalExternalIncomesMonth[$count]['date'] = $i.'-'.$j;
+                    
+                    $count = $count + 1;
+                }
+            }else{
+                $firstMonth = 1;
+                for ($j=$firstMonth; $j < $lastMonth+1; $j++){ 
+                    if($j < 10){
+                        $m = "0".$j;
+                    }else{
+                        $m = $j;
+                    }             
+                    $externalIncomesMonth = DB::table('movements')->where('type', 'i')->where('transfer', '0')->where('date', 'like', $i . '-' . $m . '%')->orderBy('date', 'asc')->count();
+                    
+                    $totalExternalIncomesMonth[$count]['value'] = $externalIncomesMonth;
+                    $totalExternalIncomesMonth[$count]['date'] = $i.'-'.$j;
+                    
+                    $count = $count + 1;
+                }
+            }
+        }
+       
+        $total = count($totalExternalIncomesMonth);
+        for($i = 0; $i < $total; $i++){
+            $labels[] = $totalExternalIncomesMonth[$i]['date'];
+            $rows[] = $totalExternalIncomesMonth[$i]['value'];
+        }
+        $data = [
+            'labels' => $labels,
+            'rows' => $rows,
+        ];
+        return $data;
+    }
+    public function getInternalTransfersThroughTimeThroughTime(){
+        $movements = DB::table('movements')->select('date')->where('type', 'e')->where('transfer', '1')->orderBy('date', 'asc')->get();
+        $firstYear = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[0]->date)->format("Y");
+        $firstMonth = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[0]->date)->format("m");
+        $lastYear = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[count($movements)-1]->date)->format("Y");
+        $lastMonth = DateTime::createFromFormat('Y-m-d H:i:s' ,$movements[count($movements)-1]->date)->format("m");
+        $count = 0;
+        for ($i=$firstYear; $i <= $lastYear; $i++){ 
+            if($count == 0){
+                for ($j=$firstMonth; $j < $lastMonth+1; $j++){          
+                    $transfersMonth = DB::table('movements')->where('type', 'e')->where('transfer', '1')->where('date', 'like', $i . '-' . $j . '%')->orderBy('date', 'asc')->count();
+                   
+                    $totalTransfersMonth[$count]['value'] = $transfersMonth;
+                    $totalTransfersMonth[$count]['date'] = $i.'-'.$j;
+                    
+                    $count = $count + 1;
+                }
+            }else{
+                $firstMonth = 1;
+                for ($j=$firstMonth; $j < $lastMonth+1; $j++){  
+                    if($j < 10){
+                        $m = "0".$j;
+                    }else{
+                        $m = $j;
+                    }             
+                    $transfersMonth = DB::table('movements')->where('type', 'e')->where('transfer', '1')->where('date', 'like', $i . '-' . $m . '%')->orderBy('date', 'asc')->count();
+                    
+                    $totalTransfersMonth[$count]['value'] = $transfersMonth;
+                    $totalTransfersMonth[$count]['date'] = $i.'-'.$j;
+                    
+                    $count = $count + 1;
+                }
+            }
+        }
+        $total = count($totalTransfersMonth);
+        for($i = 0; $i < $total; $i++){
+            $labels[] = $totalTransfersMonth[$i]['date'];
+            $rows[] = $totalTransfersMonth[$i]['value'];
+        }
+        $data = [
+            'labels' => $labels,
+            'rows' => $rows,
+        ];
+        return $data;
+    }
+    public function getUsersRegisteredThroughTime(){
+        $users = DB::table('users')->select('created_at')->where('type', 'u')->orderBy('created_at', 'asc')->get();
+        $firstYear = DateTime::createFromFormat('Y-m-d H:i:s' ,$users[0]->created_at)->format("Y");
+        $firstMonth = DateTime::createFromFormat('Y-m-d H:i:s' ,$users[0]->created_at)->format("m");
+        $lastYear = DateTime::createFromFormat('Y-m-d H:i:s' ,$users[count($users)-1]->created_at)->format("Y");
+        $lastMonth = DateTime::createFromFormat('Y-m-d H:i:s' ,$users[count($users)-1]->created_at)->format("m");
+        $count = 0;
+        for ($i=$firstYear; $i <= $lastYear; $i++){ 
+            if($count == 0){
+                for ($j=$firstMonth; $j < $lastMonth+1; $j++){        
+                    $usersMonth = DB::table('users')->where('type', 'u')->where('created_at', 'like', $i . '-' . $j . '%')->orderBy('date', 'asc')->count();
+                   
+                    $totalUsersMonth[$count]['value'] = $usersMonth;
+                    $totalUsersMonth[$count]['date'] = $i.'-'.$j;
+                    
+                    $count = $count + 1;
+                }
+            }else{
+                $firstMonth = 1;
+                for ($j=$firstMonth; $j < $lastMonth+1; $j++){  
+                    if($j < 10){
+                        $m = "0".$j;
+                    }else{
+                        $m = $j;
+                    }             
+                    $usersMonth = DB::table('users')->where('type', 'u')->where('created_at', 'like', $i . '-' . $m . '%')->orderBy('date', 'asc')->count();
+                    
+                    $totalUsersMonth[$count]['value'] = $usersMonth;
+                    $totalUsersMonth[$count]['date'] = $i.'-'.$j;
+                    
+                    $count = $count + 1;
+                }
+            }
+        }
+     
+        $total = count($totalUsersMonth);
+        for($i = 0; $i < $total; $i++){
+            $labels[] = $totalUsersMonth[$i]['date'];
+            $rows[] = $totalUsersMonth[$i]['value'];
+        }
+        $data = [
+            'labels' => $labels,
+            'rows' => $rows,
+        ];
+        return $data;
+    }
+    
+
     
 }

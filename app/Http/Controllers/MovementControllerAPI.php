@@ -224,11 +224,18 @@ class MovementControllerAPI extends Controller
         return $response;
     }
 
-    public function getAllUserMovements(){
-        $wallet = Wallet::first();
-        $movements = Movement::where('wallet_id','=',$wallet->id)->get();
+    public function getAllUserMovements(Request $request){
+        $wallet = Wallet::where('email','=',$request->email)->first();
+        $movements = Movement::where('wallet_id','=',$wallet->id)->orderBy('date','ASC')->get();
         return $movements;
     }
+    
+
+    public function totalMovements(){
+        $data = DB::table('movements')->count();
+        return $data;
+    }
+    
     
 }
 
