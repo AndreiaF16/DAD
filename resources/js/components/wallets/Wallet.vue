@@ -240,6 +240,8 @@
                 this.selectedMovementEdit = null;
                 this.showSuccess = true;
                 this.successMessage = 'Movement edit successfully!'
+                this.$toasted.success(this.successMessage);
+
             },
             showCategoryError: function(){
                 this.showErrorEdit = true;
