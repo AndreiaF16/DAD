@@ -136,30 +136,34 @@ export default {
 					'password_confirmation':this.password_confirmation,
                     'password':this.password,
                 }).then(response=>{
-					this.showErrors=false;
-					this.showMessage=true;
 					this.message='Password updated with success';
-					this.typeofmsg= "alert-success";
-					this.$router.push('home' );
+                    this.$toasted.success(this.message);
+                    this.password_old='';
+					this.password_confirmation='';
+                    this.password='';
+
 				}).catch(error=>{
-					if(error.response.status==401){
-						this.showMessage=true;
-						this.message=error.response.data.unauthorized;
-						this.typeofmsg= "alert-danger";
-						return;
-					}
-					if(error.response.status==422){
-						if(error.response.data.errors==undefined){
-							this.showErrors=false;
-							this.showMessage=true;
-							this.message=error.response.data.password_old;
-							this.typeofmsg= "alert-danger";
-						}else{
-							this.showMessage=false;
-							this.showErrors=true;
-							this.errors=error.response.data.errors;
-						}
-					}
+                    console.log(error.response);
+                    if(error.response!=undefined){
+                        if(error.response.status==401){
+                            this.showMessage=true;
+                            this.message=error.response.data.unauthorized;
+                            this.typeofmsg= "alert-danger";
+                            return;
+                        }
+                        if(error.response.status==422){
+                            if(error.response.data.errors==undefined){
+                                this.showErrors=false;
+                                this.showMessage=true;
+                                this.message=error.response.data.password_old;
+                                this.typeofmsg= "alert-danger";
+                            }else{
+                                this.showMessage=false;
+                                this.showErrors=true;
+                                this.errors=error.response.data.errors;
+                            }
+                        }
+                    }
 				});
         },
         savedUser(){
@@ -174,15 +178,14 @@ export default {
             //https://laracasts.com/discuss/channels/laravel/ajax-formdata-and-put-fails
             axios.post('/api/users/updateProfile', formdata)
                 .then(response => {
-                    this.showErrors=false;
-                    this.showMessage=true;
+                    
                     this.message='Profile updated with success';
-                    this.typeofmsg= "alert-success";
+                    this.$toasted.success(this.message);
 
                     this.$store.commit('setUser',response.data);
                     localStorage.setItem("user",JSON.stringify(response.data));
-                    this.user.photo = response.data.photo;
-                    this.getActualPhoto();
+                    this.photo = response.data.photo;
+                    //this.getActualPhoto();
                 })
             .catch(error=>{
                 if(error.response != undefined){

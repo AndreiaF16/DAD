@@ -74,8 +74,8 @@
         .post("api/createUser", formdata)
         .then(response => {
             this.successMessage = "User created with sucess!";
-            this.showSuccess = true;
-
+            this.$toasted.success(this.successMessage);
+            this.$router.push('/home');
         })
         .catch(error => {
           this.showErrors = true;

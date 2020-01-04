@@ -2327,7 +2327,10 @@ __webpack_require__.r(__webpack_exports__);
       formdata.append('_method', 'POST');
       axios.post("api/createUser", formdata).then(function (response) {
         _this.successMessage = "User created with sucess!";
-        _this.showSuccess = true;
+
+        _this.$toasted.success(_this.successMessage);
+
+        _this.$router.push('/home');
       })["catch"](function (error) {
         _this.showErrors = true;
         _this.errors = error.response.data.errors;
@@ -3590,30 +3593,35 @@ __webpack_require__.r(__webpack_exports__);
         'password_confirmation': this.password_confirmation,
         'password': this.password
       }).then(function (response) {
-        _this.showErrors = false;
-        _this.showMessage = true;
         _this.message = 'Password updated with success';
-        _this.typeofmsg = "alert-success";
 
-        _this.$router.push('home');
+        _this.$toasted.success(_this.message);
+
+        _this.password_old = '';
+        _this.password_confirmation = '';
+        _this.password = '';
       })["catch"](function (error) {
-        if (error.response.status == 401) {
-          _this.showMessage = true;
-          _this.message = error.response.data.unauthorized;
-          _this.typeofmsg = "alert-danger";
-          return;
-        }
+        console.log(error.response);
 
-        if (error.response.status == 422) {
-          if (error.response.data.errors == undefined) {
-            _this.showErrors = false;
+        if (error.response != undefined) {
+          if (error.response.status == 401) {
             _this.showMessage = true;
-            _this.message = error.response.data.password_old;
+            _this.message = error.response.data.unauthorized;
             _this.typeofmsg = "alert-danger";
-          } else {
-            _this.showMessage = false;
-            _this.showErrors = true;
-            _this.errors = error.response.data.errors;
+            return;
+          }
+
+          if (error.response.status == 422) {
+            if (error.response.data.errors == undefined) {
+              _this.showErrors = false;
+              _this.showMessage = true;
+              _this.message = error.response.data.password_old;
+              _this.typeofmsg = "alert-danger";
+            } else {
+              _this.showMessage = false;
+              _this.showErrors = true;
+              _this.errors = error.response.data.errors;
+            }
           }
         }
       });
@@ -3631,17 +3639,14 @@ __webpack_require__.r(__webpack_exports__);
       formdata.append('_method', 'PUT'); //https://laracasts.com/discuss/channels/laravel/ajax-formdata-and-put-fails
 
       axios.post('/api/users/updateProfile', formdata).then(function (response) {
-        _this2.showErrors = false;
-        _this2.showMessage = true;
         _this2.message = 'Profile updated with success';
-        _this2.typeofmsg = "alert-success";
+
+        _this2.$toasted.success(_this2.message);
 
         _this2.$store.commit('setUser', response.data);
 
         localStorage.setItem("user", JSON.stringify(response.data));
-        _this2.user.photo = response.data.photo;
-
-        _this2.getActualPhoto();
+        _this2.photo = response.data.photo; //this.getActualPhoto();
       })["catch"](function (error) {
         if (error.response != undefined) {
           if (error.response.status == 401) {
