@@ -60,7 +60,6 @@
                         this.$router.push('/home');
                     })
                     .catch(error => {
-                        console.log(error.response.data)
                         this.showMessage=true;
                         this.message = "Invalid credentials";
                         this.typeofmsg= "alert-danger";

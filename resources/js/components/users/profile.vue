@@ -143,7 +143,6 @@ export default {
                     this.password='';
 
 				}).catch(error=>{
-                    console.log(error.response);
                     if(error.response!=undefined){
                         if(error.response.status==401){
                             this.showMessage=true;
