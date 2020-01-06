@@ -233,14 +233,18 @@ class MovementControllerAPI extends Controller
     }
 
     public function getAllUserMovements(Request $request){
+        $time = strtotime("-1 year", time());
+        $date = date("Y-m-d", $time);
         $wallet = Wallet::where('email','=',$request->email)->first();
-        $movements = Movement::where('wallet_id','=',$wallet->id)->orderBy('date','ASC')->get();
+        $movements = Movement::where('wallet_id','=',$wallet->id)->whereDate("date", ">=" ,$date)->orderBy('date','ASC')->get();
         return $movements;
     }
     
 
     public function totalMovements(){
-        $data = DB::table('movements')->count();
+        $time = strtotime("-1 year", time());
+        $date = date("Y-m-d", $time);
+        $data = DB::table('movements')->whereDate("date", ">=" ,$date)->count();
         return $data;
     }
     
