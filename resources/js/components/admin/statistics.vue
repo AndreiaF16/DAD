@@ -37,11 +37,6 @@
             </table>
         </div>
 
-                <div v-if="loadedMovementsMonth" class="container">
-                <h4>Total Movements Per Month:</h4>
-                <line-chart :data="data1" :labels="label1" :color="'#800000'"/>
-            </div>
-
             <br>
 
             <div v-if="loadedExternalIncomeMonth" class="container">
@@ -121,15 +116,6 @@ export default {
             getTotalAmmountMoney(){
                 axios.get('api/totalAmmountMoney').then(({ data }) => (this.totalAmmountMoney = data));
             },
-             getMovementsThoughTime(){
-            axios.get('api/movementsThroughTime')
-            .then( response => {
-                this.label1 = response.data.labels;
-                this.data1 = response.data.rows;
-                this.loadedMovementsMonth = true;
-            })
-
-        },
         getExternalIncomeThoughTime(){
             axios.get('api/externalIncomeThroughTime')
             .then( response => {
@@ -169,7 +155,6 @@ export default {
             this.getNumberActiveIUsers();
             this.getTotalTransactions();
             this.getTotalAmmountMoney();
-            this.getMovementsThoughTime();
             this.getExternalIncomeThoughTime();
             this.getInternalTransfersThoughTime();
             this.getUsersRegisteredThroughTime();

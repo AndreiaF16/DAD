@@ -2427,11 +2427,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2526,40 +2521,31 @@ __webpack_require__.r(__webpack_exports__);
         return _this8.totalAmmountMoney = data;
       });
     },
-    getMovementsThoughTime: function getMovementsThoughTime() {
+    getExternalIncomeThoughTime: function getExternalIncomeThoughTime() {
       var _this9 = this;
 
-      axios.get('api/movementsThroughTime').then(function (response) {
-        _this9.label1 = response.data.labels;
-        _this9.data1 = response.data.rows;
-        _this9.loadedMovementsMonth = true;
-      });
-    },
-    getExternalIncomeThoughTime: function getExternalIncomeThoughTime() {
-      var _this10 = this;
-
       axios.get('api/externalIncomeThroughTime').then(function (response) {
-        _this10.label2 = response.data.labels;
-        _this10.data2 = response.data.rows;
-        _this10.loadedExternalIncomeMonth = true;
+        _this9.label2 = response.data.labels;
+        _this9.data2 = response.data.rows;
+        _this9.loadedExternalIncomeMonth = true;
       });
     },
     getInternalTransfersThoughTime: function getInternalTransfersThoughTime() {
-      var _this11 = this;
+      var _this10 = this;
 
       axios.get('api/internalTransfersThroughTime').then(function (response) {
-        _this11.label3 = response.data.labels;
-        _this11.data3 = response.data.rows;
-        _this11.loadedInternalTransfersMonth = true;
+        _this10.label3 = response.data.labels;
+        _this10.data3 = response.data.rows;
+        _this10.loadedInternalTransfersMonth = true;
       });
     },
     getUsersRegisteredThroughTime: function getUsersRegisteredThroughTime() {
-      var _this12 = this;
+      var _this11 = this;
 
       axios.get('api/usersRegisteredThroughTime').then(function (response) {
-        _this12.label4 = response.data.labels;
-        _this12.data4 = response.data.rows;
-        _this12.loadedUsersRegisteredMonth = true;
+        _this11.label4 = response.data.labels;
+        _this11.data4 = response.data.rows;
+        _this11.loadedUsersRegisteredMonth = true;
       });
     }
   },
@@ -2572,7 +2558,6 @@ __webpack_require__.r(__webpack_exports__);
     this.getNumberActiveIUsers();
     this.getTotalTransactions();
     this.getTotalAmmountMoney();
-    this.getMovementsThoughTime();
     this.getExternalIncomeThoughTime();
     this.getInternalTransfersThoughTime();
     this.getUsersRegisteredThroughTime();
@@ -90355,21 +90340,6 @@ var render = function() {
         ])
       ])
     ]),
-    _vm._v(" "),
-    _vm.loadedMovementsMonth
-      ? _c(
-          "div",
-          { staticClass: "container" },
-          [
-            _c("h4", [_vm._v("Total Movements Per Month:")]),
-            _vm._v(" "),
-            _c("line-chart", {
-              attrs: { data: _vm.data1, labels: _vm.label1, color: "#800000" }
-            })
-          ],
-          1
-        )
-      : _vm._e(),
     _vm._v(" "),
     _c("br"),
     _vm._v(" "),

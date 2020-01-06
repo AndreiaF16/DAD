@@ -274,7 +274,7 @@ class UserControllerAPI extends Controller
             'labels' => $labels,
             'rows' => $rows,
         ];
-        return $data;
+        return response()->json($data, 200);
     }
     public function getExternalIncomeThroughTimeThroughTime(){
         $time = strtotime("-1 year", time());
