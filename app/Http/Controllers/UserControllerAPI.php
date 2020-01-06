@@ -288,7 +288,7 @@ class UserControllerAPI extends Controller
         $count = 0;
         for ($i=$firstYear; $i <= $lastYear; $i++){ 
             if($count == 0){
-                for ($j=$firstMonth; $j < $lastMonth+12; $j++){
+                for ($j=$firstMonth; $j < 12; $j++){
                     if($j < 10){
                         $m = "0".intval($j);
                     }else{
@@ -343,7 +343,7 @@ class UserControllerAPI extends Controller
         $count = 0;
         for ($i=$firstYear; $i <= $lastYear; $i++){ 
             if($count == 0){
-                for ($j=$firstMonth; $j < $lastMonth+1; $j++){    
+                for ($j=$firstMonth; $j < 12; $j++){    
                     if($j < 10){
                         $m = "0".intval($j);
                     }else{
@@ -394,7 +394,7 @@ class UserControllerAPI extends Controller
         $count = 0;
         for ($i=$firstYear; $i <= $lastYear; $i++){ 
             if($count == 0){
-                for ($j=$firstMonth; $j < $lastMonth+12; $j++){
+                for ($j=$firstMonth; $j < 12; $j++){
                     if($j < 10){
                         $m = "0".intval($j);
                     }else{
