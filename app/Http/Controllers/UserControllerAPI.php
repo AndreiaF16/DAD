@@ -330,7 +330,7 @@ class UserControllerAPI extends Controller
             'labels' => $labels,
             'rows' => $rows,
         ];
-        return $data;
+        return response()->json($data, 200);
     }
     public function getInternalTransfersThroughTimeThroughTime(){
         $time = strtotime("-1 year", time());
@@ -381,7 +381,7 @@ class UserControllerAPI extends Controller
             'labels' => $labels,
             'rows' => $rows,
         ];
-        return $data;
+        return response()->json($data, 200);
     }
     public function getUsersRegisteredThroughTime(){
         $time = strtotime("-1 year", time());
@@ -434,7 +434,7 @@ class UserControllerAPI extends Controller
             'labels' => $labels,
             'rows' => $rows,
         ];
-        return $data;
+        return response()->json($data, 200);
     }
     
 
