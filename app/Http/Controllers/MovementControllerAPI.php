@@ -127,16 +127,21 @@ class MovementControllerAPI extends Controller
         }
 
         if($request->email == $request->destination_email){
-            return response()->json(["error"=> "Email and Destination Email are the same!"], 400);
+            return response()->json(["errors"=> ["balance" =>["Email and Destination Email are the same!"]]], 400);
         }
 
         $wallet = Wallet::where('email',$request->email)->first();
         if($wallet == null){
-            return response()->json(["error"=> "Email is not valid!"], 400);
+            return response()->json(["errors"=> ["email" =>[ "Email is not valid!"]]], 400);
         }
 
+        if($wallet->balance <= 0){
+
+            return response()->json(["errors"=> ["balance" =>["The balance is less or equal to 0! Debit not allowed"]]], 400);
+        }
+        
         if($wallet->balance - $request->value < 0){
-            return response()->json(["error"=> "The balance would be negative with this debit! Debit not allowed"], 400);
+            return response()->json(["errors"=> ["balance" =>["The balance would be negative with this debit! Debit not allowed"]]], 400);
         }
 
         $date = Carbon::now();

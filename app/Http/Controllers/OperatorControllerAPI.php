@@ -26,7 +26,7 @@ class OperatorControllerAPI extends Controller
         //Alterar balance da wallet destino
         $wallet = Wallet::where('email',$request->email)->first();
         if($wallet == null){
-            return response()->json(["error"=> "Email does not have virtual wallet!"], 400); 
+            return response()->json(["errors"=> ["email" =>["Email does not have virtual wallet!"]]], 400); 
         }
         $wallet->balance = $wallet->balance + $request->value;
         $wallet->save();
