@@ -191,27 +191,29 @@ class MovementControllerAPI extends Controller
     }
 
     public function getMovementStatistics(){
+        $time = strtotime("-1 year", time());
+        $date = date("Y-m-d", $time);
         $authenticatedUser = Auth::guard('api')->user();
         if ($authenticatedUser == null || $authenticatedUser->type != "a") {
             return abort(401);
         }
-        $total = Movement::count();
+        $total = Movement::whereDate("date", ">=" ,$date)->count();
         $totalByCategory = [];
         $categories = Category::all();
         for ($i = 0; $i < sizeof($categories); $i++) {
             $cat = $categories[$i]->name;
-            $val = Movement::where('category_id','=',$categories[$i]->id)->count() / $total;
+            $val = Movement::where('category_id','=',$categories[$i]->id)->whereDate("date", ">=" ,$date)->count() / $total;
             $val = round($val,2) * 100;
             $obj = (object) array(
                 'category' => $cat,
-                'total' => Movement::where('category_id','=',$categories[$i]->id)->count()
+                'total' => Movement::where('category_id','=',$categories[$i]->id)->whereDate("date", ">=" ,$date)->count()
             );
             array_push($totalByCategory,$obj);
         }
-        $totalExpenses = round(Movement::where('type','=','e')->count()/$total,2)*100;
-        $totalIncomes =round(Movement::where('type','=','i')->count()/$total,2)*100;
-        $totalTransfers = round(Movement::where('transfer','=',1)->count()/$total,2)*100;
-        $totalNonTransfers = round(Movement::where('transfer','=',0)->count()/$total,2)*100;
+        $totalExpenses = round(Movement::where('type','=','e')->whereDate("date", ">=" ,$date)->count()/$total,2)*100;
+        $totalIncomes =round(Movement::where('type','=','i')->whereDate("date", ">=" ,$date)->count()/$total,2)*100;
+        $totalTransfers = round(Movement::where('transfer','=',1)->whereDate("date", ">=" ,$date)->count()/$total,2)*100;
+        $totalNonTransfers = round(Movement::where('transfer','=',0)->whereDate("date", ">=" ,$date)->count()/$total,2)*100;
         $largestMovementValue = DB::select('select max(value) as maximum from movements')[0]->maximum;
         $smallestMovementValue = DB::select('select min(value) as minimum from movements')[0]->minimum;
         $averageMovementValue = DB::select('select avg(value) as average from movements')[0]->average;

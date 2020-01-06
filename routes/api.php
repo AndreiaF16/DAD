@@ -67,13 +67,13 @@ Route::middleware('auth:api')->get('/totalPlatformUsers', 'UserControllerAPI@tot
 Route::middleware('auth:api')->get('/totalAdmins', 'UserControllerAPI@totalAdmins');
 Route::middleware('auth:api')->get('/totalMovements', 'MovementControllerAPI@totalMovements');
 Route::middleware('auth:api')->get('/totalMoney', 'MovementControllerAPI@totalMoney');
-Route::middleware('auth:api')->get('admin/stats/numberActiveUsers', 'UserControllerAPI@getNumberActiveUsers');
+Route::middleware('auth:api')->get('/admin/stats/numberActiveUsers', 'UserControllerAPI@getNumberActiveUsers');
 Route::middleware('auth:api')->get('/totalTransactions', 'UserControllerAPI@getTotalTransactions');
 Route::middleware('auth:api')->get('/totalAmmountMoney', 'UserControllerAPI@getTotalAmmountMoney');
-Route::middleware('auth:api')->get('movementsThroughTime', 'UserControllerAPI@getMovementsThroughTime');
-Route::middleware('auth:api')->get('externalIncomeThroughTime', 'UserControllerAPI@getExternalIncomeThroughTimeThroughTime');
-Route::middleware('auth:api')->get('internalTransfersThroughTime', 'UserControllerAPI@getInternalTransfersThroughTimeThroughTime');
-Route::middleware('auth:api')->get('usersRegisteredThroughTime', 'UserControllerAPI@getUsersRegisteredThroughTime');
+Route::middleware('auth:api')->get('/movementsThroughTime', 'UserControllerAPI@getMovementsThroughTime');
+Route::middleware('auth:api')->get('/externalIncomeThroughTime', 'UserControllerAPI@getExternalIncomeThroughTimeThroughTime');
+Route::middleware('auth:api')->get('/internalTransfersThroughTime', 'UserControllerAPI@getInternalTransfersThroughTimeThroughTime');
+Route::middleware('auth:api')->get('/usersRegisteredThroughTime', 'UserControllerAPI@getUsersRegisteredThroughTime');
 
 
 Route::get('getphotobyemail/{email}','UserControllerAPI@getPhotoByEmail');
