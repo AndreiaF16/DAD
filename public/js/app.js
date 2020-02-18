@@ -1862,19 +1862,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       title: 'Welcome to VIRTUAL WALLET',
       text: 'Total Number Of Virtual Wallets: ',
-      wallets: undefined
+      wallets: undefined,
+      text1: 'Ammount Of Money In The Platform: ',
+      totalAmmountMoney: ''
     };
   },
+  methods: {
+    getTotalAmmountMoney: function getTotalAmmountMoney() {
+      var _this = this;
+
+      axios.get('api/totalAmmountMoney').then(function (_ref) {
+        var data = _ref.data;
+        return _this.totalAmmountMoney = data;
+      });
+    }
+  },
+  created: function created() {
+    this.getTotalAmmountMoney();
+  },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     axios.get('api/home').then(function (response) {
-      _this.wallets = response.data;
+      _this2.wallets = response.data;
     });
   }
 });
@@ -89954,6 +89979,18 @@ var render = function() {
                   _vm._s(_vm.wallets) +
                   "\n                    "
               )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row justify-content-center" }, [
+              _c("h6", [_vm._v(" " + _vm._s(_vm.text1))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body row justify-content-center" }, [
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.totalAmmountMoney) +
+                  "\n                    "
+              )
             ])
           ])
         ])
@@ -111394,8 +111431,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\projetoDAD\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\projetoDAD\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\DAD\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\DAD\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

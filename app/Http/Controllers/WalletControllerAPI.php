@@ -18,6 +18,17 @@ class WalletControllerAPI extends Controller
      $wallets = DB::table('wallets')->count();
         return $wallets;
 
+
+
+
+       // $wallets = DB::table('wallets')->select('balance')->get();
+       $sizeWallets = count($wallets);
+        $totalBalance = 0;
+        for($i = 0; $i < $sizeWallets; $i++){
+            $totalBalance = $totalBalance + $wallets[$i]->balance;
+        }
+        $data = number_format((float)$totalBalance, 2, '.', '');
+        return $data;
        /* $user=Wallet::findOrFail($id);
 
         if((Auth::guard('api')->user()->id != $user->id) /*|| (Auth::guard('api')->user()->type != 'u')*///){

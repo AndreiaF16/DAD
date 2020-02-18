@@ -4,7 +4,7 @@ var app = require('http').createServer();
 
 // Se tiverem problemas com "same-origin policy" deverão activar o CORS.
 
-// Aqui, temos um exemplo de código que ativa o CORS (alterar o url base) 
+// Aqui, temos um exemplo de código que ativa o CORS (alterar o url base)
 
 // var app = require('http').createServer(function(req,res){
 // Set CORS headers
@@ -20,7 +20,7 @@ var app = require('http').createServer();
 //  }
 // });
 
-// NOTA: A solução correta depende da configuração do próprio servidor, 
+// NOTA: A solução correta depende da configuração do próprio servidor,
 // e alguns casos do próprio browser.
 // Assim sendo, não se garante que a solução anterior funcione.
 // Caso não funcione é necessário procurar/investigar soluções alternativas
@@ -37,7 +37,7 @@ app.listen(8080, function(){
 // Estrutura dados - server
 // ------------------------
 
-// loggedUsers = the list (map) of logged users. 
+// loggedUsers = the list (map) of logged users.
 // Each list element has the information about the user and the socket id
 // Check loggedusers.js file
 
@@ -46,7 +46,7 @@ let loggedUsers = new LoggedUsers();
 io.on('connection', function (socket) {
     console.log('client has connected (socket ID = '+socket.id+')' );
 
-    // Emit message to the same cliente 
+    // Emit message to the same cliente
     //socket.emit('my_active_games_changed');
 
     // Handle message sent from the client to the server
@@ -71,6 +71,12 @@ io.on('connection', function (socket) {
         }
     });
 
+    socket.on("notifyMovementId", function(msg, destUser) {
+        let userInfo = loggedUsers.userInfoByID(1);
+        let socket_id = userInfo !== undefined ? userInfo.socketID : null;
+            io.to(socket_id).emit("movementReceived", msg);
+    });
+
     socket.on("serverUpdateVirtualWallet", function(destUser) {
         let userInfo = loggedUsers.userInfoByID(destUser.id);
         let socket_id = userInfo !== undefined ? userInfo.socketID : null;
@@ -80,7 +86,7 @@ io.on('connection', function (socket) {
             io.to(socket_id).emit("updateVirtualWallet");
         }
     });
-    
+
     socket.on("disconnect", function() {
         loggedUsers.removeUserInfoBySocketID(socket.id);
         console.log(

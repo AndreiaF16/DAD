@@ -56,9 +56,15 @@ class MovementControllerAPI extends Controller
 
     public function getFilteredMovements(Request $request){
 
-        if(!is_null($request->id) || !is_null($request->type) || !is_null($request->category) || !is_null($request->type_payment) || !is_null($request->transfer_email) || !is_null($request->data_inf) || !is_null($request->data_sup)){
+        if(!is_null($request->id) || !is_null($request->type) || !is_null($request->category) || !is_null($request->type_payment) || !is_null($request->transfer_email) || !is_null($request->data_inf) || !is_null($request->data_sup) /*|| !is_null($request->value) */){
 
             $movements = Movement::with('category', 'transfer_wallet', 'transfer_wallet.user')->select('*')->where('wallet_id', $request->user_id);
+
+
+          /*  if (!is_null($request->value)){
+                $movements = $movements->where('value', 'like', $request->value);
+            }*/
+
 
             if (!is_null($request->id)){
                 $movements = $movements->where('id', 'like', $request->id . '%');
@@ -139,10 +145,13 @@ class MovementControllerAPI extends Controller
 
             return response()->json(["errors"=> ["balance" =>["The balance is less or equal to 0! Debit not allowed"]]], 400);
         }
-        
+
         if($wallet->balance - $request->value < 0){
             return response()->json(["errors"=> ["balance" =>["The balance would be negative with this debit! Debit not allowed"]]], 400);
         }
+
+
+
 
         $date = Carbon::now();
         $movement->wallet_id = $wallet->id;
@@ -155,11 +164,17 @@ class MovementControllerAPI extends Controller
         $wallet->balance = $wallet->balance - $request->value;
         $wallet->save();
 
+
         if($request->transfer == 1){
 
             $wallet_dest = Wallet::where('email',$request->destination_email)->first();
             if($wallet_dest == null){
                 return response()->json(["error"=> "Destination Email is invalid!"], 400);
+            }
+            if($wallet->balance - $request->value > 1000){
+
+                $wallet_dest = Wallet::where('msg',$request->msg)->first();
+
             }
 
             $date = Carbon::now();
@@ -239,7 +254,7 @@ class MovementControllerAPI extends Controller
         $movements = Movement::where('wallet_id','=',$wallet->id)->whereDate("date", ">=" ,$date)->orderBy('date','ASC')->get();
         return $movements;
     }
-    
+
 
     public function totalMovements(){
         $time = strtotime("-1 year", time());
@@ -247,7 +262,7 @@ class MovementControllerAPI extends Controller
         $data = DB::table('movements')->whereDate("date", ">=" ,$date)->count();
         return $data;
     }
-    
-    
+
+
 }
 
